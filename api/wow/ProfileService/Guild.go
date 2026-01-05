@@ -11,6 +11,8 @@ import (
 	"encoding/json"
 )
 
+//NOTE: All guild endpoints require a cookie generated from the player's accounts.
+
 //Guild Returns a single guild by its name and realm.
 //@see: /data/wow/guild/{realmSlug}/{nameSlug}
 
