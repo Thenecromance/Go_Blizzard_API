@@ -1,4 +1,4 @@
-package utils
+package client
 
 import (
 	"Unofficial_API/Interface"

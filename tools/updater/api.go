@@ -26,7 +26,8 @@ type Api struct {
 	Name        string        `json:"name"`        // just like "Achievement API"
 	Description string        `json:"description"` // what this api do
 	Path        string        `json:"path"`        // just like "/wow/achievement"
-	Method      string        `json:"method"`      // just like "GET"
+	Method      string        `json:"httpMethod"`  // just like "GET"
+	CnRegion    bool          `json:"cnRegion"`    // just like true
 	Params      []*Parameters `json:"parameters"`  // just like "id"
 	NameSpace   string        `json:"-"`           // the real place which will write to api file
 }
@@ -41,11 +42,14 @@ func (a *Api) fixed() {
 
 func (a *Api) fixParams() {
 	var filtered []*Parameters
-	for _, p := range a.Params {
-		if strings.Contains(p.Name, "locale") {
+	for i, p := range a.Params {
+		/*if strings.Contains(p.Name, "locale") {
 			continue
 		} else if strings.Contains(p.Name, "namespace") {
 			a.NameSpace = strings.Split(p.DefaultValue.(string), "-")[0] // just need this api is static or dynamic
+		}else*/if strings.Contains(p.Type, "(deprecated)") {
+			a.Params[i] = nil // so crazy
+			continue
 		} else if strings.Contains(p.Name, ".") {
 			p.Name = strings.ReplaceAll(p.Name, ".", "Dot")
 			fmt.Printf("wrong params need to be fixed %s\n", p.Name)
@@ -129,6 +133,7 @@ func (a *Api) fixPath() {
 
 type Parameters struct {
 	Name         string `json:"name"`
+	ParamName    string `json:"-"`
 	Description  string `json:"description"`
 	Type         string `json:"type"`
 	Required     bool   `json:"required"`
@@ -136,17 +141,26 @@ type Parameters struct {
 }
 
 func (p *Parameters) fixed() {
+	if p == nil {
+		return
+	}
+
 	p.Name = strings.ReplaceAll(p.Name, "{", "") // remove
 	p.Name = strings.ReplaceAll(p.Name, "}", "")
 
 	if strings.HasPrefix(p.Name, ":") {
 		p.Name = strings.ReplaceAll(p.Name, ":", "")
 	}
-
+	p.ParamName = p.Name
+	p.Name = strings.Title(p.Name) // capitalize the first letter
 	// todo: parse Type to support golang types
 	switch p.Type {
 	case "integer":
 		p.Type = "int"
+	case "number":
+		p.Type = "int"
+	case "numbers":
+		p.Type = "[]int"
 	}
 	// todo: fix the DefaultValue ( which just like static-us or dynamic-us)
 }
