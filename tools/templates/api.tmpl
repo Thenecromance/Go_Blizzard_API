@@ -57,10 +57,12 @@ func String{{.Name}}(ctx context.Context, fields *{{.Name}}Fields)(string,error)
 		}
 	}(fields)
 	cli := http.Client{}
+	tpl, _ := uritemplates.Parse(fields.Path)
+    u, _ := tpl.Expand(map[string]interface{}{"realmSlug": fields.RealmId, "characterName": fields.CharacterId}) // todo: this code need to auto generate by parameters
 	req, err := http.NewRequestWithContext(
 		ctx,
 		fields.Methods,
-		"https://us.api.blizzard.com"+fields.Path,
+		"https://us.api.blizzard.com"+u,
 		nil)
 
 	if err != nil {

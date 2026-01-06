@@ -78,7 +78,7 @@ func ParseTemplate(pkgName string, folder string, apiPath string) {
 		}
 		file.Close()
 		fmt.Printf("generate api %s\n", apiGroup.ApiGroupName)
-		
+
 		// For each API in the group, generate a separate model file named {{.Name}}.go
 		for _, api := range apiGroup.Apis {
 			modelFilePath := subFolder + "/" + api.Name + ".model.go"
@@ -103,21 +103,63 @@ func ParseTemplate(pkgName string, folder string, apiPath string) {
 	}
 	return
 	// Generate the index file
-	indexFile, err := os.Create(folder + "entry.go")
+	/*	indexFile, err := os.Create(folder + "entry.go")
+		if err != nil {
+			fmt.Printf("Error creating index file: %v\n", err)
+			return
+		}
+		indexTmpl, err := template.New("index").Parse(apiListTmpl)
+		if err != nil {
+			fmt.Printf("Error parsing index template: %v\n", err)
+			return
+		}
+		if err = indexTmpl.Execute(indexFile, map[string]any{
+			"PkgName": pkgName,
+			"Apis":    apis,
+		}); err != nil {
+			fmt.Printf("Error executing index template: %v\n", err)
+					return
+		}*/
+}
+
+func GenerateRouterList(pkgName string, folder string, apiPath string) {
+	file, err := os.ReadFile("./templates/routers.tmpl")
 	if err != nil {
-		fmt.Printf("Error creating index file: %v\n", err)
 		return
 	}
-	indexTmpl, err := template.New("index").Parse(apiListTmpl)
+	Tmpl := string(file)
+
+	t, err := template.New("tmpl").Parse(Tmpl)
 	if err != nil {
-		fmt.Printf("Error parsing index template: %v\n", err)
+		fmt.Printf("Error parsing template: %v\n", err)
 		return
 	}
-	if err = indexTmpl.Execute(indexFile, map[string]any{
-		"PkgName": pkgName,
-		"Apis":    apis,
+	/*
+		// also prepare model template
+		m, err := template.New("model").Parse(modelTmpl)
+		if err != nil {
+			fmt.Printf("Error parsing model template: %v\n", err)
+			return
+		}*/
+
+	apis := updateFromRemote(apiPath)
+
+	os.MkdirAll(folder, os.ModePerm)
+	var apiList []*Api
+	for _, apiGroup := range apis {
+		apiGroup.fixed()
+		apiList = append(apiList, apiGroup.Apis...)
+	}
+
+	out, err := os.Create(folder + "/" + pkgName + "." + "router.go")
+	if err = t.Execute(out, map[string]any{
+		"PkgName":      pkgName,
+		"ApiGroupName": "routers",
+		"Apis":         apiList,
 	}); err != nil {
-		fmt.Printf("Error executing index template: %v\n", err)
+		fmt.Printf("Error executing template: %v\n", err)
 		return
 	}
+	out.Close()
+	return
 }

@@ -26,6 +26,7 @@ type Api struct {
 	Name        string        `json:"name"`        // just like "Achievement API"
 	Description string        `json:"description"` // what this api do
 	Path        string        `json:"path"`        // just like "/wow/achievement"
+	GinPath     string        `json:"-"`           // the real gin path with :id
 	Method      string        `json:"httpMethod"`  // just like "GET"
 	CnRegion    bool          `json:"cnRegion"`    // just like true
 	Params      []*Parameters `json:"parameters"`  // just like "id"
@@ -36,7 +37,7 @@ func (a *Api) fixed() {
 	a.Name = strings.ReplaceAll(a.Name, " ", "") // Remove spaces
 	a.Description = a.Name + " " + a.Description
 	a.fixParams()
-	//a.fixPath()
+	a.fixPath()
 
 }
 
@@ -51,7 +52,7 @@ func (a *Api) fixParams() {
 			a.Params[i] = nil // so crazy
 			continue
 		} else if strings.Contains(p.Name, ".") {
-			p.Name = strings.ReplaceAll(p.Name, ".", "Dot")
+			p.Name = strings.ReplaceAll(p.Name, ".", "")
 			fmt.Printf("wrong params need to be fixed %s\n", p.Name)
 			filtered = append(filtered, p)
 		} else {
@@ -98,37 +99,14 @@ func (a *Api) formatPath(template string, params map[string]string) string {
 }
 
 func (a *Api) fixPath() {
-	// remove unnecessary slashes
-	if strings.Contains(a.Path, "/data/wow/") {
-		a.Path = strings.ReplaceAll(a.Path, "/data/wow/", "") // Remove slashes
-	}
-
-	// path with params
-	if len(a.Params) == 0 {
-		a.Path = "\"" + a.Path + "\""
-		return
-	}
-	// Create a map to hold the parameters
-	params := make(map[string]string)
-
-	var notRequired bool
-	// Iterate over the parameters and add them to the map
-	for _, param := range a.Params {
-		params[param.Name] = param.Type
-		if !param.Required {
-			notRequired = true
+	lists := strings.Split(a.Path, "/")
+	for i, segment := range lists {
+		if strings.HasPrefix(segment, "{") && strings.HasSuffix(segment, "}") {
+			paramName := strings.ReplaceAll(strings.ReplaceAll(segment, "{", ""), "}", "")
+			lists[i] = ":" + paramName // just mark it
 		}
 	}
-
-	// Format the path with the parameters
-	// the final params will be like ===>fmt.Sprintf("apis/%s" , ...args )
-	// but if the params contains the not required params,  the final path should be like====> fmt.Sprintf("api/?paramsName=paramsValue")
-	// not done yet lol
-	if !notRequired {
-		a.Path = a.formatPath(a.Path, params)
-	} else {
-		a.Path = fmt.Sprintf("\"%s\"", a.Path)
-	}
+	a.GinPath = strings.Join(lists, "/")
 }
 
 type Parameters struct {

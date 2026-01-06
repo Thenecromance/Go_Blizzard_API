@@ -1,0 +1,14 @@
+package {{.PkgName}}_{{.ApiGroupName}}
+
+import "Unofficial_API/app"
+
+func init() {
+
+{{range .Apis}} app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}",gin{{.Name}})
+{{end}}
+}
+
+{{range .Apis}}func gin{{.Name}}(c *gin.Context){
+    c.JSON(http.StatusOK,gin.H{})
+}
+{{end}}
