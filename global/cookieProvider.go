@@ -1,5 +1,7 @@
 package global
 
+import "github.com/spf13/viper"
+
 func GetCookie() string {
-	return cookie
+	return viper.GetString("cookie")
 }

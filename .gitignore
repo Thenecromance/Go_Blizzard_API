@@ -112,4 +112,6 @@ go.work.sum
 # env file
 .env
 
-cookie.go
+global/cookie.go
+universal_config.yaml
+*.json

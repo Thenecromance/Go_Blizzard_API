@@ -36,7 +36,6 @@ func CNAccountProfileSummary(ctx context.Context, name, slug string) (any, error
 }
 
 func BNetAccountProfileSummary(ctx context.Context, name, slug string) (any, error) {
-
 	obj, err := CNAccountProfileSummary(ctx, name, slug)
 	if err != nil {
 		return nil, err
