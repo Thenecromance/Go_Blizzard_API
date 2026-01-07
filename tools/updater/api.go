@@ -13,18 +13,14 @@ type ApiGroup struct {
 }
 
 func (ap *ApiGroup) Fixed() {
-	if strings.Contains(ap.ApiGroupName, " API") {
-		fixedName := ap.ApiGroupName[:len(ap.ApiGroupName)-4]
-		fixedName = strings.ReplaceAll(fixedName, " ", "")
-		ap.ApiGroupName = fixedName
+	if strings.HasSuffix(ap.ApiGroupName, " API") {
+		ap.ApiGroupName = strings.TrimSuffix(ap.ApiGroupName, " API")
 	}
-	if strings.Contains(ap.ApiGroupName, " ") {
-		ap.ApiGroupName = strings.ReplaceAll(ap.ApiGroupName, " ", "") // Remove spaces
-	}
-	for i := 0; i < len(ap.Apis); i++ {
-		ap.Apis[i].fixed()
-	}
+	ap.ApiGroupName = strings.ReplaceAll(ap.ApiGroupName, " ", "")
 
+	for _, api := range ap.Apis {
+		api.fixed()
+	}
 }
 
 type Api struct {
@@ -52,41 +48,34 @@ func (a *Api) fixed() {
 		log.Info(a.Name)
 	}
 	a.Name = strings.ReplaceAll(a.Name, " ", "") // Remove spaces
-	if strings.Contains(a.Name, "(US,EU,KR,TW)") {
-		a.Name = strings.ReplaceAll(a.Name, "(US,EU,KR,TW)", "")
-	}
-	if strings.Contains(a.Name, "(CN)") {
-		a.Name = strings.ReplaceAll(a.Name, "(CN)", "CN")
-	}
+	a.Name = strings.ReplaceAll(a.Name, "(US,EU,KR,TW)", "")
+	a.Name = strings.ReplaceAll(a.Name, "(CN)", "CN")
 
 	a.Description = a.Name + " " + a.Description
 	a.fixParams()
 	a.fixPath()
-
 }
 
 func (a *Api) fixParams() {
 	var filtered []*Parameters
-	for i, p := range a.Params {
-		/*if strings.Contains(p.Name, "locale") {
+	for _, p := range a.Params {
+		// 优先处理弃用字段，直接跳过不添加到 filtered 中即为删除
+		if strings.Contains(p.SourceName, "(deprecated)") {
+			log.Infof("found deprecated param: %s at API:%s", p.SourceName, a.Name)
 			continue
-		} else if strings.Contains(p.Name, "namespace") {
-			a.NameSpace = strings.Split(p.DefaultValue.(string), "-")[0] // just need this api is static or dynamic
-		}else*/if strings.Contains(p.Type, "(deprecated)") {
-			a.Params[i] = nil // so crazy
-			continue
-		} else if strings.Contains(p.Name, ".") {
-			p.Name = strings.ReplaceAll(p.Name, ".", "")
-			fmt.Printf("wrong params need to be fixed %s\n", p.Name)
-			filtered = append(filtered, p)
-		} else {
-			filtered = append(filtered, p)
 		}
+
+		if strings.Contains(p.SourceName, ".") {
+			p.SourceName = strings.ReplaceAll(p.SourceName, ".", "")
+			fmt.Printf("wrong params need to be fixed %s\n", p.SourceName)
+		}
+
+		filtered = append(filtered, p)
 	}
 	a.Params = filtered
 
-	for i := 0; i < len(a.Params); i++ {
-		a.Params[i].fixed()
+	for _, p := range a.Params {
+		p.fixed()
 	}
 }
 
@@ -133,7 +122,8 @@ func (a *Api) fixPath() {
 }
 
 type Parameters struct {
-	Name         string `json:"name"`       // original name
+	SourceName   string `json:"name"`
+	Name         string `json:"title"`      // original name
 	ParamName    string `json:"param_name"` // fixed name for golang
 	IsBindingUri bool   `json:"is_binding_uri"`
 	Description  string `json:"description"`
@@ -147,19 +137,19 @@ func (p *Parameters) fixed() {
 		return
 	}
 
-	if strings.Contains(p.Name, "{") && strings.Contains(p.Name, "}") {
-		fmt.Printf("found binding uri param: %s\n", p.Name)
-		p.Name = strings.ReplaceAll(p.Name, "{", "") // remove
-		p.Name = strings.ReplaceAll(p.Name, "}", "")
+	if strings.Contains(p.SourceName, "{") && strings.Contains(p.SourceName, "}") {
+		fmt.Printf("found binding uri param: %s\n", p.SourceName)
+		p.SourceName = strings.ReplaceAll(p.SourceName, "{", "") // remove
+		p.SourceName = strings.ReplaceAll(p.SourceName, "}", "")
 		p.IsBindingUri = true
 	}
 
-	if strings.HasPrefix(p.Name, ":") {
-		p.Name = strings.ReplaceAll(p.Name, ":", "")
+	if strings.HasPrefix(p.SourceName, ":") {
+		p.SourceName = strings.ReplaceAll(p.SourceName, ":", "")
 		p.IsBindingUri = true
 	}
-	p.ParamName = p.Name
-	p.Name = strings.Title(p.Name) // capitalize the first letter
+	p.ParamName = p.SourceName
+	p.Name = strings.Title(p.SourceName) // capitalize the first letter
 	// todo: parse Type to support golang types
 	switch p.Type {
 	case "integer":
@@ -169,5 +159,4 @@ func (p *Parameters) fixed() {
 	case "numbers":
 		p.Type = "[]int"
 	}
-	// todo: fix the DefaultValue ( which just like static-us or dynamic-us)
 }
