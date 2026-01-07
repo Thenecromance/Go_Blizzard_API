@@ -1,35 +1,49 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/{{.Game}}/DataService/{{.ApiGroupName}}"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-
-{{range .Apis}} app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}",gin{{.Name}}) //{{.Description}}
+{{range .Apis}}
+	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{.Name}}) // {{.Description}}
 {{end}}
 }
 
 {{range .Apis}}
-
+/*
 type {{.Name}}Request struct {
-    {{range .Params}}
-    {{if .IsBindingUri}} {{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"` //{{.Description}}
-    {{else}} {{.Name}} {{.Type}} `form:"{{.ParamName}},default={{.DefaultValue}}"` //{{.Description}}
-    {{end}}
-    {{end}}}
+{{range .Params}}
+	{{if .IsBindingUri}}{{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"` // {{.Description}}
+	{{else}}{{.Name}} {{.Type}} `form:"{{.ParamName}},default={{.DefaultValue}}"` // {{.Description}}
+	{{end}}
+{{end}}
+}
+*/
 
+func gin{{.Name}}(c *gin.Context) {
+	// binding uri parameters
+	var req {{$.Game}}_{{$.ApiGroupName}}.{{.Name}}Fields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
 
-func gin{{.Name}}(c *gin.Context){
-    // binding uri parameters
-    var req {{.Name}}Request
-    if err := c.ShouldBindUri(&req); err != nil {
-    	c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
-    	return
-    }
-    c.JSON(http.StatusOK,"{{.Name}}")
+	resp, err := {{$.Game}}_{{$.ApiGroupName}}.{{.Name}}(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
 {{end}}

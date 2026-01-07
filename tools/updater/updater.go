@@ -2,26 +2,26 @@ package updater
 
 import (
 	"Unofficial_API/bridge/log"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"text/template"
 
 	"github.com/bytedance/sonic"
 )
 
-func RequestApiList(apiPath string) []*ApiGroup {
+func RequestApiList(pkgName string, apiPath string) []*ApiGroup {
 	url := apiPath
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("failed to get api list: %v", err)
+		log.Error("failed to get api list: %v", err)
 		return nil
 	}
 	defer resp.Body.Close()
 	buf, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("failed to read response body: %v", err)
+		log.Error("failed to read response body: %v", err)
 		return nil
 	}
 
@@ -30,124 +30,35 @@ func RequestApiList(apiPath string) []*ApiGroup {
 	}
 
 	if err = sonic.Unmarshal(buf, &Response); err != nil {
-
-		fmt.Printf("failed to unmarshal api list: %v\n", err)
-		//fmt.Printf("%s\n", string(buf))
+		log.Error("failed to unmarshal api list: %v", err)
 		return nil
+	}
+	for i := range Response.ApiList {
+		Response.ApiList[i].Game = pkgName
 	}
 
 	return Response.ApiList
 }
 
-func ParseTemplate(pkgName string, folder string, apiPath string) {
-
-	file, err := os.ReadFile("./templates/api.tmpl")
-	if err != nil {
-		return
-	}
-	dataTmpl = string(file)
-
-	t, err := template.New("tmpl").Parse(dataTmpl)
-	if err != nil {
-		fmt.Printf("Error parsing template: %v\n", err)
-		return
-	}
-
-	// also prepare model template
-	m, err := template.New("model").Parse(modelTmpl)
-	if err != nil {
-		fmt.Printf("Error parsing model template: %v\n", err)
-		return
-	}
-
-	apis := RequestApiList(apiPath)
-
-	os.MkdirAll(folder, os.ModePerm)
-	for _, apiGroup := range apis {
-		apiGroup.fixed()
-		subFolder := folder + "/" + apiGroup.ApiGroupName
-		os.Mkdir(subFolder, os.ModePerm)
-
-		file, err := os.Create(subFolder + "/" + apiGroup.ApiGroupName + ".go")
-		if err = t.Execute(file, map[string]any{
-			"PkgName":      pkgName,
-			"ApiGroupName": apiGroup.ApiGroupName,
-			"Apis":         apiGroup.Apis,
-		}); err != nil {
-			fmt.Printf("Error executing template: %v\n", err)
-			return
-		}
-		file.Close()
-		fmt.Printf("generate api %s\n", apiGroup.ApiGroupName)
-
-		// For each API in the group, generate a separate model file named {{.Name}}.go
-		for _, api := range apiGroup.Apis {
-			modelFilePath := subFolder + "/" + api.Name + ".model.go"
-			mf, err := os.Create(modelFilePath)
-			if err != nil {
-				fmt.Printf("Error creating model file %s: %v\n", modelFilePath, err)
-				continue
-			}
-			if err = m.Execute(mf, map[string]any{
-				"PkgName":      pkgName,
-				"ApiGroupName": apiGroup.ApiGroupName,
-				"Apis":         apiGroup.Apis,
-				"Name":         api.Name,
-			}); err != nil {
-				fmt.Printf("Error executing model template for %s: %v\n", api.Name, err)
-				mf.Close()
-				continue
-			}
-			mf.Close()
-			fmt.Printf("generate model %s\n", api.Name)
-		}
-	}
-	return
-}
-
-func GenerateRouterList(pkgName string, folder string, apiPath string) {
-	file, err := os.ReadFile("./templates/routers.tmpl")
-	if err != nil {
-		return
-	}
-	Tmpl := string(file)
-
-	t, err := template.New("tmpl").Parse(Tmpl)
-	if err != nil {
-		fmt.Printf("Error parsing template: %v\n", err)
-		return
-	}
-	/*
-		// also prepare model template
-		m, err := template.New("model").Parse(modelTmpl)
-		if err != nil {
-			fmt.Printf("Error parsing model template: %v\n", err)
-			return
-		}*/
-
-	apis := RequestApiList(apiPath)
-
-	os.MkdirAll(folder, os.ModePerm)
-	var apiList []*Api
-	for _, apiGroup := range apis {
-		apiGroup.fixed()
-		apiList = append(apiList, apiGroup.Apis...)
-	}
-
-	out, err := os.Create(folder + "/" + pkgName + "." + "router.go")
-	if err = t.Execute(out, map[string]any{
-		"PkgName":      pkgName,
-		"ApiGroupName": "routers",
-		"Apis":         apiList,
-	}); err != nil {
-		fmt.Printf("Error executing template: %v\n", err)
-		return
-	}
-	out.Close()
-	return
-}
-
 type GenerateHandler func(pkgName string, folder string, apiList []*ApiGroup)
+
+// writeFile creates the file (and any necessary directories) and executes the template into it.
+func writeFile(filePath string, t *template.Template, data any) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+		return err
+	}
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if err := t.Execute(file, data); err != nil {
+		return err
+	}
+	return nil
+}
 
 func read(path string) (string, error) {
 	file, err := os.ReadFile(path)
@@ -156,111 +67,93 @@ func read(path string) (string, error) {
 	}
 	return string(file), nil
 }
+
 func parse(path string) (*template.Template, error) {
 	file, err := read(path)
 	if err != nil {
 		return nil, err
 	}
-	log.Info("Parsing template from %s", path)
-	log.Debug(file)
+	log.Debug("Parsing template from %s", path)
 	return template.New(path).Parse(file)
 }
 
 func GenerateApi(pkgName string, folder string, apiList []*ApiGroup) {
 	t, err := parse("./templates/api.tmpl")
 	if err != nil {
-		fmt.Printf("Error parsing template: %v\n", err)
-	}
-
-	{
-		os.MkdirAll(folder, os.ModePerm)
+		log.Error("Error parsing template: %v", err)
+		return
 	}
 
 	for _, apiGroup := range apiList {
-		apiGroup.fixed()
-		subFolder := folder + "/" + apiGroup.ApiGroupName
-		os.Mkdir(subFolder, os.ModePerm)
+		// e.g. folder/GroupName/GroupName.go
+		filePath := filepath.Join(folder, apiGroup.ApiGroupName, apiGroup.ApiGroupName+".go")
 
-		file, err := os.Create(subFolder + "/" + apiGroup.ApiGroupName + ".go")
-		if err = t.Execute(file, map[string]any{
+		data := map[string]any{
 			"PkgName":      pkgName,
 			"ApiGroupName": apiGroup.ApiGroupName,
 			"Apis":         apiGroup.Apis,
-		}); err != nil {
-			fmt.Printf("Error executing template: %v\n", err)
-			return
 		}
-		file.Close()
-		fmt.Printf("generate api %s\n", apiGroup.ApiGroupName)
-	}
 
+		if err := writeFile(filePath, t, data); err != nil {
+			log.Error("Error generating API file %s: %v", filePath, err)
+			continue
+		}
+		log.Info("generate api %s", apiGroup.ApiGroupName)
+	}
 }
 
 func GenerateModels(pkgName string, folder string, apiList []*ApiGroup) {
 	t, err := parse("./templates/model.tmpl")
 	if err != nil {
-		fmt.Printf("Error parsing template: %v\n", err)
-	}
-
-	{
-		os.MkdirAll(folder, os.ModePerm)
+		log.Error("Error parsing template: %v", err)
+		return
 	}
 
 	for _, apiGroup := range apiList {
-		apiGroup.fixed()
-		subFolder := folder + "/" + apiGroup.ApiGroupName
-		os.Mkdir(subFolder, os.ModePerm)
-
-		// For each API in the group, generate a separate model file named {{.Name}}.go
 		for _, api := range apiGroup.Apis {
-			modelFilePath := subFolder + "/" + api.Name + ".model.go"
-			mf, err := os.Create(modelFilePath)
-			if err != nil {
-				fmt.Printf("Error creating model file %s: %v\n", modelFilePath, err)
-				continue
-			}
-			if err = t.Execute(mf, map[string]any{
+			// e.g. folder/GroupName/ApiName.model.go
+			modelFilePath := filepath.Join(folder, apiGroup.ApiGroupName, api.Name+".model.go")
+
+			data := map[string]any{
 				"PkgName":      pkgName,
 				"ApiGroupName": apiGroup.ApiGroupName,
 				"Apis":         apiGroup.Apis,
 				"Name":         api.Name,
-			}); err != nil {
-				fmt.Printf("Error executing model template for %s: %v\n", api.Name, err)
-				mf.Close()
+			}
+
+			if err := writeFile(modelFilePath, t, data); err != nil {
+				log.Error("Error generating model file %s: %v", modelFilePath, err)
 				continue
 			}
-			mf.Close()
-			fmt.Printf("generate model %s\n", api.Name)
+			log.Info("generate model %s", api.Name)
 		}
 	}
 }
 
 func GenerateRouters(pkgName string, folder string, apiList []*ApiGroup) {
-	log.Info("Generating routers...")
+	log.Debug("Generating routers...")
 	t, err := parse("./templates/routers.tmpl")
 	if err != nil {
-		log.Warn("Error parsing template: ", err)
+		log.Error("Error parsing template: %v", err)
+		return
 	}
 
-	{
-		log.Debug("Creating folder: ", folder)
-		os.MkdirAll(folder, os.ModePerm)
-	}
+	log.Debug("Target folder: %s", folder)
 
 	for _, apiGroup := range apiList {
-		apiGroup.fixed()
+		// e.g. folder/GroupName.go
+		filePath := filepath.Join(folder, apiGroup.ApiGroupName+".go")
 
-		file, err := os.Create(folder + "/" + apiGroup.ApiGroupName + ".go")
-		if err = t.Execute(file, map[string]any{
-			"PkgName":      pkgName,
+		data := map[string]any{
+			"Game":         apiGroup.Game,
 			"ApiGroupName": apiGroup.ApiGroupName,
 			"Apis":         apiGroup.Apis,
-		}); err != nil {
-			fmt.Printf("Error executing template: %v\n", err)
-			return
 		}
-		file.Close()
-		fmt.Printf("generate router %s\n", apiGroup.ApiGroupName)
-	}
 
+		if err := writeFile(filePath, t, data); err != nil {
+			log.Error("Error generating router file %s: %v", filePath, err)
+			continue
+		}
+		log.Info("generate router %s", apiGroup.ApiGroupName)
+	}
 }

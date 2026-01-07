@@ -60,3 +60,7 @@ func Dynamic() string {
 	builder.WriteString(Region())
 	return builder.String()
 }
+
+const (
+	PortalURL = "https://us.api.blizzard.com"
+)

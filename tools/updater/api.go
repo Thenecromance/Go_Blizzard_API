@@ -7,11 +7,12 @@ import (
 )
 
 type ApiGroup struct {
+	Game         string `json:"package"` // just like "Achievement"
 	ApiGroupName string `json:"name"`    // just like "Achievement API"
 	Apis         []*Api `json:"methods"` // just like "Achievement API"
 }
 
-func (ap *ApiGroup) fixed() {
+func (ap *ApiGroup) Fixed() {
 	if strings.Contains(ap.ApiGroupName, " API") {
 		fixedName := ap.ApiGroupName[:len(ap.ApiGroupName)-4]
 		fixedName = strings.ReplaceAll(fixedName, " ", "")
@@ -37,12 +38,20 @@ type Api struct {
 	NameSpace   string        `json:"name_space"`  // the real place which will write to api file
 }
 
+func (a *Api) HasURIBinding() bool {
+	for _, p := range a.Params {
+		if p != nil && p.IsBindingUri {
+			return true
+		}
+	}
+	return false
+}
+
 func (a *Api) fixed() {
 	if strings.Contains(a.Name, " Card") {
 		log.Info(a.Name)
 	}
-	a.Name = strings.ReplaceAll(a.Name, " ", "_") // Remove spaces
-	a.Name = strings.ReplaceAll(a.Name, " ", "_") // Remove dashes
+	a.Name = strings.ReplaceAll(a.Name, " ", "") // Remove spaces
 	if strings.Contains(a.Name, "(US,EU,KR,TW)") {
 		a.Name = strings.ReplaceAll(a.Name, "(US,EU,KR,TW)", "")
 	}
