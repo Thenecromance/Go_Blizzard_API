@@ -1,6 +1,11 @@
-package {{.PkgName}}_{{.ApiGroupName}}
+package routers
 
-import "Unofficial_API/app"
+import (
+	"Unofficial_API/app"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func init() {
 

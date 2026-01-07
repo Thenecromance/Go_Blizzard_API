@@ -1,6 +1,7 @@
 package updater
 
 import (
+	"Unofficial_API/bridge/log"
 	"fmt"
 	"strings"
 )
@@ -15,6 +16,9 @@ func (ap *ApiGroup) fixed() {
 		fixedName := ap.ApiGroupName[:len(ap.ApiGroupName)-4]
 		fixedName = strings.ReplaceAll(fixedName, " ", "")
 		ap.ApiGroupName = fixedName
+	}
+	if strings.Contains(ap.ApiGroupName, " ") {
+		ap.ApiGroupName = strings.ReplaceAll(ap.ApiGroupName, " ", "") // Remove spaces
 	}
 	for i := 0; i < len(ap.Apis); i++ {
 		ap.Apis[i].fixed()
@@ -34,7 +38,18 @@ type Api struct {
 }
 
 func (a *Api) fixed() {
-	a.Name = strings.ReplaceAll(a.Name, " ", "") // Remove spaces
+	if strings.Contains(a.Name, " Card") {
+		log.Info(a.Name)
+	}
+	a.Name = strings.ReplaceAll(a.Name, " ", "_") // Remove spaces
+	a.Name = strings.ReplaceAll(a.Name, " ", "_") // Remove dashes
+	if strings.Contains(a.Name, "(US,EU,KR,TW)") {
+		a.Name = strings.ReplaceAll(a.Name, "(US,EU,KR,TW)", "")
+	}
+	if strings.Contains(a.Name, "(CN)") {
+		a.Name = strings.ReplaceAll(a.Name, "(CN)", "CN")
+	}
+
 	a.Description = a.Name + " " + a.Description
 	a.fixParams()
 	a.fixPath()
@@ -72,7 +87,6 @@ func (a *Api) formatPath(template string, params map[string]string) string {
 		placeholder := "{" + key + "}"
 		switch value {
 		case "string":
-
 			template = strings.Replace(template, placeholder, "%s", -1)
 			args = append(args, key)
 		case "int":
