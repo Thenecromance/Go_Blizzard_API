@@ -30,11 +30,11 @@ type Api struct {
 	Name        string        `json:"name"`        // just like "Achievement API"
 	Description string        `json:"description"` // what this api do
 	Path        string        `json:"path"`        // just like "/wow/achievement"
-	GinPath     string        `json:"-"`           // the real gin path with :id
+	GinPath     string        `json:"gin_path"`    // the real gin path with :id
 	Method      string        `json:"httpMethod"`  // just like "GET"
 	CnRegion    bool          `json:"cnRegion"`    // just like true
 	Params      []*Parameters `json:"parameters"`  // just like "id"
-	NameSpace   string        `json:"-"`           // the real place which will write to api file
+	NameSpace   string        `json:"name_space"`  // the real place which will write to api file
 }
 
 func (a *Api) fixed() {
@@ -124,8 +124,9 @@ func (a *Api) fixPath() {
 }
 
 type Parameters struct {
-	Name         string `json:"name"`
-	ParamName    string `json:"-"`
+	Name         string `json:"name"`       // original name
+	ParamName    string `json:"param_name"` // fixed name for golang
+	IsBindingUri bool   `json:"is_binding_uri"`
 	Description  string `json:"description"`
 	Type         string `json:"type"`
 	Required     bool   `json:"required"`
@@ -137,11 +138,16 @@ func (p *Parameters) fixed() {
 		return
 	}
 
-	p.Name = strings.ReplaceAll(p.Name, "{", "") // remove
-	p.Name = strings.ReplaceAll(p.Name, "}", "")
+	if strings.Contains(p.Name, "{") && strings.Contains(p.Name, "}") {
+		fmt.Printf("found binding uri param: %s\n", p.Name)
+		p.Name = strings.ReplaceAll(p.Name, "{", "") // remove
+		p.Name = strings.ReplaceAll(p.Name, "}", "")
+		p.IsBindingUri = true
+	}
 
 	if strings.HasPrefix(p.Name, ":") {
 		p.Name = strings.ReplaceAll(p.Name, ":", "")
+		p.IsBindingUri = true
 	}
 	p.ParamName = p.Name
 	p.Name = strings.Title(p.Name) // capitalize the first letter

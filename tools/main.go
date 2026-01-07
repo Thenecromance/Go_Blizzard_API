@@ -2,6 +2,8 @@ package main
 
 import (
 	"Unofficial_API/tools/updater"
+	"encoding/json"
+	"os"
 	"sync"
 )
 
@@ -80,6 +82,9 @@ func updateApi() {
 	collection = append(append(collection, SCcommunityServices...), SCdataServices...)
 
 	updater.GenerateRouters("routers", "./routers/", collection)
+
+	buf, _ := json.MarshalIndent(collection, "", "  ")
+	os.WriteFile("./api_collection.json", buf, 0644)
 }
 
 func main() {
