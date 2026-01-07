@@ -1,22 +1,65 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/Heirloom"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/index", ginHeirloom_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/:heirloomId", ginHeirloom)
+	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/index", ginHeirloomIndex) //HeirloomIndex Returns an index of heirlooms.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/:heirloomId", ginHeirloom) //Heirloom Returns an heirloom by id.
 
 }
 
-func ginHeirloom_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginHeirloomIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Heirloom.HeirloomIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Heirloom.HeirloomIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
+
+
+
 func ginHeirloom(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	// binding uri parameters
+	var req wow_Heirloom.HeirloomFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Heirloom.Heirloom(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

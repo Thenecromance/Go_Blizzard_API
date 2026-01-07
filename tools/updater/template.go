@@ -17,7 +17,7 @@ import (
 
 
 {{range .Apis}} 
-//{{.Description}}
+/*{{.Description}}*/
 //@see: {{.Path}}
 
 func String{{.Name}}(ctx context.Context  {{ if .Params}} ,
@@ -84,7 +84,7 @@ import (
 //==============================================================================================
 
 type {{.Name}}Fields struct{
-	{{range .Params}}{{.Name}} {{.Type}}//{{.Description}}
+	{{range .Params}}{{.Name}} {{.Type}}/*{{.Description}}*/
 	{{end}}
 	ExtraFields map[any]any // extra fields
 	utils.RequestMethod

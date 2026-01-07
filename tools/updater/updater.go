@@ -11,7 +11,7 @@ import (
 	"github.com/bytedance/sonic"
 )
 
-func RequestApiList(pkgName string, apiPath string) []*ApiGroup {
+func RequestApiList(pkgName string, apiPath string, category string) []*ApiGroup {
 	url := apiPath
 	resp, err := http.Get(url)
 	if err != nil {
@@ -35,6 +35,7 @@ func RequestApiList(pkgName string, apiPath string) []*ApiGroup {
 	}
 	for i := range Response.ApiList {
 		Response.ApiList[i].Game = pkgName
+		Response.ApiList[i].Category = category
 	}
 
 	return Response.ApiList
@@ -89,9 +90,11 @@ func GenerateApi(pkgName string, folder string, apiList []*ApiGroup) {
 		filePath := filepath.Join(folder, apiGroup.ApiGroupName, apiGroup.ApiGroupName+".go")
 
 		data := map[string]any{
-			"PkgName":      pkgName,
-			"ApiGroupName": apiGroup.ApiGroupName,
-			"Apis":         apiGroup.Apis,
+			"PkgName":       pkgName,
+			"ApiGroupName":  apiGroup.ApiGroupName,
+			"Apis":          apiGroup.Apis,
+			"NeedStrconv":   apiGroup.NeedStrconv(), // Change: Call the method explicitly
+			"HasURIBinding": apiGroup.HasURIBinding(),
 		}
 
 		if err := writeFile(filePath, t, data); err != nil {
@@ -146,8 +149,10 @@ func GenerateRouters(pkgName string, folder string, apiList []*ApiGroup) {
 
 		data := map[string]any{
 			"Game":         apiGroup.Game,
+			"Category":     apiGroup.Category,
 			"ApiGroupName": apiGroup.ApiGroupName,
 			"Apis":         apiGroup.Apis,
+			"NeedStrconv":  apiGroup.NeedStrconv(), // Change: Call the method explicitly
 		}
 
 		if err := writeFile(filePath, t, data); err != nil {

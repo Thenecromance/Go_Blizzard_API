@@ -1,46 +1,215 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wowClassic/DataService/PvPSeason"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/index", ginPvP_Seasons_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/:pvpSeasonId", ginPvP_Season)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/index", ginPvP_Region_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/index", ginPvP_Regional_Season_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId", ginPvP_Regional_Season)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/index", ginPvP_Leaderboards_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/:pvpBracket", ginPvP_Leaderboard)
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-reward/index", ginPvP_Rewards_Index)
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/index", ginPvPSeasonsIndex) //PvPSeasonsIndex Returns an index of PvP seasons.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/:pvpSeasonId", ginPvPSeason) //PvPSeason Returns a PvP season by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/index", ginPvPRegionIndex) //PvPRegionIndex Returns an index of PvP Regions.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/index", ginPvPRegionalSeasonIndex) //PvPRegionalSeasonIndex Returns an index of PvP Seasons in a PvP region.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId", ginPvPRegionalSeason) //PvPRegionalSeason Returns a PvP season by region ID and season ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/index", ginPvPLeaderboardsIndex) //PvPLeaderboardsIndex Returns an index of PvP leaderboards for a PvP season in a given PvP region.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/:pvpBracket", ginPvPLeaderboard) //PvPLeaderboard Returns the PvP leaderboard of a specific PvP bracket for a PvP season in a given PvP region.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-reward/index", ginPvPRewardsIndex) //PvPRewardsIndex Returns an index of PvP rewards for a PvP season in a given PvP region.
 
 }
 
-func ginPvP_Seasons_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPSeasonsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPSeasonsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPSeasonsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Season(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPSeason(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPSeasonFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPSeason(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Region_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPRegionIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPRegionIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPRegionIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Regional_Season_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPRegionalSeasonIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPRegionalSeasonIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPRegionalSeasonIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Regional_Season(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPRegionalSeason(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPRegionalSeasonFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPRegionalSeason(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Leaderboards_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPLeaderboardsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPLeaderboardsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPLeaderboardsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Leaderboard(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPLeaderboard(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPLeaderboardFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPLeaderboard(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginPvP_Rewards_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginPvPRewardsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wowClassic_PvPSeason.PvPRewardsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wowClassic_PvPSeason.PvPRewardsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

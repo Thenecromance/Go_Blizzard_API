@@ -1,6 +1,10 @@
 package utils
 
-import "sync"
+import (
+	"sync"
+
+	"github.com/spf13/viper"
+)
 
 type RequestMethod struct {
 	Methods  string
@@ -16,6 +20,10 @@ type CNRequestMethod struct {
 // =================================================================================
 // Global API Configuration Registry (全局 API 配置注册表)
 // =================================================================================
+
+func init() {
+	viper.SetDefault("api_configs.path", "")
+}
 
 var (
 	// apiConfigRegistry internal map to store API metadata globally.

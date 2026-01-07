@@ -8,6 +8,7 @@ import (
 
 type ApiGroup struct {
 	Game         string `json:"package"` // just like "Achievement"
+	Category     string `json:"category"`
 	ApiGroupName string `json:"name"`    // just like "Achievement API"
 	Apis         []*Api `json:"methods"` // just like "Achievement API"
 }
@@ -21,6 +22,24 @@ func (ap *ApiGroup) Fixed() {
 	for _, api := range ap.Apis {
 		api.fixed()
 	}
+}
+
+func (ap *ApiGroup) NeedStrconv() bool {
+	for _, p := range ap.Apis {
+		if p.NeedStrconv() {
+			return true
+		}
+	}
+	return false
+}
+
+func (ap *ApiGroup) HasURIBinding() bool {
+	for _, p := range ap.Apis {
+		if p.HasURIBinding() {
+			return true
+		}
+	}
+	return false
 }
 
 type Api struct {
@@ -43,6 +62,16 @@ func (a *Api) HasURIBinding() bool {
 	return false
 }
 
+func (a *Api) NeedStrconv() bool {
+	for _, p := range a.Params {
+
+		if !p.IsBindingUri && p.Type == "int" {
+			return true
+		}
+	}
+	return false
+}
+
 func (a *Api) fixed() {
 	if strings.Contains(a.Name, " Card") {
 		log.Info(a.Name)
@@ -51,23 +80,29 @@ func (a *Api) fixed() {
 	a.Name = strings.ReplaceAll(a.Name, "(US,EU,KR,TW)", "")
 	a.Name = strings.ReplaceAll(a.Name, "(CN)", "CN")
 
+	a.Name = strings.Title(a.Name)
+
 	a.Description = a.Name + " " + a.Description
 	a.fixParams()
 	a.fixPath()
 }
 
 func (a *Api) fixParams() {
-	var filtered []*Parameters
+	// 使用 pre-allocate 优化性能
+	filtered := make([]*Parameters, 0, len(a.Params))
+
 	for _, p := range a.Params {
-		// 优先处理弃用字段，直接跳过不添加到 filtered 中即为删除
+		// 1. 优先检查并删除已弃用的参数
 		if strings.Contains(p.SourceName, "(deprecated)") {
 			log.Infof("found deprecated param: %s at API:%s", p.SourceName, a.Name)
-			continue
+			continue // 跳过 append，即为删除
 		}
 
+		// 2. 修复无效的字符
 		if strings.Contains(p.SourceName, ".") {
+			oldName := p.SourceName
 			p.SourceName = strings.ReplaceAll(p.SourceName, ".", "")
-			fmt.Printf("wrong params need to be fixed %s\n", p.SourceName)
+			log.Infof("fixed param name from %s to %s", oldName, p.SourceName)
 		}
 
 		filtered = append(filtered, p)
@@ -150,7 +185,7 @@ func (p *Parameters) fixed() {
 	}
 	p.ParamName = p.SourceName
 	p.Name = strings.Title(p.SourceName) // capitalize the first letter
-	// todo: parse Type to support golang types
+
 	switch p.Type {
 	case "integer":
 		p.Type = "int"

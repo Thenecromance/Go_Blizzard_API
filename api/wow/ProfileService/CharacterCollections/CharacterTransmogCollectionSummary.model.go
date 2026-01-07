@@ -5,13 +5,13 @@ package wow_CharacterCollections
 // Author: @Thenecromance
 
 // BNetCharacterTransmogCollectionSummaryResponse is the unified BNet representation for CharacterTransmogCollectionSummary.
-type BNetCharacterTransmogCollectionSummaryResponse struct{}
+type BNetCharacterTransmogCollectionSummary struct{}
 
 // CharacterTransmogCollectionSummaryResponse represents the raw CN API response for CharacterTransmogCollectionSummary.
-type CharacterTransmogCollectionSummaryResponse struct{}
+type CNCharacterTransmogCollectionSummary BNetCharacterTransmogCollectionSummary
 
 // ToBNet converts the CN response to the unified BNetCharacterTransmogCollectionSummaryResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterTransmogCollectionSummaryResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterTransmogCollectionSummary) ToBNet() any {
+	return r
 }

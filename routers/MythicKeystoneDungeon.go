@@ -1,42 +1,190 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/MythicKeystoneDungeon"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/index", ginMythic_Keystone_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/index", ginMythic_Keystone_Dungeons_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/:dungeonId", ginMythic_Keystone_Dungeon)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/index", ginMythic_Keystone_Periods_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/:periodId", ginMythic_Keystone_Period)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/index", ginMythic_Keystone_Seasons_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/:seasonId", ginMythic_Keystone_Season)
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/index", ginMythicKeystoneIndex) //MythicKeystoneIndex Returns an index of links to other documents related to Mythic Keystone dungeons.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/index", ginMythicKeystoneDungeonsIndex) //MythicKeystoneDungeonsIndex Returns an index of Mythic Keystone dungeons.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/:dungeonId", ginMythicKeystoneDungeon) //MythicKeystoneDungeon Returns a Mythic Keystone dungeon by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/index", ginMythicKeystonePeriodsIndex) //MythicKeystonePeriodsIndex Returns an index of Mythic Keystone periods.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/:periodId", ginMythicKeystonePeriod) //MythicKeystonePeriod Returns a Mythic Keystone period by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/index", ginMythicKeystoneSeasonsIndex) //MythicKeystoneSeasonsIndex Returns an index of Mythic Keystone seasons.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/:seasonId", ginMythicKeystoneSeason) //MythicKeystoneSeason Returns a Mythic Keystone season by ID.
 
 }
 
-func ginMythic_Keystone_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystoneIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystoneIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Dungeons_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneDungeonsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystoneDungeonsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystoneDungeonsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Dungeon(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneDungeon(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystoneDungeonFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystoneDungeon(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Periods_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystonePeriodsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystonePeriodsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystonePeriodsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Period(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystonePeriod(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystonePeriodFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystonePeriod(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Seasons_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneSeasonsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystoneSeasonsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystoneSeasonsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Season(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneSeason(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneDungeon.MythicKeystoneSeasonFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneDungeon.MythicKeystoneSeason(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

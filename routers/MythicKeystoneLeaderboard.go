@@ -1,22 +1,65 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/MythicKeystoneLeaderboard"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/index", ginMythic_Keystone_Leaderboards_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/:dungeonId/period/:period", ginMythic_Keystone_Leaderboard)
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/index", ginMythicKeystoneLeaderboardsIndex) //MythicKeystoneLeaderboardsIndex Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/:dungeonId/period/:period", ginMythicKeystoneLeaderboard) //MythicKeystoneLeaderboard Returns a weekly Mythic Keystone Leaderboard by period.
 
 }
 
-func ginMythic_Keystone_Leaderboards_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneLeaderboardsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboardsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboardsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMythic_Keystone_Leaderboard(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginMythicKeystoneLeaderboard(c *gin.Context) {
+	// binding uri parameters
+	var req wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboardFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboard(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

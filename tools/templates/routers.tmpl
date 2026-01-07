@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"Unofficial_API/app"
-	"Unofficial_API/api/{{.Game}}/DataService/{{.ApiGroupName}}"
+	"Unofficial_API/api/{{.Game}}/{{.Category}}/{{.ApiGroupName}}"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 {{range .Apis}}
-	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{.Name}}) // {{.Description}}
+	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{.Name}}) //{{.Description}}
 {{end}}
 }
 
@@ -19,7 +19,7 @@ func init() {
 {{/*
 type {{.Name}}Request struct {
 {{range .Params}}
-	{{if .IsBindingUri}}{{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"` // {{.Description}}
+	{{if .IsBindingUri}}{{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"`// {{.Description}}
 	{{else}}{{.Name}} {{.Type}} `form:"{{.ParamName}},default={{.DefaultValue}}"` // {{.Description}}
 	{{end}}
 {{end}}

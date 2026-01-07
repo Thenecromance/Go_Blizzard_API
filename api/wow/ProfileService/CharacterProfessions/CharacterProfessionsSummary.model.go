@@ -5,84 +5,13 @@ package wow_CharacterProfessions
 // Author: @Thenecromance
 
 // BNetCharacterProfessionsSummaryResponse is the unified BNet representation for CharacterProfessionsSummary.
-type BNetCharacterProfessionsSummaryResponse struct {
-	Links struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"_links"`
-	Character struct {
-		Key struct {
-			Href string `json:"href"`
-		} `json:"key"`
-		Name  string `json:"name"`
-		Id    int    `json:"id"`
-		Realm struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-			Slug string `json:"slug"`
-		} `json:"realm"`
-	} `json:"character"`
-	Primaries []struct {
-		Profession struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-		} `json:"profession"`
-		Tiers []struct {
-			SkillPoints    int `json:"skill_points"`
-			MaxSkillPoints int `json:"max_skill_points"`
-			Tier           struct {
-				Name string `json:"name"`
-				Id   int    `json:"id"`
-			} `json:"tier"`
-			KnownRecipes []struct {
-				Key struct {
-					Href string `json:"href"`
-				} `json:"key"`
-				Name string `json:"name"`
-				Id   int    `json:"id"`
-			} `json:"known_recipes"`
-		} `json:"tiers"`
-	} `json:"primaries"`
-	Secondaries []struct {
-		Profession struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-		} `json:"profession"`
-		SkillPoints    int `json:"skill_points,omitempty"`
-		MaxSkillPoints int `json:"max_skill_points,omitempty"`
-		Tiers          []struct {
-			SkillPoints    int `json:"skill_points"`
-			MaxSkillPoints int `json:"max_skill_points"`
-			Tier           struct {
-				Name string `json:"name"`
-				Id   int    `json:"id"`
-			} `json:"tier"`
-			KnownRecipes []struct {
-				Key struct {
-					Href string `json:"href"`
-				} `json:"key"`
-				Name string `json:"name"`
-				Id   int    `json:"id"`
-			} `json:"known_recipes,omitempty"`
-		} `json:"tiers,omitempty"`
-	} `json:"secondaries"`
-}
+type BNetCharacterProfessionsSummary struct{}
 
 // CharacterProfessionsSummaryResponse represents the raw CN API response for CharacterProfessionsSummary.
-type CharacterProfessionsSummaryResponse struct{}
+type CNCharacterProfessionsSummary BNetCharacterProfessionsSummary
 
 // ToBNet converts the CN response to the unified BNetCharacterProfessionsSummaryResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterProfessionsSummaryResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterProfessionsSummary) ToBNet() any {
+	return r
 }

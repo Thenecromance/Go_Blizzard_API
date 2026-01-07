@@ -1,18 +1,40 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/ProfileService/CharacterHouse"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/house/house-{houseNumber}", ginCharacter_House_Summary)
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/house/house-{houseNumber}", ginCharacterHouseSummary) //CharacterHouseSummary Returns a summary of a house a character has built.
 
 }
 
-func ginCharacter_House_Summary(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginCharacterHouseSummary(c *gin.Context) {
+	// binding uri parameters
+	var req wow_CharacterHouse.CharacterHouseSummaryFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_CharacterHouse.CharacterHouseSummary(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

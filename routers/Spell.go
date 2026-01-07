@@ -1,26 +1,90 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/Spell"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/spell/:spellId", ginSpell)
-	app.Instance().RegisterRoute("GET", "/data/wow/media/spell/:spellId", ginSpell_Media)
-	app.Instance().RegisterRoute("GET", "/data/wow/search/spell", ginSpell_Search)
+	app.Instance().RegisterRoute("GET", "/data/wow/spell/:spellId", ginSpell) //Spell Returns a spell by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/media/spell/:spellId", ginSpellMedia) //SpellMedia Returns media for a spell by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/search/spell", ginSpellSearch) //SpellSearch Performs a search of spells. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
 
 }
+
+
+
 
 func ginSpell(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	// binding uri parameters
+	var req wow_Spell.SpellFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Spell.Spell(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginSpell_Media(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginSpellMedia(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Spell.SpellMediaFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Spell.SpellMedia(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginSpell_Search(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginSpellSearch(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Spell.SpellSearchFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Spell.SpellSearch(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

@@ -5,22 +5,13 @@ package wow_CharacterProfile
 // Author: @Thenecromance
 
 // BNetCharacterProfileStatusResponse is the unified BNet representation for CharacterProfileStatus.
-
-type BNetCharacterProfileStatusResponse struct {
-	Links struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"_links"`
-	Id      int  `json:"id"`
-	IsValid bool `json:"is_valid"`
-}
+type BNetCharacterProfileStatus struct{}
 
 // CharacterProfileStatusResponse represents the raw CN API response for CharacterProfileStatus.
-type CharacterProfileStatusResponse struct{}
+type CNCharacterProfileStatus BNetCharacterProfileStatus
 
 // ToBNet converts the CN response to the unified BNetCharacterProfileStatusResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterProfileStatusResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterProfileStatus) ToBNet() any {
+	return r
 }

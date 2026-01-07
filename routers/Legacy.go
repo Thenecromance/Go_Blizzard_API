@@ -1,38 +1,152 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/api/StarCraftII/Community/Legacy"
+	"Unofficial_API/app"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId", ginlegacyProfile)
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/ladders", ginlegacyLadder)
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/matches", ginMatch_History)
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/ladder/:regionId/:ladderId", ginlegacyLadders)
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/achievements/:regionId", ginAchievements)
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/rewards/:regionId", ginRewards)
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId", ginLegacyProfile) //Profile Retrieves data about an individual SC2 profile.
+
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/ladders", ginLegacyLadders) //Ladders Retrieves data about an individual SC2 profile's ladders.
+
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/matches", ginMatchHistory) //MatchHistory Returns data about an individual SC2 profile's match history.
+
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/ladder/:regionId/:ladderId", ginLegacyLadder) //Ladder Returns data about an individual SC2 ladder.
+
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/achievements/:regionId", ginAchievements) //Achievements Returns data about the achievements available in SC2.
+
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/rewards/:regionId", ginRewards) //Rewards Returns data about the rewards available in SC2.
 
 }
 
-func ginlegacyProfile(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+func ginLegacyProfile(c *gin.Context) {
+	// binding uri parameters
+	var req StarCraftII_Legacy.ProfileFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.Profile(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginlegacyLadders(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+func ginLegacyLadders(c *gin.Context) {
+	// binding uri parameters
+	var req StarCraftII_Legacy.LaddersFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.Ladders(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginMatch_History(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+func ginMatchHistory(c *gin.Context) {
+	// binding uri parameters
+	var req StarCraftII_Legacy.MatchHistoryFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.MatchHistory(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginlegacyLadder(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+func ginLegacyLadder(c *gin.Context) {
+	// binding uri parameters
+	var req StarCraftII_Legacy.LadderFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.Ladder(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
+
 func ginAchievements(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	// binding uri parameters
+	var req StarCraftII_Legacy.AchievementsFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.Achievements(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
+
 func ginRewards(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	// binding uri parameters
+	var req StarCraftII_Legacy.RewardsFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := StarCraftII_Legacy.Rewards(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

@@ -1,30 +1,115 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/Reputations"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/index", ginReputation_Factions_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/:reputationFactionId", ginReputation_Faction)
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/index", ginReputation_Tiers_Index)
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/:reputationTiersId", ginReputation_Tiers)
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/index", ginReputationFactionsIndex) //ReputationFactionsIndex Returns an index of reputation factions.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/:reputationFactionId", ginReputationFaction) //ReputationFaction Returns a single reputation faction by ID.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/index", ginReputationTiersIndex) //ReputationTiersIndex Returns an index of reputation tiers.
+
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/:reputationTiersId", ginReputationTiers) //ReputationTiers Returns a single set of reputation tiers by ID.
 
 }
 
-func ginReputation_Factions_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginReputationFactionsIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Reputations.ReputationFactionsIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Reputations.ReputationFactionsIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginReputation_Faction(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginReputationFaction(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Reputations.ReputationFactionFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Reputations.ReputationFaction(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginReputation_Tiers_Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginReputationTiersIndex(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Reputations.ReputationTiersIndexFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Reputations.ReputationTiersIndex(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }
-func ginReputation_Tiers(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginReputationTiers(c *gin.Context) {
+	// binding uri parameters
+	var req wow_Reputations.ReputationTiersFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_Reputations.ReputationTiers(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

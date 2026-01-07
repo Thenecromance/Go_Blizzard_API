@@ -7,17 +7,20 @@ package {{.PkgName}}_{{.ApiGroupName}}
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	{{if .NeedStrconv}}
+	    "strconv"
+	{{end}}
 	"io"
 	"net/http"
-	"strconv"
 
 	"Unofficial_API/ApiError"
 	"Unofficial_API/api/Authentication"
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
+{{if .HasURIBinding}}
 	"github.com/jtacoma/uritemplates"
+{{end}}
 )
 
 {{range .Apis}}
@@ -84,7 +87,7 @@ func String{{.Name}}(ctx context.Context, fields *{{.Name}}Fields) (string, erro
 	{{if .HasURIBinding}}
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
-		return "", fmt.Errorf("failed to parse path template: %w", err)
+		return "", err
 	}
 
 	pathValues := map[string]interface{}{
@@ -94,7 +97,7 @@ func String{{.Name}}(ctx context.Context, fields *{{.Name}}Fields) (string, erro
 
 	expandedPath, err := tpl.Expand(pathValues)
 	if err != nil {
-		return "", fmt.Errorf("failed to expand path: %w", err)
+		return "", err
 	}
 	req.URL.Path = expandedPath
 	{{else}}

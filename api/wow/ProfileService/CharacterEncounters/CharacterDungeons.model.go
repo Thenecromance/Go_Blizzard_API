@@ -5,14 +5,13 @@ package wow_CharacterEncounters
 // Author: @Thenecromance
 
 // BNetCharacterDungeonsResponse is the unified BNet representation for CharacterDungeons.
-type BNetCharacterDungeonsResponse struct{}
+type BNetCharacterDungeons struct{}
 
 // CharacterDungeonsResponse represents the raw CN API response for CharacterDungeons.
-type CharacterDungeonsResponse struct {
-}
+type CNCharacterDungeons BNetCharacterDungeons
 
 // ToBNet converts the CN response to the unified BNetCharacterDungeonsResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterDungeonsResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterDungeons) ToBNet() any {
+	return r
 }

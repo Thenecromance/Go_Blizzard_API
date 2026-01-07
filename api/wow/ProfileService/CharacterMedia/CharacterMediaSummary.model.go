@@ -5,58 +5,13 @@ package wow_CharacterMedia
 // Author: @Thenecromance
 
 // BNetCharacterMediaSummaryResponse is the unified BNet representation for CharacterMediaSummary.
-type BNetCharacterMediaSummaryResponse struct {
-	Links struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"_links"`
-	Character struct {
-		Key struct {
-			Href string `json:"href"`
-		} `json:"key"`
-		Name  string `json:"name"`
-		Id    int    `json:"id"`
-		Realm struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-			Slug string `json:"slug"`
-		} `json:"realm"`
-	} `json:"character"`
-	Assets []struct {
-		Key   string `json:"key"`
-		Value string `json:"value"`
-	} `json:"assets"`
-}
+type BNetCharacterMediaSummary struct{}
 
 // CharacterMediaSummaryResponse represents the raw CN API response for CharacterMediaSummary.
-type CharacterMediaSummaryResponse struct {
-	Character struct {
-		Key struct {
-			Href string `json:"href"`
-		} `json:"key"`
-		Name  string `json:"name"`
-		Id    int    `json:"id"`
-		Realm struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-			Slug string `json:"slug"`
-		} `json:"realm"`
-	} `json:"character"`
-	Assets []struct {
-		Key   string `json:"key"`
-		Value string `json:"value"`
-	} `json:"assets"`
-}
+type CNCharacterMediaSummary BNetCharacterMediaSummary
 
 // ToBNet converts the CN response to the unified BNetCharacterMediaSummaryResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterMediaSummaryResponse) ToBNet() any {
+func (r *CNCharacterMediaSummary) ToBNet() any {
 	return r
 }

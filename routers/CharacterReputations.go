@@ -1,18 +1,40 @@
 package routers
 
 import (
-	"Unofficial_API/app"
 	"net/http"
+
+	"Unofficial_API/app"
+	"Unofficial_API/api/wow/ProfileService/CharacterReputations"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/reputations", ginCharacter_Reputations_Summary)
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/reputations", ginCharacterReputationsSummary) //CharacterReputationsSummary Returns a summary of a character's reputations.
 
 }
 
-func ginCharacter_Reputations_Summary(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+
+
+func ginCharacterReputationsSummary(c *gin.Context) {
+	// binding uri parameters
+	var req wow_CharacterReputations.CharacterReputationsSummaryFields
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+	// binding query parameters
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
+	resp, err := wow_CharacterReputations.CharacterReputationsSummary(c, &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
 }

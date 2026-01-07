@@ -53,7 +53,7 @@ func updateApi(f *Fields) {
 		wg.Add(1)
 		go func(t *apiTask) {
 			defer wg.Done()
-			t.Result = updater.RequestApiList(t.Game, t.URL)
+			t.Result = updater.RequestApiList(t.Game, t.URL, t.Category)
 		}(tasks[i])
 
 	}
@@ -72,7 +72,7 @@ func updateApi(f *Fields) {
 			collection = append(collection, task.Result...)
 		}
 
-		outPath := "./api/" + task.Game + "/" + task.Category + "/"
+		outPath := "../api/" + task.Game + "/" + task.Category + "/"
 
 		if f.Api && task.Enabled {
 			updater.GenerateApi(task.Game, outPath, task.Result)
@@ -84,7 +84,7 @@ func updateApi(f *Fields) {
 	}
 
 	if f.Router {
-		updater.GenerateRouters("routers", "./routers/", collection)
+		updater.GenerateRouters("routers", "../routers/", collection)
 	}
 
 	if len(f.LocalPath) > 0 {

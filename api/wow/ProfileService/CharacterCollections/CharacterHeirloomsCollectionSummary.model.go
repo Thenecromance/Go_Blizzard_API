@@ -5,13 +5,13 @@ package wow_CharacterCollections
 // Author: @Thenecromance
 
 // BNetCharacterHeirloomsCollectionSummaryResponse is the unified BNet representation for CharacterHeirloomsCollectionSummary.
-type BNetCharacterHeirloomsCollectionSummaryResponse struct{}
+type BNetCharacterHeirloomsCollectionSummary struct{}
 
 // CharacterHeirloomsCollectionSummaryResponse represents the raw CN API response for CharacterHeirloomsCollectionSummary.
-type CharacterHeirloomsCollectionSummaryResponse struct{}
+type CNCharacterHeirloomsCollectionSummary BNetCharacterHeirloomsCollectionSummary
 
 // ToBNet converts the CN response to the unified BNetCharacterHeirloomsCollectionSummaryResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterHeirloomsCollectionSummaryResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterHeirloomsCollectionSummary) ToBNet() any {
+	return r
 }

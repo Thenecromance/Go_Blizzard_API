@@ -5,52 +5,13 @@ package wow_CharacterCollections
 // Author: @Thenecromance
 
 // BNetCharacterCollectionsIndexResponse is the unified BNet representation for CharacterCollectionsIndex.
-type BNetCharacterCollectionsIndexResponse struct {
-	Links struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"_links"`
-	Pets struct {
-		Href string `json:"href"`
-	} `json:"pets"`
-	Mounts struct {
-		Href string `json:"href"`
-	} `json:"mounts"`
-	Heirlooms struct {
-		Href string `json:"href"`
-	} `json:"heirlooms"`
-	Toys struct {
-		Href string `json:"href"`
-	} `json:"toys"`
-	Character struct {
-		Key struct {
-			Href string `json:"href"`
-		} `json:"key"`
-		Name  string `json:"name"`
-		Id    int    `json:"id"`
-		Realm struct {
-			Key struct {
-				Href string `json:"href"`
-			} `json:"key"`
-			Name string `json:"name"`
-			Id   int    `json:"id"`
-			Slug string `json:"slug"`
-		} `json:"realm"`
-	} `json:"character"`
-	Transmogs struct {
-		Href string `json:"href"`
-	} `json:"transmogs"`
-	Decors struct {
-		Href string `json:"href"`
-	} `json:"decors"`
-}
+type BNetCharacterCollectionsIndex struct{}
 
 // CharacterCollectionsIndexResponse represents the raw CN API response for CharacterCollectionsIndex.
-type CharacterCollectionsIndexResponse struct{}
+type CNCharacterCollectionsIndex BNetCharacterCollectionsIndex
 
 // ToBNet converts the CN response to the unified BNetCharacterCollectionsIndexResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterCollectionsIndexResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterCollectionsIndex) ToBNet() any {
+	return r
 }

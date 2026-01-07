@@ -5,13 +5,13 @@ package wow_CharacterCollections
 // Author: @Thenecromance
 
 // BNetCharacterDecorCollectionSummaryResponse is the unified BNet representation for CharacterDecorCollectionSummary.
-type BNetCharacterDecorCollectionSummaryResponse struct{}
+type BNetCharacterDecorCollectionSummary struct{}
 
 // CharacterDecorCollectionSummaryResponse represents the raw CN API response for CharacterDecorCollectionSummary.
-type CharacterDecorCollectionSummaryResponse struct{}
+type CNCharacterDecorCollectionSummary BNetCharacterDecorCollectionSummary
 
 // ToBNet converts the CN response to the unified BNetCharacterDecorCollectionSummaryResponse.
 // Implementation intentionally returns nil and should be filled by hand when needed.
-func (r *CharacterDecorCollectionSummaryResponse) ToBNet() any {
-	return nil
+func (r *CNCharacterDecorCollectionSummary) ToBNet() any {
+	return r
 }
