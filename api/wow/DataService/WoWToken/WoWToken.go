@@ -9,7 +9,7 @@ import (
  
 //==============================================================================================
 
-type WoWTokenIndex(US,EU,KR,TW)Fields struct{
+type WoWTokenIndexFields struct{
 	Namespace string//The namespace to use to locate this document.
 	Locale string//The locale to reflect in localized data.
 	
@@ -30,7 +30,7 @@ type WoWTokenIndex(US,EU,KR,TW)Fields struct{
 //WoWTokenIndex(US,EU,KR,TW) Returns the WoW Token index.
 //
 //@see: /data/wow/token/index
-func StringWoWTokenIndex(US,EU,KR,TW)(ctx context.Context, fields *WoWTokenIndex(US,EU,KR,TW)Fields)(string,error){
+func StringWoWTokenIndex(ctx context.Context, fields *WoWTokenIndex(US,EU,KR,TW)Fields)(string,error){
 	if fields == nil {
 		fields = &WoWTokenIndex(US,EU,KR,TW)Fields{}
 	}
