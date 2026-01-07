@@ -16,11 +16,15 @@ func init() {
 {{range .Apis}}
 
 type {{.Name}}Request struct {
-    {{range .Params}}{{if .IsBindingUri}} {{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"` //{{.Description}}{{end}}
+    {{range .Params}}
+    {{if .IsBindingUri}} {{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"` //{{.Description}}
+    {{else}} {{.Name}} {{.Type}} `form:"{{.ParamName}}"` //{{.Description}}
+    {{end}}
     {{end}}}
 
 
 func gin{{.Name}}(c *gin.Context){
+    // binding uri parameters
     var req {{.Name}}Request
     if err := c.ShouldBindUri(&req); err != nil {
     	c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})

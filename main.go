@@ -2,7 +2,7 @@ package main
 
 import (
 	"Unofficial_API/app"
-	_ "Unofficial_API/router"
+	_ "Unofficial_API/routers"
 )
 
 func main() {
