@@ -5,7 +5,40 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetSoulbindResponse is the unified BNet representation for Soulbind.
-type BNetSoulbind struct{}
+type BNetSoulbind struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Covenant struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"covenant"`
+	Creature struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"creature"`
+	Follower struct {
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"follower"`
+	TalentTree struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"talent_tree"`
+}
 
 // SoulbindResponse represents the raw CN API response for Soulbind.
 type CNSoulbind BNetSoulbind

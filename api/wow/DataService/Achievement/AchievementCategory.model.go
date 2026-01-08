@@ -5,7 +5,41 @@ package wow_Achievement
 // Author: @Thenecromance
 
 // BNetAchievementCategoryResponse is the unified BNet representation for AchievementCategory.
-type BNetAchievementCategory struct{}
+type BNetAchievementCategory struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Achievements []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"achievements"`
+	ParentCategory struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"parent_category"`
+	IsGuildCategory     bool `json:"is_guild_category"`
+	AggregatesByFaction struct {
+		Alliance struct {
+			Quantity int `json:"quantity"`
+			Points   int `json:"points"`
+		} `json:"alliance"`
+		Horde struct {
+			Quantity int `json:"quantity"`
+			Points   int `json:"points"`
+		} `json:"horde"`
+	} `json:"aggregates_by_faction"`
+	DisplayOrder int `json:"display_order"`
+}
 
 // AchievementCategoryResponse represents the raw CN API response for AchievementCategory.
 type CNAchievementCategory BNetAchievementCategory

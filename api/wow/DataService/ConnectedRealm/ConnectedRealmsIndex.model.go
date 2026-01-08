@@ -5,7 +5,16 @@ package wow_ConnectedRealm
 // Author: @Thenecromance
 
 // BNetConnectedRealmsIndexResponse is the unified BNet representation for ConnectedRealmsIndex.
-type BNetConnectedRealmsIndex struct{}
+type BNetConnectedRealmsIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	ConnectedRealms []struct {
+		Href string `json:"href"`
+	} `json:"connected_realms"`
+}
 
 // ConnectedRealmsIndexResponse represents the raw CN API response for ConnectedRealmsIndex.
 type CNConnectedRealmsIndex BNetConnectedRealmsIndex

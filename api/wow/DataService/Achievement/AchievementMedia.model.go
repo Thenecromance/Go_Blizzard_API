@@ -5,7 +5,19 @@ package wow_Achievement
 // Author: @Thenecromance
 
 // BNetAchievementMediaResponse is the unified BNet representation for AchievementMedia.
-type BNetAchievementMedia struct{}
+type BNetAchievementMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key        string `json:"key"`
+		Value      string `json:"value"`
+		FileDataId int    `json:"file_data_id"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // AchievementMediaResponse represents the raw CN API response for AchievementMedia.
 type CNAchievementMedia BNetAchievementMedia

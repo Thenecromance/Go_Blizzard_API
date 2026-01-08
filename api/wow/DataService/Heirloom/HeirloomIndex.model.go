@@ -5,7 +5,20 @@ package wow_Heirloom
 // Author: @Thenecromance
 
 // BNetHeirloomIndexResponse is the unified BNet representation for HeirloomIndex.
-type BNetHeirloomIndex struct{}
+type BNetHeirloomIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Heirlooms []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"heirlooms"`
+}
 
 // HeirloomIndexResponse represents the raw CN API response for HeirloomIndex.
 type CNHeirloomIndex BNetHeirloomIndex

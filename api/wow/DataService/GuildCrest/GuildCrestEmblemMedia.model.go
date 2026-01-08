@@ -5,7 +5,18 @@ package wow_GuildCrest
 // Author: @Thenecromance
 
 // BNetGuildCrestEmblemMediaResponse is the unified BNet representation for GuildCrestEmblemMedia.
-type BNetGuildCrestEmblemMedia struct{}
+type BNetGuildCrestEmblemMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // GuildCrestEmblemMediaResponse represents the raw CN API response for GuildCrestEmblemMedia.
 type CNGuildCrestEmblemMedia BNetGuildCrestEmblemMedia

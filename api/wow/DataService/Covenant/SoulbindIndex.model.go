@@ -5,7 +5,20 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetSoulbindIndexResponse is the unified BNet representation for SoulbindIndex.
-type BNetSoulbindIndex struct{}
+type BNetSoulbindIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Soulbinds []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"soulbinds"`
+}
 
 // SoulbindIndexResponse represents the raw CN API response for SoulbindIndex.
 type CNSoulbindIndex BNetSoulbindIndex

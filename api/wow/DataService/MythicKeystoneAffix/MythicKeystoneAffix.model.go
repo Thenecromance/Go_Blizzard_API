@@ -5,7 +5,22 @@ package wow_MythicKeystoneAffix
 // Author: @Thenecromance
 
 // BNetMythicKeystoneAffixResponse is the unified BNet representation for MythicKeystoneAffix.
-type BNetMythicKeystoneAffix struct{}
+type BNetMythicKeystoneAffix struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Media       struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Id int `json:"id"`
+	} `json:"media"`
+}
 
 // MythicKeystoneAffixResponse represents the raw CN API response for MythicKeystoneAffix.
 type CNMythicKeystoneAffix BNetMythicKeystoneAffix

@@ -5,7 +5,20 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetCovenantIndexResponse is the unified BNet representation for CovenantIndex.
-type BNetCovenantIndex struct{}
+type BNetCovenantIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Covenants []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"covenants"`
+}
 
 // CovenantIndexResponse represents the raw CN API response for CovenantIndex.
 type CNCovenantIndex BNetCovenantIndex

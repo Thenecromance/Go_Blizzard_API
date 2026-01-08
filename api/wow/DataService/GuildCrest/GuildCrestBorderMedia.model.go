@@ -5,7 +5,18 @@ package wow_GuildCrest
 // Author: @Thenecromance
 
 // BNetGuildCrestBorderMediaResponse is the unified BNet representation for GuildCrestBorderMedia.
-type BNetGuildCrestBorderMedia struct{}
+type BNetGuildCrestBorderMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // GuildCrestBorderMediaResponse represents the raw CN API response for GuildCrestBorderMedia.
 type CNGuildCrestBorderMedia BNetGuildCrestBorderMedia

@@ -7,9 +7,9 @@ package wow_Creature
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
+
+	"strconv"
+
 	"io"
 	"net/http"
 
@@ -18,20 +18,17 @@ import (
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
-
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Creature
 // ==============================================================================================
 
 type CreatureFields struct {
-	CreatureId int `uri:"creatureId" binding:"required"` // The ID of the creature.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CreatureId int    `uri:"creatureId" binding:"required"` // The ID of the creature.
+	Namespace  string `form:"namespace,default=static-us"`  // The namespace to use to locate this document.
+	Locale     string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,19 +59,18 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CreatureId == 0 {
 		fields.CreatureId = 42722
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -91,7 +87,7 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -99,7 +95,6 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 
 	pathValues := map[string]interface{}{
 		"creatureId": fields.CreatureId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -107,15 +102,14 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -138,7 +132,7 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 func bridgeCreature(ctx context.Context, fields *CreatureFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreature != nil {
 			return CNHookCreature(ctx, fields)
@@ -165,16 +159,15 @@ func bridgeCreature(ctx context.Context, fields *CreatureFields) (any, error) {
 // Path: /data/wow/creature/{creatureId}
 var Creature = bridgeCreature
 
-
 // ==============================================================================================
 // API: CreatureSearch
 // ==============================================================================================
 
 type CreatureSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Nameen_US string `form:"nameen_US,default=Dragon"` // The name of the creature. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Nameen_US string `form:"nameen_US,default=Dragon"`    // The name of the creature. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,23 +198,22 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Dragon"
 	}
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -238,21 +230,20 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	req.URL.Path = fields.Path
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("nameen_US", fields.Nameen_US)
-	
+
 	q.Add("orderby", fields.Orderby)
-	
+
 	q.Add("_page", strconv.Itoa(fields._page))
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -275,7 +266,7 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 func bridgeCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureSearch != nil {
 			return CNHookCreatureSearch(ctx, fields)
@@ -302,15 +293,14 @@ func bridgeCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (an
 // Path: /data/wow/search/creature
 var CreatureSearch = bridgeCreatureSearch
 
-
 // ==============================================================================================
 // API: CreatureDisplayMedia
 // ==============================================================================================
 
 type CreatureDisplayMediaFields struct {
-	CreatureDisplayId int `uri:"creatureDisplayId" binding:"required"` // The ID of the creature display.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CreatureDisplayId int    `uri:"creatureDisplayId" binding:"required"` // The ID of the creature display.
+	Namespace         string `form:"namespace,default=static-us"`         // The namespace to use to locate this document.
+	Locale            string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -341,19 +331,18 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CreatureDisplayId == 0 {
 		fields.CreatureDisplayId = 30221
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -370,7 +359,7 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -378,7 +367,6 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 
 	pathValues := map[string]interface{}{
 		"creatureDisplayId": fields.CreatureDisplayId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -386,15 +374,14 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -417,7 +404,7 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 func bridgeCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMediaFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureDisplayMedia != nil {
 			return CNHookCreatureDisplayMedia(ctx, fields)
@@ -444,14 +431,13 @@ func bridgeCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 // Path: /data/wow/media/creature-display/{creatureDisplayId}
 var CreatureDisplayMedia = bridgeCreatureDisplayMedia
 
-
 // ==============================================================================================
 // API: CreatureFamiliesIndex
 // ==============================================================================================
 
 type CreatureFamiliesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -482,15 +468,14 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -507,17 +492,16 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	req.URL.Path = fields.Path
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -540,7 +524,7 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 func bridgeCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIndexFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureFamiliesIndex != nil {
 			return CNHookCreatureFamiliesIndex(ctx, fields)
@@ -567,15 +551,14 @@ func bridgeCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 // Path: /data/wow/creature-family/index
 var CreatureFamiliesIndex = bridgeCreatureFamiliesIndex
 
-
 // ==============================================================================================
 // API: CreatureFamily
 // ==============================================================================================
 
 type CreatureFamilyFields struct {
-	CreatureFamilyId int `uri:"creatureFamilyId" binding:"required"` // The ID of the creature family.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CreatureFamilyId int    `uri:"creatureFamilyId" binding:"required"` // The ID of the creature family.
+	Namespace        string `form:"namespace,default=static-us"`        // The namespace to use to locate this document.
+	Locale           string `form:"locale,default=en_US"`               // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -606,19 +589,18 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CreatureFamilyId == 0 {
 		fields.CreatureFamilyId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -635,7 +617,7 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -643,7 +625,6 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 
 	pathValues := map[string]interface{}{
 		"creatureFamilyId": fields.CreatureFamilyId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -651,15 +632,14 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -682,7 +662,7 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 func bridgeCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureFamily != nil {
 			return CNHookCreatureFamily(ctx, fields)
@@ -709,15 +689,14 @@ func bridgeCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (an
 // Path: /data/wow/creature-family/{creatureFamilyId}
 var CreatureFamily = bridgeCreatureFamily
 
-
 // ==============================================================================================
 // API: CreatureFamilyMedia
 // ==============================================================================================
 
 type CreatureFamilyMediaFields struct {
-	CreatureFamilyId int `uri:"creatureFamilyId" binding:"required"` // The ID of the creature family.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CreatureFamilyId int    `uri:"creatureFamilyId" binding:"required"` // The ID of the creature family.
+	Namespace        string `form:"namespace,default=static-us"`        // The namespace to use to locate this document.
+	Locale           string `form:"locale,default=en_US"`               // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -748,19 +727,18 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CreatureFamilyId == 0 {
 		fields.CreatureFamilyId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -777,7 +755,7 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -785,7 +763,6 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 
 	pathValues := map[string]interface{}{
 		"creatureFamilyId": fields.CreatureFamilyId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -793,15 +770,14 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -824,7 +800,7 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 func bridgeCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureFamilyMedia != nil {
 			return CNHookCreatureFamilyMedia(ctx, fields)
@@ -851,14 +827,13 @@ func bridgeCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 // Path: /data/wow/media/creature-family/{creatureFamilyId}
 var CreatureFamilyMedia = bridgeCreatureFamilyMedia
 
-
 // ==============================================================================================
 // API: CreatureTypesIndex
 // ==============================================================================================
 
 type CreatureTypesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -889,15 +864,14 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -914,17 +888,16 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	req.URL.Path = fields.Path
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -947,7 +920,7 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 func bridgeCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureTypesIndex != nil {
 			return CNHookCreatureTypesIndex(ctx, fields)
@@ -974,15 +947,14 @@ func bridgeCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 // Path: /data/wow/creature-type/index
 var CreatureTypesIndex = bridgeCreatureTypesIndex
 
-
 // ==============================================================================================
 // API: CreatureType
 // ==============================================================================================
 
 type CreatureTypeFields struct {
-	CreatureTypeId int `uri:"creatureTypeId" binding:"required"` // The ID of the creature type.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CreatureTypeId int    `uri:"creatureTypeId" binding:"required"` // The ID of the creature type.
+	Namespace      string `form:"namespace,default=static-us"`      // The namespace to use to locate this document.
+	Locale         string `form:"locale,default=en_US"`             // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1013,19 +985,18 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CreatureTypeId == 0 {
 		fields.CreatureTypeId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1042,7 +1013,7 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -1050,7 +1021,6 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 
 	pathValues := map[string]interface{}{
 		"creatureTypeId": fields.CreatureTypeId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -1058,15 +1028,14 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -1089,7 +1058,7 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 func bridgeCreatureType(ctx context.Context, fields *CreatureTypeFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCreatureType != nil {
 			return CNHookCreatureType(ctx, fields)
@@ -1115,4 +1084,3 @@ func bridgeCreatureType(ctx context.Context, fields *CreatureTypeFields) (any, e
 // CreatureType CreatureType Returns a creature type by ID.
 // Path: /data/wow/creature-type/{creatureTypeId}
 var CreatureType = bridgeCreatureType
-

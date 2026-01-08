@@ -5,7 +5,44 @@ package wow_Achievement
 // Author: @Thenecromance
 
 // BNetAchievementResponse is the unified BNet representation for Achievement.
-type BNetAchievement struct{}
+type BNetAchievement struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id       int `json:"id"`
+	Category struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"category"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	Points        int    `json:"points"`
+	IsAccountWide bool   `json:"is_account_wide"`
+	Criteria      struct {
+		Id          int    `json:"id"`
+		Description string `json:"description"`
+		Amount      int    `json:"amount"`
+	} `json:"criteria"`
+	NextAchievement struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"next_achievement"`
+	Media struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Id int `json:"id"`
+	} `json:"media"`
+	DisplayOrder int `json:"display_order"`
+}
 
 // AchievementResponse represents the raw CN API response for Achievement.
 type CNAchievement BNetAchievement

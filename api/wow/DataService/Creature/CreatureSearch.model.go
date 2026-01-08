@@ -5,7 +5,72 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureSearchResponse is the unified BNet representation for CreatureSearch.
-type BNetCreatureSearch struct{}
+type BNetCreatureSearch struct {
+	Page        int `json:"page"`
+	PageSize    int `json:"pageSize"`
+	MaxPageSize int `json:"maxPageSize"`
+	PageCount   int `json:"pageCount"`
+	Results     []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Data struct {
+			CreatureDisplays []struct {
+				Id int `json:"id"`
+			} `json:"creature_displays"`
+			IsTameable bool `json:"is_tameable"`
+			Name       struct {
+				ItIT string `json:"it_IT,omitempty"`
+				RuRU string `json:"ru_RU,omitempty"`
+				EnGB string `json:"en_GB"`
+				ZhTW string `json:"zh_TW,omitempty"`
+				KoKR string `json:"ko_KR,omitempty"`
+				EnUS string `json:"en_US"`
+				EsMX string `json:"es_MX,omitempty"`
+				PtBR string `json:"pt_BR,omitempty"`
+				EsES string `json:"es_ES,omitempty"`
+				ZhCN string `json:"zh_CN,omitempty"`
+				FrFR string `json:"fr_FR,omitempty"`
+				DeDE string `json:"de_DE,omitempty"`
+			} `json:"name"`
+			Id   int `json:"id"`
+			Type struct {
+				Name struct {
+					ItIT string `json:"it_IT"`
+					RuRU string `json:"ru_RU"`
+					EnGB string `json:"en_GB"`
+					ZhTW string `json:"zh_TW"`
+					KoKR string `json:"ko_KR"`
+					EnUS string `json:"en_US"`
+					EsMX string `json:"es_MX"`
+					PtBR string `json:"pt_BR"`
+					EsES string `json:"es_ES"`
+					ZhCN string `json:"zh_CN"`
+					FrFR string `json:"fr_FR"`
+					DeDE string `json:"de_DE"`
+				} `json:"name"`
+				Id int `json:"id"`
+			} `json:"type"`
+			Family struct {
+				Name struct {
+					ItIT string `json:"it_IT"`
+					RuRU string `json:"ru_RU"`
+					EnGB string `json:"en_GB"`
+					ZhTW string `json:"zh_TW"`
+					KoKR string `json:"ko_KR"`
+					EnUS string `json:"en_US"`
+					EsMX string `json:"es_MX"`
+					PtBR string `json:"pt_BR"`
+					EsES string `json:"es_ES"`
+					ZhCN string `json:"zh_CN"`
+					FrFR string `json:"fr_FR"`
+					DeDE string `json:"de_DE"`
+				} `json:"name"`
+				Id int `json:"id"`
+			} `json:"family,omitempty"`
+		} `json:"data"`
+	} `json:"results"`
+}
 
 // CreatureSearchResponse represents the raw CN API response for CreatureSearch.
 type CNCreatureSearch BNetCreatureSearch

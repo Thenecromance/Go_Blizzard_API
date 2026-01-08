@@ -5,7 +5,78 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetCovenantResponse is the unified BNet representation for Covenant.
-type BNetCovenant struct{}
+type BNetCovenant struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id               int    `json:"id"`
+	Name             string `json:"name"`
+	Description      string `json:"description"`
+	SignatureAbility struct {
+		Id           int `json:"id"`
+		SpellTooltip struct {
+			Spell struct {
+				Key struct {
+					Href string `json:"href"`
+				} `json:"key"`
+				Name string `json:"name"`
+				Id   int    `json:"id"`
+			} `json:"spell"`
+			Description string `json:"description"`
+			CastTime    string `json:"cast_time"`
+			Cooldown    string `json:"cooldown"`
+		} `json:"spell_tooltip"`
+	} `json:"signature_ability"`
+	ClassAbilities []struct {
+		Id            int `json:"id"`
+		PlayableClass struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Name string `json:"name"`
+			Id   int    `json:"id"`
+		} `json:"playable_class"`
+		SpellTooltip struct {
+			Spell struct {
+				Key struct {
+					Href string `json:"href"`
+				} `json:"key"`
+				Name string `json:"name"`
+				Id   int    `json:"id"`
+			} `json:"spell"`
+			Description string  `json:"description"`
+			CastTime    string  `json:"cast_time"`
+			Range       string  `json:"range,omitempty"`
+			Cooldown    string  `json:"cooldown,omitempty"`
+			PowerCost   *string `json:"power_cost,omitempty"`
+		} `json:"spell_tooltip"`
+	} `json:"class_abilities"`
+	Soulbinds []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"soulbinds"`
+	RenownRewards []struct {
+		Level  int `json:"level"`
+		Reward struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Name string `json:"name"`
+			Id   int    `json:"id"`
+		} `json:"reward"`
+	} `json:"renown_rewards"`
+	Media struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Id int `json:"id"`
+	} `json:"media"`
+}
 
 // CovenantResponse represents the raw CN API response for Covenant.
 type CNCovenant BNetCovenant

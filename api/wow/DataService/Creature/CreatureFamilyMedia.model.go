@@ -5,7 +5,19 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureFamilyMediaResponse is the unified BNet representation for CreatureFamilyMedia.
-type BNetCreatureFamilyMedia struct{}
+type BNetCreatureFamilyMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key        string `json:"key"`
+		Value      string `json:"value"`
+		FileDataId int    `json:"file_data_id"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // CreatureFamilyMediaResponse represents the raw CN API response for CreatureFamilyMedia.
 type CNCreatureFamilyMedia BNetCreatureFamilyMedia

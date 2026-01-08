@@ -5,7 +5,46 @@ package wow_AzeriteEssence
 // Author: @Thenecromance
 
 // BNetAzeriteEssenceResponse is the unified BNet representation for AzeriteEssence.
-type BNetAzeriteEssence struct{}
+type BNetAzeriteEssence struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id                     int    `json:"id"`
+	Name                   string `json:"name"`
+	AllowedSpecializations []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"allowed_specializations"`
+	Powers []struct {
+		Id             int `json:"id"`
+		Rank           int `json:"rank"`
+		MainPowerSpell struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Name string `json:"name"`
+			Id   int    `json:"id"`
+		} `json:"main_power_spell"`
+		PassivePowerSpell struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Name string `json:"name"`
+			Id   int    `json:"id"`
+		} `json:"passive_power_spell"`
+	} `json:"powers"`
+	Media struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Id int `json:"id"`
+	} `json:"media"`
+}
 
 // AzeriteEssenceResponse represents the raw CN API response for AzeriteEssence.
 type CNAzeriteEssence BNetAzeriteEssence

@@ -5,7 +5,20 @@ package wow_Achievement
 // Author: @Thenecromance
 
 // BNetAchievementsIndexResponse is the unified BNet representation for AchievementsIndex.
-type BNetAchievementsIndex struct{}
+type BNetAchievementsIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Achievements []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"achievements"`
+}
 
 // AchievementsIndexResponse represents the raw CN API response for AchievementsIndex.
 type CNAchievementsIndex BNetAchievementsIndex

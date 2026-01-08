@@ -5,7 +5,21 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetConduitIndexResponse is the unified BNet representation for ConduitIndex.
-type BNetConduitIndex struct{}
+
+type BNetConduitIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Conduits []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"conduits"`
+}
 
 // ConduitIndexResponse represents the raw CN API response for ConduitIndex.
 type CNConduitIndex BNetConduitIndex

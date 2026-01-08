@@ -5,7 +5,34 @@ package wow_Achievement
 // Author: @Thenecromance
 
 // BNetAchievementCategoriesIndexResponse is the unified BNet representation for AchievementCategoriesIndex.
-type BNetAchievementCategoriesIndex struct{}
+type BNetAchievementCategoriesIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Categories []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"categories"`
+	RootCategories []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"root_categories"`
+	GuildCategories []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"guild_categories"`
+}
 
 // AchievementCategoriesIndexResponse represents the raw CN API response for AchievementCategoriesIndex.
 type CNAchievementCategoriesIndex BNetAchievementCategoriesIndex

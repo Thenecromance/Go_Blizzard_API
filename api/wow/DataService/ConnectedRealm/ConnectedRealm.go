@@ -7,9 +7,9 @@ package wow_ConnectedRealm
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
+
+	"strconv"
+
 	"io"
 	"net/http"
 
@@ -18,11 +18,8 @@ import (
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
-
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: ConnectedRealmsIndex
@@ -30,7 +27,7 @@ import (
 
 type ConnectedRealmsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -61,15 +58,14 @@ func StringConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -86,17 +82,16 @@ func StringConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	req.URL.Path = fields.Path
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -119,7 +114,7 @@ func StringConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 func bridgeConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsIndexFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookConnectedRealmsIndex != nil {
 			return CNHookConnectedRealmsIndex(ctx, fields)
@@ -146,15 +141,14 @@ func bridgeConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 // Path: /data/wow/connected-realm/index
 var ConnectedRealmsIndex = bridgeConnectedRealmsIndex
 
-
 // ==============================================================================================
 // API: ConnectedRealm
 // ==============================================================================================
 
 type ConnectedRealmFields struct {
-	ConnectedRealmId int `uri:"connectedRealmId" binding:"required"` // The ID of the connected realm.
-		Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ConnectedRealmId int    `uri:"connectedRealmId" binding:"required"` // The ID of the connected realm.
+	Namespace        string `form:"namespace,default=dynamic-us"`       // The namespace to use to locate this document.
+	Locale           string `form:"locale,default=en_US"`               // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -185,19 +179,18 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ConnectedRealmId == 0 {
 		fields.ConnectedRealmId = 11
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -214,7 +207,7 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -222,7 +215,6 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 
 	pathValues := map[string]interface{}{
 		"connectedRealmId": fields.ConnectedRealmId,
-		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -230,15 +222,14 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 		return "", err
 	}
 	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("locale", fields.Locale)
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -261,7 +252,7 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 func bridgeConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookConnectedRealm != nil {
 			return CNHookConnectedRealm(ctx, fields)
@@ -288,17 +279,16 @@ func bridgeConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (an
 // Path: /data/wow/connected-realm/{connectedRealmId}
 var ConnectedRealm = bridgeConnectedRealm
 
-
 // ==============================================================================================
 // API: ConnectedRealmSearch
 // ==============================================================================================
 
 type ConnectedRealmSearchFields struct {
-	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Statustype string `form:"statustype,default=UP"` // The status of the connected realm, UP or DOWN. (example search field)
+	Namespace      string `form:"namespace,default=dynamic-us"`            // The namespace to use to locate this document.
+	Statustype     string `form:"statustype,default=UP"`                   // The status of the connected realm, UP or DOWN. (example search field)
 	Realmstimezone string `form:"realmstimezone,default=America/New_York"` // The timezone of the realm. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Orderby        string `form:"orderby,default=id"`                      // The field to sort the result set by.
+	_page          int    `form:"_page,default=1"`                         // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -329,27 +319,26 @@ func StringConnectedRealmSearch(ctx context.Context, fields *ConnectedRealmSearc
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
+
 	if fields.Statustype == "" {
 		fields.Statustype = "UP"
 	}
-	
+
 	if fields.Realmstimezone == "" {
 		fields.Realmstimezone = "America/New_York"
 	}
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -366,23 +355,22 @@ func StringConnectedRealmSearch(ctx context.Context, fields *ConnectedRealmSearc
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
+
 	req.URL.Path = fields.Path
-	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-	
+
 	q.Add("namespace", fields.Namespace)
-	
+
 	q.Add("statustype", fields.Statustype)
-	
+
 	q.Add("realmstimezone", fields.Realmstimezone)
-	
+
 	q.Add("orderby", fields.Orderby)
-	
+
 	q.Add("_page", strconv.Itoa(fields._page))
-	
+
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -405,7 +393,7 @@ func StringConnectedRealmSearch(ctx context.Context, fields *ConnectedRealmSearc
 func bridgeConnectedRealmSearch(ctx context.Context, fields *ConnectedRealmSearchFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookConnectedRealmSearch != nil {
 			return CNHookConnectedRealmSearch(ctx, fields)
@@ -431,4 +419,3 @@ func bridgeConnectedRealmSearch(ctx context.Context, fields *ConnectedRealmSearc
 // ConnectedRealmSearch ConnectedRealmSearch Performs a search of connected realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
 // Path: /data/wow/search/connected-realm
 var ConnectedRealmSearch = bridgeConnectedRealmSearch
-

@@ -5,7 +5,20 @@ package wow_AzeriteEssence
 // Author: @Thenecromance
 
 // BNetAzeriteEssencesIndexResponse is the unified BNet representation for AzeriteEssencesIndex.
-type BNetAzeriteEssencesIndex struct{}
+type BNetAzeriteEssencesIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	AzeriteEssences []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"azerite_essences"`
+}
 
 // AzeriteEssencesIndexResponse represents the raw CN API response for AzeriteEssencesIndex.
 type CNAzeriteEssencesIndex BNetAzeriteEssencesIndex

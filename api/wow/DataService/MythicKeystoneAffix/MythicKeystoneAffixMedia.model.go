@@ -5,7 +5,19 @@ package wow_MythicKeystoneAffix
 // Author: @Thenecromance
 
 // BNetMythicKeystoneAffixMediaResponse is the unified BNet representation for MythicKeystoneAffixMedia.
-type BNetMythicKeystoneAffixMedia struct{}
+type BNetMythicKeystoneAffixMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key        string `json:"key"`
+		Value      string `json:"value"`
+		FileDataId int    `json:"file_data_id"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // MythicKeystoneAffixMediaResponse represents the raw CN API response for MythicKeystoneAffixMedia.
 type CNMythicKeystoneAffixMedia BNetMythicKeystoneAffixMedia

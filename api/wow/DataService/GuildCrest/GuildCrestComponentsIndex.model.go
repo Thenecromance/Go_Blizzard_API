@@ -5,7 +5,60 @@ package wow_GuildCrest
 // Author: @Thenecromance
 
 // BNetGuildCrestComponentsIndexResponse is the unified BNet representation for GuildCrestComponentsIndex.
-type BNetGuildCrestComponentsIndex struct{}
+type BNetGuildCrestComponentsIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Emblems []struct {
+		Id    int `json:"id"`
+		Media struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Id int `json:"id"`
+		} `json:"media"`
+	} `json:"emblems"`
+	Borders []struct {
+		Id    int `json:"id"`
+		Media struct {
+			Key struct {
+				Href string `json:"href"`
+			} `json:"key"`
+			Id int `json:"id"`
+		} `json:"media"`
+	} `json:"borders"`
+	Colors struct {
+		Emblems []struct {
+			Id   int `json:"id"`
+			Rgba struct {
+				R int `json:"r"`
+				G int `json:"g"`
+				B int `json:"b"`
+				A int `json:"a"`
+			} `json:"rgba"`
+		} `json:"emblems"`
+		Borders []struct {
+			Id   int `json:"id"`
+			Rgba struct {
+				R int `json:"r"`
+				G int `json:"g"`
+				B int `json:"b"`
+				A int `json:"a"`
+			} `json:"rgba"`
+		} `json:"borders"`
+		Backgrounds []struct {
+			Id   int `json:"id"`
+			Rgba struct {
+				R int `json:"r"`
+				G int `json:"g"`
+				B int `json:"b"`
+				A int `json:"a"`
+			} `json:"rgba"`
+		} `json:"backgrounds"`
+	} `json:"colors"`
+}
 
 // GuildCrestComponentsIndexResponse represents the raw CN API response for GuildCrestComponentsIndex.
 type CNGuildCrestComponentsIndex BNetGuildCrestComponentsIndex

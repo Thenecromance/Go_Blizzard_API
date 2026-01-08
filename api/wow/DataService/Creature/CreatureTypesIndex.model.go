@@ -5,7 +5,20 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureTypesIndexResponse is the unified BNet representation for CreatureTypesIndex.
-type BNetCreatureTypesIndex struct{}
+type BNetCreatureTypesIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	CreatureTypes []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"creature_types"`
+}
 
 // CreatureTypesIndexResponse represents the raw CN API response for CreatureTypesIndex.
 type CNCreatureTypesIndex BNetCreatureTypesIndex

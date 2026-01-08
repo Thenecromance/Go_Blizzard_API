@@ -137,7 +137,7 @@ func bridgeMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 
 // MythicKeystoneAffixesIndex MythicKeystoneAffixesIndex Returns an index of mythic keystone affixes.
 // Path: /data/wow/keystone-affix/index
-var MythicKeystoneAffixesIndex = StringMythicKeystoneAffixesIndex
+var MythicKeystoneAffixesIndex = bridgeMythicKeystoneAffixesIndex
 
 // ==============================================================================================
 // API: MythicKeystoneAffix

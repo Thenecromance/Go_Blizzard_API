@@ -5,7 +5,15 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureTypeResponse is the unified BNet representation for CreatureType.
-type BNetCreatureType struct{}
+type BNetCreatureType struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+}
 
 // CreatureTypeResponse represents the raw CN API response for CreatureType.
 type CNCreatureType BNetCreatureType

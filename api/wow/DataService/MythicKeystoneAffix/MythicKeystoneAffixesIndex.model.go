@@ -5,7 +5,20 @@ package wow_MythicKeystoneAffix
 // Author: @Thenecromance
 
 // BNetMythicKeystoneAffixesIndexResponse is the unified BNet representation for MythicKeystoneAffixesIndex.
-type BNetMythicKeystoneAffixesIndex struct{}
+type BNetMythicKeystoneAffixesIndex struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Affixes []struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name *string `json:"name"`
+		Id   int     `json:"id"`
+	} `json:"affixes"`
+}
 
 // MythicKeystoneAffixesIndexResponse represents the raw CN API response for MythicKeystoneAffixesIndex.
 type CNMythicKeystoneAffixesIndex BNetMythicKeystoneAffixesIndex

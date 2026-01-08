@@ -5,7 +5,28 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureFamilyResponse is the unified BNet representation for CreatureFamily.
-type BNetCreatureFamily struct{}
+type BNetCreatureFamily struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id             int    `json:"id"`
+	Name           string `json:"name"`
+	Specialization struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"specialization"`
+	Media struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Id int `json:"id"`
+	} `json:"media"`
+}
 
 // CreatureFamilyResponse represents the raw CN API response for CreatureFamily.
 type CNCreatureFamily BNetCreatureFamily

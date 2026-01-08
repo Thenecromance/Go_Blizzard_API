@@ -5,7 +5,18 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetCovenantMediaResponse is the unified BNet representation for CovenantMedia.
-type BNetCovenantMedia struct{}
+type BNetCovenantMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key        string `json:"key"`
+		Value      string `json:"value"`
+		FileDataId int    `json:"file_data_id"`
+	} `json:"assets"`
+}
 
 // CovenantMediaResponse represents the raw CN API response for CovenantMedia.
 type CNCovenantMedia BNetCovenantMedia

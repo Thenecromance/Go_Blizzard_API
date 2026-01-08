@@ -5,7 +5,35 @@ package wow_AuctionHouse
 // Author: @Thenecromance
 
 // BNetAuctionsResponse is the unified BNet representation for Auctions.
-type BNetAuctions struct{}
+type Auction struct {
+	Id   int `json:"id"`
+	Item struct {
+		Id         int   `json:"id"`
+		Context    int   `json:"context"`
+		BonusLists []int `json:"bonus_lists"`
+		Modifiers  []struct {
+			Type  int `json:"type"`
+			Value int `json:"value"`
+		} `json:"modifiers"`
+	} `json:"item"`
+	Buyout   int    `json:"buyout"`
+	Quantity int    `json:"quantity"`
+	TimeLeft string `json:"time_left"`
+}
+type BNetAuctions struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	ConnectedRealm struct {
+		Href string `json:"href"`
+	} `json:"connected_realm"`
+	Auctions    []Auction `json:"auctions"`
+	Commodities struct {
+		Href string `json:"href"`
+	} `json:"commodities"`
+}
 
 // AuctionsResponse represents the raw CN API response for Auctions.
 type CNAuctions BNetAuctions

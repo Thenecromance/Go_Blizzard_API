@@ -5,7 +5,18 @@ package wow_Creature
 // Author: @Thenecromance
 
 // BNetCreatureDisplayMediaResponse is the unified BNet representation for CreatureDisplayMedia.
-type BNetCreatureDisplayMedia struct{}
+type BNetCreatureDisplayMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // CreatureDisplayMediaResponse represents the raw CN API response for CreatureDisplayMedia.
 type CNCreatureDisplayMedia BNetCreatureDisplayMedia

@@ -5,7 +5,19 @@ package wow_AzeriteEssence
 // Author: @Thenecromance
 
 // BNetAzeriteEssenceMediaResponse is the unified BNet representation for AzeriteEssenceMedia.
-type BNetAzeriteEssenceMedia struct{}
+type BNetAzeriteEssenceMedia struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Assets []struct {
+		Key        string `json:"key"`
+		Value      string `json:"value"`
+		FileDataId int    `json:"file_data_id"`
+	} `json:"assets"`
+	Id int `json:"id"`
+}
 
 // AzeriteEssenceMediaResponse represents the raw CN API response for AzeriteEssenceMedia.
 type CNAzeriteEssenceMedia BNetAzeriteEssenceMedia

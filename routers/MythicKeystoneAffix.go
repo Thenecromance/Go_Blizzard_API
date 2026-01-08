@@ -37,7 +37,7 @@ func ginMythicKeystoneAffixesIndex(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
 		return
 	}
-	c.String(http.StatusOK, resp)
+	c.JSON(http.StatusOK, resp.(*wow_MythicKeystoneAffix.BNetMythicKeystoneAffixesIndex))
 }
 
 func ginMythicKeystoneAffix(c *gin.Context) {

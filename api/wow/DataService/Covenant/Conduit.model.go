@@ -5,7 +5,41 @@ package wow_Covenant
 // Author: @Thenecromance
 
 // BNetConduitResponse is the unified BNet representation for Conduit.
-type BNetConduit struct{}
+type BNetConduit struct {
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+	} `json:"_links"`
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	Item struct {
+		Key struct {
+			Href string `json:"href"`
+		} `json:"key"`
+		Name string `json:"name"`
+		Id   int    `json:"id"`
+	} `json:"item"`
+	SocketType struct {
+		Type string `json:"type"`
+		Name string `json:"name"`
+	} `json:"socket_type"`
+	Ranks []struct {
+		Id           int `json:"id"`
+		Tier         int `json:"tier"`
+		SpellTooltip struct {
+			Spell struct {
+				Key struct {
+					Href string `json:"href"`
+				} `json:"key"`
+				Name string `json:"name"`
+				Id   int    `json:"id"`
+			} `json:"spell"`
+			Description string `json:"description"`
+			CastTime    string `json:"cast_time"`
+		} `json:"spell_tooltip"`
+	} `json:"ranks"`
+}
 
 // ConduitResponse represents the raw CN API response for Conduit.
 type CNConduit BNetConduit
