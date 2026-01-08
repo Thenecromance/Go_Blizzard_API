@@ -86,18 +86,36 @@ func StringProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -217,32 +235,50 @@ func StringProfession(ctx context.Context, fields *ProfessionFields) (string, er
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"professionId": fields.ProfessionId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"professionId": fields.ProfessionId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -362,32 +398,50 @@ func StringProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"professionId": fields.ProfessionId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"professionId": fields.ProfessionId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -512,33 +566,51 @@ func StringProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"professionId": fields.ProfessionId,
-		"skillTierId": fields.SkillTierId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"professionId": fields.ProfessionId,
+    		"skillTierId": fields.SkillTierId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -658,32 +730,50 @@ func StringRecipe(ctx context.Context, fields *RecipeFields) (string, error) {
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"recipeId": fields.RecipeId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"recipeId": fields.RecipeId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -803,32 +893,50 @@ func StringRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (string, 
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"recipeId": fields.RecipeId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"recipeId": fields.RecipeId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

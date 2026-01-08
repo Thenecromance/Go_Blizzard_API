@@ -74,14 +74,26 @@ func StringSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (string, 
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -189,28 +201,40 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"id": fields.Id,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"id": fields.Id,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -324,29 +348,41 @@ func StringSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"id": fields.Id,
-		"leaderboard": fields.Leaderboard,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"id": fields.Id,
+    		"leaderboard": fields.Leaderboard,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -449,14 +485,26 @@ func StringEraIndex(ctx context.Context, fields *EraIndexFields) (string, error)
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -564,28 +612,40 @@ func StringEra(ctx context.Context, fields *EraFields) (string, error) {
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"id": fields.Id,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"id": fields.Id,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -699,29 +759,41 @@ func StringEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"id": fields.Id,
-		"leaderboard": fields.Leaderboard,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"id": fields.Id,
+    		"leaderboard": fields.Leaderboard,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

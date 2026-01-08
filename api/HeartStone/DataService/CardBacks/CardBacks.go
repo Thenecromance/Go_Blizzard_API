@@ -87,26 +87,56 @@ func StringCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("cardBackCategory", fields.CardBackCategory)
-	
-	q.Add("textFilter", fields.TextFilter)
-	
-	q.Add("sort", fields.Sort)
-	
-	q.Add("page", strconv.Itoa(fields.Page))
-	
-	q.Add("pageSize", strconv.Itoa(fields.PageSize))
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "<no value>")
+	}
+    
+    
+	if !q.Has("cardBackCategory") {
+		q.Add("cardBackCategory", "<no value>")
+	}
+    
+    
+	if !q.Has("textFilter") {
+		q.Add("textFilter", "<no value>")
+	}
+    
+    
+	if !q.Has("sort") {
+		q.Add("sort", "dateAdded:desc")
+	}
+    
+    
+    	if !q.Has("page") {
+    		q.Add("page", strconv.Itoa(fields.Page))
+    	}
+    
+    
+    	if !q.Has("pageSize") {
+    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
+    	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -216,30 +246,45 @@ func StringFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"idorslug": fields.Idorslug,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"idorslug": fields.Idorslug,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

@@ -104,33 +104,48 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"seasonId": fields.SeasonId,
-		"queueId": fields.QueueId,
-		"teamType": fields.TeamType,
-		"leagueId": fields.LeagueId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"seasonId": fields.SeasonId,
+    		"queueId": fields.QueueId,
+    		"teamType": fields.TeamType,
+    		"leagueId": fields.LeagueId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

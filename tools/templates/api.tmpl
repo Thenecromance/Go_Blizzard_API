@@ -89,34 +89,52 @@ func String{{.Name}}(ctx context.Context, fields *{{.Name}}Fields) (string, erro
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	{{if .HasURIBinding}}
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		{{range .Params}}{{if .IsBindingUri}}"{{.ParamName}}": fields.{{.Name}},
-		{{end}}{{end}}
-	}
+    	pathValues := map[string]interface{}{
+    		{{range .Params}}{{if .IsBindingUri}}"{{.ParamName}}": fields.{{.Name}},
+    		{{end}}{{end}}
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	{{else}}
+    	req.URL.Path = fields.Path
+    	{{end}}
 	}
-	req.URL.Path = expandedPath
-	{{else}}
-	req.URL.Path = fields.Path
-	{{end}}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	{{range .Params}}{{if not .IsBindingUri}}
-	{{if eq .Type "int"}}q.Add("{{.ParamName}}", strconv.Itoa(fields.{{.Name}}))
-	{{else if eq .Type "[]int"}} // q.Add("{{.ParamName}}", fields.{{.Name}})
-	{{else}}q.Add("{{.ParamName}}", fields.{{.Name}})
-	{{end}}{{end}}{{end}}
+    {{if eq .Type "int"}}
+    	if !q.Has("{{.ParamName}}") {
+    		q.Add("{{.ParamName}}", strconv.Itoa(fields.{{.Name}}))
+    	}
+    {{else if eq .Type "[]int"}} // q.Add("{{.ParamName}}", fields.{{.Name}})
+    {{else}}
+	if !q.Has("{{.ParamName}}") {
+		q.Add("{{.ParamName}}", "{{.DefaultValue}}")
+	}
+    {{end}}{{end}}{{end}}
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

@@ -97,22 +97,46 @@ func StringMediaSearch(ctx context.Context, fields *MediaSearchFields) (string, 
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("tags", fields.Tags)
-	
-	q.Add("orderby", fields.Orderby)
-	
-	q.Add("_page", strconv.Itoa(fields._page))
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("tags") {
+		q.Add("tags", "item")
+	}
+    
+    
+	if !q.Has("orderby") {
+		q.Add("orderby", "id")
+	}
+    
+    
+    	if !q.Has("_page") {
+    		q.Add("_page", strconv.Itoa(fields._page))
+    	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

@@ -41,6 +41,19 @@ func ginLegacyProfile(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := StarCraftII_Legacy.Profile(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -63,6 +76,19 @@ func ginLegacyLadders(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := StarCraftII_Legacy.Ladders(c, &req)
 	if err != nil {
@@ -87,6 +113,19 @@ func ginLegacyMatchHistory(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := StarCraftII_Legacy.MatchHistory(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -109,6 +148,19 @@ func ginLegacyLadder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := StarCraftII_Legacy.Ladder(c, &req)
 	if err != nil {
@@ -133,6 +185,19 @@ func ginLegacyAchievements(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := StarCraftII_Legacy.Achievements(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -155,6 +220,19 @@ func ginLegacyRewards(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := StarCraftII_Legacy.Rewards(c, &req)
 	if err != nil {

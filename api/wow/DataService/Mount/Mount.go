@@ -88,18 +88,36 @@ func StringMountsIndex(ctx context.Context, fields *MountsIndexFields) (string, 
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -219,32 +237,50 @@ func StringMount(ctx context.Context, fields *MountFields) (string, error) {
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"mountId": fields.MountId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"mountId": fields.MountId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -370,22 +406,46 @@ func StringMountSearch(ctx context.Context, fields *MountSearchFields) (string, 
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("nameen_US", fields.Nameen_US)
-	
-	q.Add("orderby", fields.Orderby)
-	
-	q.Add("_page", strconv.Itoa(fields._page))
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("nameen_US") {
+		q.Add("nameen_US", "Turtle")
+	}
+    
+    
+	if !q.Has("orderby") {
+		q.Add("orderby", "id")
+	}
+    
+    
+    	if !q.Has("_page") {
+    		q.Add("_page", strconv.Itoa(fields._page))
+    	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

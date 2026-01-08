@@ -86,18 +86,36 @@ func StringPlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -217,32 +235,50 @@ func StringPlayableClass(ctx context.Context, fields *PlayableClassFields) (stri
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"classId": fields.ClassId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"classId": fields.ClassId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -362,32 +398,50 @@ func StringPlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"playableClassId": fields.PlayableClassId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"playableClassId": fields.PlayableClassId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -507,32 +561,50 @@ func StringPvPTalentSlots(ctx context.Context, fields *PvPTalentSlotsFields) (st
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"classId": fields.ClassId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"classId": fields.ClassId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

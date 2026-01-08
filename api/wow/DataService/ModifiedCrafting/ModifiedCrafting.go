@@ -86,18 +86,36 @@ func StringModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -212,18 +230,36 @@ func StringModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -343,32 +379,50 @@ func StringModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"categoryId": fields.CategoryId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"categoryId": fields.CategoryId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -483,18 +537,36 @@ func StringModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -614,32 +686,50 @@ func StringModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"slotTypeId": fields.SlotTypeId,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"slotTypeId": fields.SlotTypeId,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
+    
+	if !q.Has("namespace") {
+		q.Add("namespace", "static-us")
+	}
+    
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

@@ -86,22 +86,46 @@ func StringGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (stri
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("code", fields.Code)
-	
-	q.Add("ids", fields.Ids)
-	
-	q.Add("hero", fields.Hero)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("code") {
+		q.Add("code", "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA")
+	}
+    
+    
+	if !q.Has("ids") {
+		q.Add("ids", "<no value>")
+	}
+    
+    
+	if !q.Has("hero") {
+		q.Add("hero", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -223,22 +247,46 @@ func StringGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("code", fields.Code)
-	
-	q.Add("ids", fields.Ids)
-	
-	q.Add("hero", fields.Hero)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("code") {
+		q.Add("code", "<no value>")
+	}
+    
+    
+	if !q.Has("ids") {
+		q.Add("ids", "906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416")
+	}
+    
+    
+	if !q.Has("hero") {
+		q.Add("hero", "813")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

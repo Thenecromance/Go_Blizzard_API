@@ -41,6 +41,19 @@ func ginItemAppearanceItemAppearance(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_ItemAppearance.ItemAppearance(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -63,6 +76,19 @@ func ginItemAppearanceItemAppearanceSearch(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_ItemAppearance.ItemAppearanceSearch(c, &req)
 	if err != nil {
@@ -87,6 +113,19 @@ func ginItemAppearanceItemAppearanceSetsIndex(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_ItemAppearance.ItemAppearanceSetsIndex(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -109,6 +148,19 @@ func ginItemAppearanceItemAppearanceSet(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_ItemAppearance.ItemAppearanceSet(c, &req)
 	if err != nil {
@@ -133,6 +185,19 @@ func ginItemAppearanceItemAppearanceSlotIndex(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_ItemAppearance.ItemAppearanceSlotIndex(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -155,6 +220,19 @@ func ginItemAppearanceItemAppearanceSlot(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_ItemAppearance.ItemAppearanceSlot(c, &req)
 	if err != nil {

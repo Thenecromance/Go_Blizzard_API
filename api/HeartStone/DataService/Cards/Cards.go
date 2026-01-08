@@ -98,48 +98,99 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("set", fields.Set)
-	
-	q.Add("class", fields.Class)
-	
-	 // q.Add("manaCost", fields.ManaCost)
-	
-	 // q.Add("attack", fields.Attack)
-	
-	 // q.Add("health", fields.Health)
-	
-	 // q.Add("collectible", fields.Collectible)
-	
-	q.Add("rarity", fields.Rarity)
-	
-	q.Add("type", fields.Type)
-	
-	q.Add("minionType", fields.MinionType)
-	
-	q.Add("keyword", fields.Keyword)
-	
-	q.Add("textFilter", fields.TextFilter)
-	
-	q.Add("gameMode", fields.GameMode)
-	
-	q.Add("spellSchool", fields.SpellSchool)
-	
-	q.Add("page", strconv.Itoa(fields.Page))
-	
-	q.Add("pageSize", strconv.Itoa(fields.PageSize))
-	
-	q.Add("sort", fields.Sort)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("set") {
+		q.Add("set", "<no value>")
+	}
+    
+    
+	if !q.Has("class") {
+		q.Add("class", "<no value>")
+	}
+    
+     // q.Add("manaCost", fields.ManaCost)
+    
+     // q.Add("attack", fields.Attack)
+    
+     // q.Add("health", fields.Health)
+    
+     // q.Add("collectible", fields.Collectible)
+    
+    
+	if !q.Has("rarity") {
+		q.Add("rarity", "<no value>")
+	}
+    
+    
+	if !q.Has("type") {
+		q.Add("type", "<no value>")
+	}
+    
+    
+	if !q.Has("minionType") {
+		q.Add("minionType", "<no value>")
+	}
+    
+    
+	if !q.Has("keyword") {
+		q.Add("keyword", "<no value>")
+	}
+    
+    
+	if !q.Has("textFilter") {
+		q.Add("textFilter", "<no value>")
+	}
+    
+    
+	if !q.Has("gameMode") {
+		q.Add("gameMode", "<no value>")
+	}
+    
+    
+	if !q.Has("spellSchool") {
+		q.Add("spellSchool", "<no value>")
+	}
+    
+    
+    	if !q.Has("page") {
+    		q.Add("page", strconv.Itoa(fields.Page))
+    	}
+    
+    
+    	if !q.Has("pageSize") {
+    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
+    	}
+    
+    
+	if !q.Has("sort") {
+		q.Add("sort", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -340,46 +391,94 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("set", fields.Set)
-	
-	q.Add("class", fields.Class)
-	
-	 // q.Add("manaCost", fields.ManaCost)
-	
-	 // q.Add("attack", fields.Attack)
-	
-	 // q.Add("health", fields.Health)
-	
-	 // q.Add("collectible", fields.Collectible)
-	
-	q.Add("rarity", fields.Rarity)
-	
-	q.Add("type", fields.Type)
-	
-	q.Add("minionType", fields.MinionType)
-	
-	q.Add("keyword", fields.Keyword)
-	
-	q.Add("textFilter", fields.TextFilter)
-	
-	q.Add("gameMode", fields.GameMode)
-	
-	q.Add("page", strconv.Itoa(fields.Page))
-	
-	q.Add("pageSize", strconv.Itoa(fields.PageSize))
-	
-	q.Add("sort", fields.Sort)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("set") {
+		q.Add("set", "rise-of-shadows")
+	}
+    
+    
+	if !q.Has("class") {
+		q.Add("class", "mage")
+	}
+    
+     // q.Add("manaCost", fields.ManaCost)
+    
+     // q.Add("attack", fields.Attack)
+    
+     // q.Add("health", fields.Health)
+    
+     // q.Add("collectible", fields.Collectible)
+    
+    
+	if !q.Has("rarity") {
+		q.Add("rarity", "legendary")
+	}
+    
+    
+	if !q.Has("type") {
+		q.Add("type", "minion")
+	}
+    
+    
+	if !q.Has("minionType") {
+		q.Add("minionType", "dragon")
+	}
+    
+    
+	if !q.Has("keyword") {
+		q.Add("keyword", "battlecry")
+	}
+    
+    
+	if !q.Has("textFilter") {
+		q.Add("textFilter", "kalecgos")
+	}
+    
+    
+	if !q.Has("gameMode") {
+		q.Add("gameMode", "constructed")
+	}
+    
+    
+    	if !q.Has("page") {
+    		q.Add("page", strconv.Itoa(fields.Page))
+    	}
+    
+    
+    	if !q.Has("pageSize") {
+    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
+    	}
+    
+    
+	if !q.Has("sort") {
+		q.Add("sort", "name:asc")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -509,36 +608,72 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("gameMode", fields.GameMode)
-	
-	 // q.Add("tier", fields.Tier)
-	
-	 // q.Add("attack", fields.Attack)
-	
-	 // q.Add("health", fields.Health)
-	
-	q.Add("minionType", fields.MinionType)
-	
-	q.Add("keyword", fields.Keyword)
-	
-	q.Add("textFilter", fields.TextFilter)
-	
-	q.Add("page", strconv.Itoa(fields.Page))
-	
-	q.Add("pageSize", strconv.Itoa(fields.PageSize))
-	
-	q.Add("sort", fields.Sort)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("gameMode") {
+		q.Add("gameMode", "battlegrounds")
+	}
+    
+     // q.Add("tier", fields.Tier)
+    
+     // q.Add("attack", fields.Attack)
+    
+     // q.Add("health", fields.Health)
+    
+    
+	if !q.Has("minionType") {
+		q.Add("minionType", "<no value>")
+	}
+    
+    
+	if !q.Has("keyword") {
+		q.Add("keyword", "<no value>")
+	}
+    
+    
+	if !q.Has("textFilter") {
+		q.Add("textFilter", "<no value>")
+	}
+    
+    
+    	if !q.Has("page") {
+    		q.Add("page", strconv.Itoa(fields.Page))
+    	}
+    
+    
+    	if !q.Has("pageSize") {
+    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
+    	}
+    
+    
+	if !q.Has("sort") {
+		q.Add("sort", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -663,38 +798,74 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	req.URL.Path = fields.Path
-	
+    	req.URL.Path = fields.Path
+    	
+	}
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("gameMode", fields.GameMode)
-	
-	 // q.Add("attack", fields.Attack)
-	
-	 // q.Add("health", fields.Health)
-	
-	q.Add("minionType", fields.MinionType)
-	
-	 // q.Add("mercenaryId", fields.MercenaryId)
-	
-	q.Add("mercenaryRole", fields.MercenaryRole)
-	
-	 // q.Add("defaultMercenary", fields.DefaultMercenary)
-	
-	q.Add("textFilter", fields.TextFilter)
-	
-	q.Add("page", strconv.Itoa(fields.Page))
-	
-	q.Add("pageSize", strconv.Itoa(fields.PageSize))
-	
-	q.Add("sort", fields.Sort)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("gameMode") {
+		q.Add("gameMode", "mercenaries")
+	}
+    
+     // q.Add("attack", fields.Attack)
+    
+     // q.Add("health", fields.Health)
+    
+    
+	if !q.Has("minionType") {
+		q.Add("minionType", "<no value>")
+	}
+    
+     // q.Add("mercenaryId", fields.MercenaryId)
+    
+    
+	if !q.Has("mercenaryRole") {
+		q.Add("mercenaryRole", "<no value>")
+	}
+    
+     // q.Add("defaultMercenary", fields.DefaultMercenary)
+    
+    
+	if !q.Has("textFilter") {
+		q.Add("textFilter", "<no value>")
+	}
+    
+    
+    	if !q.Has("page") {
+    		q.Add("page", strconv.Itoa(fields.Page))
+    	}
+    
+    
+    	if !q.Has("pageSize") {
+    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
+    	}
+    
+    
+	if !q.Has("sort") {
+		q.Add("sort", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -810,32 +981,50 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
+	{
 	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+    	tpl, err := uritemplates.Parse(fields.Path)
+    	if err != nil {
+    		return "", err
+    	}
 
-	pathValues := map[string]interface{}{
-		"idorslug": fields.Idorslug,
-		
-	}
+    	pathValues := map[string]interface{}{
+    		"idorslug": fields.Idorslug,
+    		
+    	}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+    	expandedPath, err := tpl.Expand(pathValues)
+    	if err != nil {
+    		return "", err
+    	}
+    	req.URL.Path = expandedPath
+    	
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
+{
 	q := req.URL.Query()
+
+
+	for key, value := range fields.ExtraFields {
+		q.Add(key.(string), value.(string))
+	}
+
 	
-	q.Add("locale", fields.Locale)
-	
-	q.Add("gameMode", fields.GameMode)
-	
+    
+	if !q.Has("locale") {
+		q.Add("locale", "en_US")
+	}
+    
+    
+	if !q.Has("gameMode") {
+		q.Add("gameMode", "<no value>")
+	}
+    
+
+
 	req.URL.RawQuery = q.Encode()
+}
 
 	// 6. Execute Request
 	cli := http.Client{}

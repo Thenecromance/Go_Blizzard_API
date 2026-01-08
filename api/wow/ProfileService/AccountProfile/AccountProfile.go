@@ -7,7 +7,7 @@ package wow_AccountProfile
 import (
 	"context"
 	"encoding/json"
-	
+
 	"io"
 	"net/http"
 
@@ -16,11 +16,8 @@ import (
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
-
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: AccountProfileSummary
@@ -28,7 +25,7 @@ import (
 
 type AccountProfileSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -59,17 +56,14 @@ func StringAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -86,18 +80,30 @@ func StringAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -119,7 +125,7 @@ func StringAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountProfileSummary != nil {
 			return CNHookAccountProfileSummary(ctx, fields)
@@ -147,16 +153,15 @@ func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 // Path: /profile/user/wow
 var AccountProfileSummary = bridgeAccountProfileSummary
 
-
 // ==============================================================================================
 // API: ProtectedCharacterProfileSummary
 // ==============================================================================================
 
 type ProtectedCharacterProfileSummaryFields struct {
-	RealmId int `uri:"realmId" binding:"required"` // The ID of the character's realm.
-		CharacterId int `uri:"characterId" binding:"required"` // The ID of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmId     int    `uri:"realmId" binding:"required"`     // The ID of the character's realm.
+	CharacterId int    `uri:"characterId" binding:"required"` // The ID of the character.
+	Namespace   string `form:"namespace,default=profile-us"`  // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -187,25 +192,22 @@ func StringProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmId == 0 {
 		fields.RealmId = 1
 	}
-	
+
 	if fields.CharacterId == 0 {
 		fields.CharacterId = 12345
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -222,33 +224,44 @@ func StringProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	tpl, err := uritemplates.Parse(fields.Path)
-	if err != nil {
-		return "", err
-	}
+	{
 
-	pathValues := map[string]interface{}{
-		"realmId": fields.RealmId,
-		"characterId": fields.CharacterId,
-		
-	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-	expandedPath, err := tpl.Expand(pathValues)
-	if err != nil {
-		return "", err
+		pathValues := map[string]interface{}{
+			"realmId":     fields.RealmId,
+			"characterId": fields.CharacterId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
-	req.URL.Path = expandedPath
-	
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -270,7 +283,7 @@ func StringProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *ProtectedCharacterProfileSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProtectedCharacterProfileSummary != nil {
 			return CNHookProtectedCharacterProfileSummary(ctx, fields)
@@ -298,14 +311,13 @@ func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 // Path: /profile/user/wow/protected-character/{realmId}-{characterId}
 var ProtectedCharacterProfileSummary = bridgeProtectedCharacterProfileSummary
 
-
 // ==============================================================================================
 // API: AccountCollectionsIndex
 // ==============================================================================================
 
 type AccountCollectionsIndexFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -336,17 +348,14 @@ func StringAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -363,18 +372,30 @@ func StringAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -396,7 +417,7 @@ func StringAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 func bridgeAccountCollectionsIndex(ctx context.Context, fields *AccountCollectionsIndexFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountCollectionsIndex != nil {
 			return CNHookAccountCollectionsIndex(ctx, fields)
@@ -424,14 +445,13 @@ func bridgeAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 // Path: /profile/user/wow/collections
 var AccountCollectionsIndex = bridgeAccountCollectionsIndex
 
-
 // ==============================================================================================
 // API: AccountDecorCollectionSummary
 // ==============================================================================================
 
 type AccountDecorCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -462,17 +482,14 @@ func StringAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -489,18 +506,30 @@ func StringAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -522,7 +551,7 @@ func StringAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 func bridgeAccountDecorCollectionSummary(ctx context.Context, fields *AccountDecorCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountDecorCollectionSummary != nil {
 			return CNHookAccountDecorCollectionSummary(ctx, fields)
@@ -550,14 +579,13 @@ func bridgeAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 // Path: /profile/user/wow/collections/decor
 var AccountDecorCollectionSummary = bridgeAccountDecorCollectionSummary
 
-
 // ==============================================================================================
 // API: AccountHeirloomsCollectionSummary
 // ==============================================================================================
 
 type AccountHeirloomsCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -588,17 +616,14 @@ func StringAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -615,18 +640,30 @@ func StringAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -648,7 +685,7 @@ func StringAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 func bridgeAccountHeirloomsCollectionSummary(ctx context.Context, fields *AccountHeirloomsCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountHeirloomsCollectionSummary != nil {
 			return CNHookAccountHeirloomsCollectionSummary(ctx, fields)
@@ -676,14 +713,13 @@ func bridgeAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 // Path: /profile/user/wow/collections/heirlooms
 var AccountHeirloomsCollectionSummary = bridgeAccountHeirloomsCollectionSummary
 
-
 // ==============================================================================================
 // API: AccountMountsCollectionSummary
 // ==============================================================================================
 
 type AccountMountsCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -714,17 +750,14 @@ func StringAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -741,18 +774,30 @@ func StringAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -774,7 +819,7 @@ func StringAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 func bridgeAccountMountsCollectionSummary(ctx context.Context, fields *AccountMountsCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountMountsCollectionSummary != nil {
 			return CNHookAccountMountsCollectionSummary(ctx, fields)
@@ -802,14 +847,13 @@ func bridgeAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 // Path: /profile/user/wow/collections/mounts
 var AccountMountsCollectionSummary = bridgeAccountMountsCollectionSummary
 
-
 // ==============================================================================================
 // API: AccountPetsCollectionSummary
 // ==============================================================================================
 
 type AccountPetsCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -840,17 +884,14 @@ func StringAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -867,18 +908,30 @@ func StringAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -900,7 +953,7 @@ func StringAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 func bridgeAccountPetsCollectionSummary(ctx context.Context, fields *AccountPetsCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountPetsCollectionSummary != nil {
 			return CNHookAccountPetsCollectionSummary(ctx, fields)
@@ -928,14 +981,13 @@ func bridgeAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 // Path: /profile/user/wow/collections/pets
 var AccountPetsCollectionSummary = bridgeAccountPetsCollectionSummary
 
-
 // ==============================================================================================
 // API: AccountToysCollectionSummary
 // ==============================================================================================
 
 type AccountToysCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -966,17 +1018,14 @@ func StringAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -993,18 +1042,30 @@ func StringAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -1026,7 +1087,7 @@ func StringAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 func bridgeAccountToysCollectionSummary(ctx context.Context, fields *AccountToysCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountToysCollectionSummary != nil {
 			return CNHookAccountToysCollectionSummary(ctx, fields)
@@ -1054,14 +1115,13 @@ func bridgeAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 // Path: /profile/user/wow/collections/toys
 var AccountToysCollectionSummary = bridgeAccountToysCollectionSummary
 
-
 // ==============================================================================================
 // API: AccountTransmogCollectionSummary
 // ==============================================================================================
 
 type AccountTransmogCollectionSummaryFields struct {
 	Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1092,17 +1152,14 @@ func StringAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1119,18 +1176,30 @@ func StringAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-	
-	req.URL.Path = fields.Path
-	
+	{
+
+		req.URL.Path = fields.Path
+
+	}
 
 	// 5. Build Query Strings
-	q := req.URL.Query()
-	
-	q.Add("namespace", fields.Namespace)
-	
-	q.Add("locale", fields.Locale)
-	
-	req.URL.RawQuery = q.Encode()
+	{
+		q := req.URL.Query()
+
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
+
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	cli := http.Client{}
@@ -1152,7 +1221,7 @@ func StringAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 func bridgeAccountTransmogCollectionSummary(ctx context.Context, fields *AccountTransmogCollectionSummaryFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAccountTransmogCollectionSummary != nil {
 			return CNHookAccountTransmogCollectionSummary(ctx, fields)
@@ -1179,4 +1248,3 @@ func bridgeAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 /* AccountTransmogCollectionSummary Returns a summary of the transmog unlocks an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/transmogs
 var AccountTransmogCollectionSummary = bridgeAccountTransmogCollectionSummary
-

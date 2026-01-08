@@ -37,6 +37,19 @@ func ginGuildGuild(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wowClassic_Guild.Guild(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -59,6 +72,19 @@ func ginGuildGuildActivity(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wowClassic_Guild.GuildActivity(c, &req)
 	if err != nil {
@@ -83,6 +109,19 @@ func ginGuildGuildAchievements(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wowClassic_Guild.GuildAchievements(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -105,6 +144,19 @@ func ginGuildGuildRoster(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wowClassic_Guild.GuildRoster(c, &req)
 	if err != nil {

@@ -45,6 +45,19 @@ func ginJournalJournalExpansionsIndex(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_Journal.JournalExpansionsIndex(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -67,6 +80,19 @@ func ginJournalJournalExpansion(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Journal.JournalExpansion(c, &req)
 	if err != nil {
@@ -91,6 +117,19 @@ func ginJournalJournalEncountersIndex(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_Journal.JournalEncountersIndex(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -113,6 +152,19 @@ func ginJournalJournalEncounter(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Journal.JournalEncounter(c, &req)
 	if err != nil {
@@ -137,6 +189,19 @@ func ginJournalJournalEncounterSearch(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_Journal.JournalEncounterSearch(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -159,6 +224,19 @@ func ginJournalJournalInstancesIndex(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Journal.JournalInstancesIndex(c, &req)
 	if err != nil {
@@ -183,6 +261,19 @@ func ginJournalJournalInstance(c *gin.Context) {
 		return
 	}
 
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
+
 	resp, err := wow_Journal.JournalInstance(c, &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
@@ -205,6 +296,19 @@ func ginJournalJournalInstanceMedia(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
 		return
 	}
+
+	// Capture all query parameters into a map if needed
+    // Note: Gin's binding doesn't remove items, so this contains all query params
+    queryParams := make(map[string]string)
+    for k, v := range c.Request.URL.Query() {
+    	if len(v) > 0 {
+    		queryParams[k] = v[0]
+    	}
+    }
+    // If the downstream function supports an extra map, pass it here.
+    // Assuming req might have a field for this or you manipulate req based on queryParams.
+    // For now, I'm just showing how to extract them.
+    // Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Journal.JournalInstanceMedia(c, &req)
 	if err != nil {

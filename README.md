@@ -114,3 +114,8 @@ func main() {
 ## License
 
 [MIT](LICENSE)
+
+
+## Known issues
+- All Search API is not working properly due to implementation.
+- All China region APIs are temporarily removed.
