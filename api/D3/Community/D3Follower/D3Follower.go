@@ -64,9 +64,11 @@ func StringGetFollower(ctx context.Context, fields *GetFollowerFields) (string, 
 		fields.FollowerSlug = "templar"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -144,7 +146,7 @@ func bridgeGetFollower(ctx context.Context, fields *GetFollowerFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetGetFollower{}
+	resp := &GetFollowerModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -152,7 +154,8 @@ func bridgeGetFollower(ctx context.Context, fields *GetFollowerFields) (any, err
 	return resp, nil
 }
 
-// GetFollower GetFollower Returns a single follower by slug.
+// GetFollower
+/* GetFollower Returns a single follower by slug. */
 // Path: /d3/data/follower/{followerSlug}
 var GetFollower = bridgeGetFollower
 

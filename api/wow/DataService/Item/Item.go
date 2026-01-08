@@ -67,13 +67,16 @@ func StringItem(ctx context.Context, fields *ItemFields) (string, error) {
 		fields.ItemId = "19019"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -153,7 +156,7 @@ func bridgeItem(ctx context.Context, fields *ItemFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetItem{}
+	resp := &ItemModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -161,7 +164,8 @@ func bridgeItem(ctx context.Context, fields *ItemFields) (any, error) {
 	return resp, nil
 }
 
-// Item Item Returns an item by ID.
+// Item
+/* Item Returns an item by ID. */
 // Path: /data/wow/item/{itemId}
 var Item = bridgeItem
 
@@ -210,13 +214,16 @@ func StringItemSearch(ctx context.Context, fields *ItemSearchFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Garrosh"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -290,7 +297,7 @@ func bridgeItemSearch(ctx context.Context, fields *ItemSearchFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetItemSearch{}
+	resp := &ItemSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -298,7 +305,8 @@ func bridgeItemSearch(ctx context.Context, fields *ItemSearchFields) (any, error
 	return resp, nil
 }
 
-// ItemSearch ItemSearch Performs a search of items. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// ItemSearch
+/* ItemSearch Performs a search of items. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/item
 var ItemSearch = bridgeItemSearch
 
@@ -350,9 +358,11 @@ func StringItemMedia(ctx context.Context, fields *ItemMediaFields) (string, erro
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -432,7 +442,7 @@ func bridgeItemMedia(ctx context.Context, fields *ItemMediaFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetItemMedia{}
+	resp := &ItemMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -440,7 +450,8 @@ func bridgeItemMedia(ctx context.Context, fields *ItemMediaFields) (any, error) 
 	return resp, nil
 }
 
-// ItemMedia ItemMedia Returns media for an item by ID.
+// ItemMedia
+/* ItemMedia Returns media for an item by ID. */
 // Path: /data/wow/media/item/{itemId}
 var ItemMedia = bridgeItemMedia
 
@@ -487,9 +498,11 @@ func StringItemClassesIndex(ctx context.Context, fields *ItemClassesIndexFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -555,7 +568,7 @@ func bridgeItemClassesIndex(ctx context.Context, fields *ItemClassesIndexFields)
 		return nil, err
 	}
 
-	resp := &BNetItemClassesIndex{}
+	resp := &ItemClassesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -563,7 +576,8 @@ func bridgeItemClassesIndex(ctx context.Context, fields *ItemClassesIndexFields)
 	return resp, nil
 }
 
-// ItemClassesIndex ItemClassesIndex Returns an index of item classes.
+// ItemClassesIndex
+/* ItemClassesIndex Returns an index of item classes. */
 // Path: /data/wow/item-class/index
 var ItemClassesIndex = bridgeItemClassesIndex
 
@@ -611,13 +625,16 @@ func StringItemClass(ctx context.Context, fields *ItemClassFields) (string, erro
 		fields.ItemClassId = "0"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -697,7 +714,7 @@ func bridgeItemClass(ctx context.Context, fields *ItemClassFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetItemClass{}
+	resp := &ItemClassModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -705,7 +722,8 @@ func bridgeItemClass(ctx context.Context, fields *ItemClassFields) (any, error) 
 	return resp, nil
 }
 
-// ItemClass ItemClass Returns an item class by ID.
+// ItemClass
+/* ItemClass Returns an item class by ID. */
 // Path: /data/wow/item-class/{itemClassId}
 var ItemClass = bridgeItemClass
 
@@ -752,9 +770,11 @@ func StringItemSetsIndex(ctx context.Context, fields *ItemSetsIndexFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -820,7 +840,7 @@ func bridgeItemSetsIndex(ctx context.Context, fields *ItemSetsIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetItemSetsIndex{}
+	resp := &ItemSetsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -828,7 +848,8 @@ func bridgeItemSetsIndex(ctx context.Context, fields *ItemSetsIndexFields) (any,
 	return resp, nil
 }
 
-// ItemSetsIndex ItemSetsIndex Returns an index of item sets.
+// ItemSetsIndex
+/* ItemSetsIndex Returns an index of item sets. */
 // Path: /data/wow/item-set/index
 var ItemSetsIndex = bridgeItemSetsIndex
 
@@ -880,9 +901,11 @@ func StringItemSet(ctx context.Context, fields *ItemSetFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -962,7 +985,7 @@ func bridgeItemSet(ctx context.Context, fields *ItemSetFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetItemSet{}
+	resp := &ItemSetModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -970,7 +993,8 @@ func bridgeItemSet(ctx context.Context, fields *ItemSetFields) (any, error) {
 	return resp, nil
 }
 
-// ItemSet ItemSet Returns an item set by ID.
+// ItemSet
+/* ItemSet Returns an item set by ID. */
 // Path: /data/wow/item-set/{itemSetId}
 var ItemSet = bridgeItemSet
 
@@ -1019,17 +1043,21 @@ func StringItemSubclass(ctx context.Context, fields *ItemSubclassFields) (string
 		fields.ItemClassId = "0"
 	}
 	
+	
 	if fields.ItemSubclassId == "" {
 		fields.ItemSubclassId = "0"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1110,7 +1138,7 @@ func bridgeItemSubclass(ctx context.Context, fields *ItemSubclassFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetItemSubclass{}
+	resp := &ItemSubclassModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1118,7 +1146,8 @@ func bridgeItemSubclass(ctx context.Context, fields *ItemSubclassFields) (any, e
 	return resp, nil
 }
 
-// ItemSubclass ItemSubclass Returns an item subclass by ID.
+// ItemSubclass
+/* ItemSubclass Returns an item subclass by ID. */
 // Path: /data/wow/item-class/{itemClassId}/item-subclass/{itemSubclassId}
 var ItemSubclass = bridgeItemSubclass
 

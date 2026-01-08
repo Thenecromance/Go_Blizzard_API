@@ -64,9 +64,11 @@ func StringTitlesIndex(ctx context.Context, fields *TitlesIndexFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeTitlesIndex(ctx context.Context, fields *TitlesIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetTitlesIndex{}
+	resp := &TitlesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeTitlesIndex(ctx context.Context, fields *TitlesIndexFields) (any, err
 	return resp, nil
 }
 
-// TitlesIndex TitlesIndex Returns an index of titles.
+// TitlesIndex
+/* TitlesIndex Returns an index of titles. */
 // Path: /data/wow/title/index
 var TitlesIndex = bridgeTitlesIndex
 
@@ -192,9 +195,11 @@ func StringTitle(ctx context.Context, fields *TitleFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeTitle(ctx context.Context, fields *TitleFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetTitle{}
+	resp := &TitleModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeTitle(ctx context.Context, fields *TitleFields) (any, error) {
 	return resp, nil
 }
 
-// Title Title Returns a title by ID.
+// Title
+/* Title Returns a title by ID. */
 // Path: /data/wow/title/{titleId}
 var Title = bridgeTitle
 

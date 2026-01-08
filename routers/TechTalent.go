@@ -11,22 +11,22 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent-tree/index", ginTechTalentTreeIndex) //TechTalentTreeIndex Returns an index of tech talent trees.
+	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent-tree/index", ginTechTalentTechTalentTreeIndex) /* TechTalentTreeIndex Returns an index of tech talent trees. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent-tree/:techTalentTreeId", ginTechTalentTree) //TechTalentTree Returns a tech talent tree by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent-tree/:techTalentTreeId", ginTechTalentTechTalentTree) /* TechTalentTree Returns a tech talent tree by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent/index", ginTechTalentIndex) //TechTalentIndex Returns an index of tech talents.
+	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent/index", ginTechTalentTechTalentIndex) /* TechTalentIndex Returns an index of tech talents. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent/:techTalentId", ginTechTalent) //TechTalent Returns a tech talent by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/tech-talent/:techTalentId", ginTechTalentTechTalent) /* TechTalent Returns a tech talent by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/tech-talent/:techTalentId", ginTechTalentMedia) //TechTalentMedia Returns media for a tech talent by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/tech-talent/:techTalentId", ginTechTalentTechTalentMedia) /* TechTalentMedia Returns media for a tech talent by ID. */
 
 }
 
 
 
 
-func ginTechTalentTreeIndex(c *gin.Context) {
+func ginTechTalentTechTalentTreeIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_TechTalent.TechTalentTreeIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -49,7 +49,7 @@ func ginTechTalentTreeIndex(c *gin.Context) {
 
 
 
-func ginTechTalentTree(c *gin.Context) {
+func ginTechTalentTechTalentTree(c *gin.Context) {
 	// binding uri parameters
 	var req wow_TechTalent.TechTalentTreeFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -72,7 +72,7 @@ func ginTechTalentTree(c *gin.Context) {
 
 
 
-func ginTechTalentIndex(c *gin.Context) {
+func ginTechTalentTechTalentIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_TechTalent.TechTalentIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -95,7 +95,7 @@ func ginTechTalentIndex(c *gin.Context) {
 
 
 
-func ginTechTalent(c *gin.Context) {
+func ginTechTalentTechTalent(c *gin.Context) {
 	// binding uri parameters
 	var req wow_TechTalent.TechTalentFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -118,7 +118,7 @@ func ginTechTalent(c *gin.Context) {
 
 
 
-func ginTechTalentMedia(c *gin.Context) {
+func ginTechTalentTechTalentMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_TechTalent.TechTalentMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -62,9 +62,11 @@ func StringWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 		fields.Namespace = "dynamic-classic-cn"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "zh_CN"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -130,7 +132,7 @@ func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 		return nil, err
 	}
 
-	resp := &BNetWoWTokenIndexCN{}
+	resp := &WoWTokenIndexCNModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -138,7 +140,8 @@ func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 	return resp, nil
 }
 
-// WoWTokenIndexCN WoWTokenIndexCN Returns the WoW Token index.
+// WoWTokenIndexCN
+/* WoWTokenIndexCN Returns the WoW Token index. */
 // Path: /data/wow/token/index
 var WoWTokenIndexCN = bridgeWoWTokenIndexCN
 

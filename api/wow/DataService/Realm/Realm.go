@@ -66,9 +66,11 @@ func StringRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (string, 
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetRealmsIndex{}
+	resp := &RealmsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (any, err
 	return resp, nil
 }
 
-// RealmsIndex RealmsIndex Returns an index of realms.
+// RealmsIndex
+/* RealmsIndex Returns an index of realms. */
 // Path: /data/wow/realm/index
 var RealmsIndex = bridgeRealmsIndex
 
@@ -190,13 +193,16 @@ func StringRealm(ctx context.Context, fields *RealmFields) (string, error) {
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +282,7 @@ func bridgeRealm(ctx context.Context, fields *RealmFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetRealm{}
+	resp := &RealmModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +290,8 @@ func bridgeRealm(ctx context.Context, fields *RealmFields) (any, error) {
 	return resp, nil
 }
 
-// Realm Realm Returns a single realm by slug or ID.
+// Realm
+/* Realm Returns a single realm by slug or ID. */
 // Path: /data/wow/realm/{realmSlug}
 var Realm = bridgeRealm
 
@@ -333,13 +340,16 @@ func StringRealmSearch(ctx context.Context, fields *RealmSearchFields) (string, 
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Timezone == "" {
 		fields.Timezone = "America/New_York"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -413,7 +423,7 @@ func bridgeRealmSearch(ctx context.Context, fields *RealmSearchFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetRealmSearch{}
+	resp := &RealmSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -421,7 +431,8 @@ func bridgeRealmSearch(ctx context.Context, fields *RealmSearchFields) (any, err
 	return resp, nil
 }
 
-// RealmSearch RealmSearch Performs a search of realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// RealmSearch
+/* RealmSearch Performs a search of realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/realm
 var RealmSearch = bridgeRealmSearch
 

@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/index", ginNeighborhoodMapIndex) //NeighborhoodMapIndex Returns an index of neighborhood maps.
+	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/index", ginNeighborhoodNeighborhoodMapIndex) /* NeighborhoodMapIndex Returns an index of neighborhood maps. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/:neighborhoodMapId", ginNeighborhoodMap) //NeighborhoodMap Returns a neighborhood map by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/:neighborhoodMapId", ginNeighborhoodNeighborhoodMap) /* NeighborhoodMap Returns a neighborhood map by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/:neighborhoodMapId/neighborhood/:neighborhoodId", ginNeighborhood) //Neighborhood Returns a neighborhood by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/neighborhood-map/:neighborhoodMapId/neighborhood/:neighborhoodId", ginNeighborhoodNeighborhood) /* Neighborhood Returns a neighborhood by ID. */
 
 }
 
 
 
 
-func ginNeighborhoodMapIndex(c *gin.Context) {
+func ginNeighborhoodNeighborhoodMapIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Neighborhood.NeighborhoodMapIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginNeighborhoodMapIndex(c *gin.Context) {
 
 
 
-func ginNeighborhoodMap(c *gin.Context) {
+func ginNeighborhoodNeighborhoodMap(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Neighborhood.NeighborhoodMapFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginNeighborhoodMap(c *gin.Context) {
 
 
 
-func ginNeighborhood(c *gin.Context) {
+func ginNeighborhoodNeighborhood(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Neighborhood.NeighborhoodFields
 	if err := c.ShouldBindUri(&req); err != nil {

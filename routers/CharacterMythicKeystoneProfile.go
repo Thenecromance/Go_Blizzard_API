@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/mythic-keystone-profile", ginCharacterMythicKeystoneProfileIndex) //CharacterMythicKeystoneProfileIndex Returns the Mythic Keystone profile index for a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/mythic-keystone-profile", ginCharacterMythicKeystoneProfileCharacterMythicKeystoneProfileIndex) /* CharacterMythicKeystoneProfileIndex Returns the Mythic Keystone profile index for a character. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/mythic-keystone-profile/season/:seasonId", ginCharacterMythicKeystoneSeasonDetails) //CharacterMythicKeystoneSeasonDetails Returns the Mythic Keystone season details for a character.<br/><br/>Returns a <strong>404 Not Found</strong> for characters that have not yet completed a Mythic Keystone dungeon for the specified season.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/mythic-keystone-profile/season/:seasonId", ginCharacterMythicKeystoneProfileCharacterMythicKeystoneSeasonDetails) /* CharacterMythicKeystoneSeasonDetails Returns the Mythic Keystone season details for a character.<br/><br/>Returns a <strong>404 Not Found</strong> for characters that have not yet completed a Mythic Keystone dungeon for the specified season. */
 
 }
 
 
 
 
-func ginCharacterMythicKeystoneProfileIndex(c *gin.Context) {
+func ginCharacterMythicKeystoneProfileCharacterMythicKeystoneProfileIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterMythicKeystoneProfile.CharacterMythicKeystoneProfileIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginCharacterMythicKeystoneProfileIndex(c *gin.Context) {
 
 
 
-func ginCharacterMythicKeystoneSeasonDetails(c *gin.Context) {
+func ginCharacterMythicKeystoneProfileCharacterMythicKeystoneSeasonDetails(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterMythicKeystoneProfile.CharacterMythicKeystoneSeasonDetailsFields
 	if err := c.ShouldBindUri(&req); err != nil {

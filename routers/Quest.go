@@ -11,28 +11,28 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/index", ginQuestsIndex) //QuestsIndex Returns the parent index for quests.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/index", ginQuestQuestsIndex) /* QuestsIndex Returns the parent index for quests. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/:questId", ginQuest) //Quest Returns a quest by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/:questId", ginQuestQuest) /* Quest Returns a quest by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/category/index", ginQuestCategoriesIndex) //QuestCategoriesIndex Returns an index of quest categories (such as quests for a specific class, profession, or storyline).
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/category/index", ginQuestQuestCategoriesIndex) /* QuestCategoriesIndex Returns an index of quest categories (such as quests for a specific class, profession, or storyline). */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/category/:questCategoryId", ginQuestCategory) //QuestCategory Returns a quest category by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/category/:questCategoryId", ginQuestQuestCategory) /* QuestCategory Returns a quest category by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/area/index", ginQuestAreasIndex) //QuestAreasIndex Returns an index of quest areas.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/area/index", ginQuestQuestAreasIndex) /* QuestAreasIndex Returns an index of quest areas. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/area/:questAreaId", ginQuestArea) //QuestArea Returns a quest area by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/area/:questAreaId", ginQuestQuestArea) /* QuestArea Returns a quest area by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/type/index", ginQuestTypesIndex) //QuestTypesIndex Returns an index of quest types (such as PvP quests, raid quests, or account quests).
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/type/index", ginQuestQuestTypesIndex) /* QuestTypesIndex Returns an index of quest types (such as PvP quests, raid quests, or account quests). */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/quest/type/:questTypeId", ginQuestType) //QuestType Returns a quest type by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/quest/type/:questTypeId", ginQuestQuestType) /* QuestType Returns a quest type by ID. */
 
 }
 
 
 
 
-func ginQuestsIndex(c *gin.Context) {
+func ginQuestQuestsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -55,7 +55,7 @@ func ginQuestsIndex(c *gin.Context) {
 
 
 
-func ginQuest(c *gin.Context) {
+func ginQuestQuest(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -78,7 +78,7 @@ func ginQuest(c *gin.Context) {
 
 
 
-func ginQuestCategoriesIndex(c *gin.Context) {
+func ginQuestQuestCategoriesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestCategoriesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -101,7 +101,7 @@ func ginQuestCategoriesIndex(c *gin.Context) {
 
 
 
-func ginQuestCategory(c *gin.Context) {
+func ginQuestQuestCategory(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestCategoryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -124,7 +124,7 @@ func ginQuestCategory(c *gin.Context) {
 
 
 
-func ginQuestAreasIndex(c *gin.Context) {
+func ginQuestQuestAreasIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestAreasIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -147,7 +147,7 @@ func ginQuestAreasIndex(c *gin.Context) {
 
 
 
-func ginQuestArea(c *gin.Context) {
+func ginQuestQuestArea(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestAreaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -170,7 +170,7 @@ func ginQuestArea(c *gin.Context) {
 
 
 
-func ginQuestTypesIndex(c *gin.Context) {
+func ginQuestQuestTypesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestTypesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -193,7 +193,7 @@ func ginQuestTypesIndex(c *gin.Context) {
 
 
 
-func ginQuestType(c *gin.Context) {
+func ginQuestQuestType(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Quest.QuestTypeFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -66,9 +66,11 @@ func StringConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 		fields.Namespace = "dynamic-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 		return nil, err
 	}
 
-	resp := &BNetConnectedRealmsIndex{}
+	resp := &ConnectedRealmsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeConnectedRealmsIndex(ctx context.Context, fields *ConnectedRealmsInde
 	return resp, nil
 }
 
-// ConnectedRealmsIndex ConnectedRealmsIndex Returns an index of connected realms.
+// ConnectedRealmsIndex
+/* ConnectedRealmsIndex Returns an index of connected realms. */
 // Path: /data/wow/connected-realm/index
 var ConnectedRealmsIndex = bridgeConnectedRealmsIndex
 
@@ -194,9 +197,11 @@ func StringConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (st
 		fields.Namespace = "dynamic-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +281,7 @@ func bridgeConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (an
 		return nil, err
 	}
 
-	resp := &BNetConnectedRealm{}
+	resp := &ConnectedRealmModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +289,8 @@ func bridgeConnectedRealm(ctx context.Context, fields *ConnectedRealmFields) (an
 	return resp, nil
 }
 
-// ConnectedRealm ConnectedRealm Returns a connected realm by ID.
+// ConnectedRealm
+/* ConnectedRealm Returns a connected realm by ID. */
 // Path: /data/wow/connected-realm/{connectedRealmId}
 var ConnectedRealm = bridgeConnectedRealm
 
@@ -334,17 +340,21 @@ func StringConnectedRealmsSearch(ctx context.Context, fields *ConnectedRealmsSea
 		fields.Namespace = "dynamic-classic-us"
 	}
 	
+	
 	if fields.Statustype == "" {
 		fields.Statustype = "UP"
 	}
+	
 	
 	if fields.Realmstimezone == "" {
 		fields.Realmstimezone = "America/New_York"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -420,7 +430,7 @@ func bridgeConnectedRealmsSearch(ctx context.Context, fields *ConnectedRealmsSea
 		return nil, err
 	}
 
-	resp := &BNetConnectedRealmsSearch{}
+	resp := &ConnectedRealmsSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -428,7 +438,8 @@ func bridgeConnectedRealmsSearch(ctx context.Context, fields *ConnectedRealmsSea
 	return resp, nil
 }
 
-// ConnectedRealmsSearch ConnectedRealmsSearch Performs a search of connected realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>.
+// ConnectedRealmsSearch
+/* ConnectedRealmsSearch Performs a search of connected realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/connected-realm
 var ConnectedRealmsSearch = bridgeConnectedRealmsSearch
 

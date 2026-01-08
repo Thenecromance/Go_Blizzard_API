@@ -63,6 +63,7 @@ func StringAllmetadata(ctx context.Context, fields *AllmetadataFields) (string, 
 		fields.Locale = "en_US"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -125,7 +126,7 @@ func bridgeAllmetadata(ctx context.Context, fields *AllmetadataFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetAllmetadata{}
+	resp := &AllmetadataModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -133,7 +134,8 @@ func bridgeAllmetadata(ctx context.Context, fields *AllmetadataFields) (any, err
 	return resp, nil
 }
 
-// Allmetadata Allmetadata Returns information about the categorization of cards. Metadata includes the card set, set group (for example, Standard or Year of the Dragon), rarity, class, card type, minion type, and keywords. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>.
+// Allmetadata
+/* Allmetadata Returns information about the categorization of cards. Metadata includes the card set, set group (for example, Standard or Year of the Dragon), rarity, class, card type, minion type, and keywords. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>. */
 // Path: /hearthstone/metadata
 var Allmetadata = bridgeAllmetadata
 
@@ -180,9 +182,11 @@ func StringSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 		fields.Locale = "en_US"
 	}
 	
+	
 	if fields.Type == "" {
 		fields.Type = "sets"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -260,7 +264,7 @@ func bridgeSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 		return nil, err
 	}
 
-	resp := &BNetSpecificmetadata{}
+	resp := &SpecificmetadataModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -268,7 +272,8 @@ func bridgeSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 	return resp, nil
 }
 
-// Specificmetadata Specificmetadata Returns information about just one type of metadata. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>.
+// Specificmetadata
+/* Specificmetadata Returns information about just one type of metadata. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>. */
 // Path: /hearthstone/metadata/:type
 var Specificmetadata = bridgeSpecificmetadata
 

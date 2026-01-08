@@ -66,17 +66,21 @@ func StringCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 		return nil, err
 	}
 
-	resp := &BNetCharacterMythicKeystoneProfileIndex{}
+	resp := &CharacterMythicKeystoneProfileIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 	return resp, nil
 }
 
-// CharacterMythicKeystoneProfileIndex CharacterMythicKeystoneProfileIndex Returns the Mythic Keystone profile index for a character.
+// CharacterMythicKeystoneProfileIndex
+/* CharacterMythicKeystoneProfileIndex Returns the Mythic Keystone profile index for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/mythic-keystone-profile
 var CharacterMythicKeystoneProfileIndex = bridgeCharacterMythicKeystoneProfileIndex
 
@@ -215,21 +220,26 @@ func StringCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.SeasonId == "" {
 		fields.SeasonId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -311,7 +321,7 @@ func bridgeCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 		return nil, err
 	}
 
-	resp := &BNetCharacterMythicKeystoneSeasonDetails{}
+	resp := &CharacterMythicKeystoneSeasonDetailsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -319,7 +329,8 @@ func bridgeCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 	return resp, nil
 }
 
-// CharacterMythicKeystoneSeasonDetails CharacterMythicKeystoneSeasonDetails Returns the Mythic Keystone season details for a character.<br/><br/>Returns a <strong>404 Not Found</strong> for characters that have not yet completed a Mythic Keystone dungeon for the specified season.
+// CharacterMythicKeystoneSeasonDetails
+/* CharacterMythicKeystoneSeasonDetails Returns the Mythic Keystone season details for a character.<br/><br/>Returns a <strong>404 Not Found</strong> for characters that have not yet completed a Mythic Keystone dungeon for the specified season. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/mythic-keystone-profile/season/{seasonId}
 var CharacterMythicKeystoneSeasonDetails = bridgeCharacterMythicKeystoneSeasonDetails
 

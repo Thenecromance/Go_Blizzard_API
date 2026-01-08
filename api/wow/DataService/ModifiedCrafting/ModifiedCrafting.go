@@ -64,9 +64,11 @@ func StringModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 		return nil, err
 	}
 
-	resp := &BNetModifiedCraftingIndex{}
+	resp := &ModifiedCraftingIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 	return resp, nil
 }
 
-// ModifiedCraftingIndex ModifiedCraftingIndex Returns the parent index for Modified Crafting.
+// ModifiedCraftingIndex
+/* ModifiedCraftingIndex Returns the parent index for Modified Crafting. */
 // Path: /data/wow/modified-crafting/index
 var ModifiedCraftingIndex = bridgeModifiedCraftingIndex
 
@@ -187,9 +190,11 @@ func StringModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -255,7 +260,7 @@ func bridgeModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 		return nil, err
 	}
 
-	resp := &BNetModifiedCraftingCategoryIndex{}
+	resp := &ModifiedCraftingCategoryIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -263,7 +268,8 @@ func bridgeModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 	return resp, nil
 }
 
-// ModifiedCraftingCategoryIndex ModifiedCraftingCategoryIndex Returns the index of Modified Crafting categories.
+// ModifiedCraftingCategoryIndex
+/* ModifiedCraftingCategoryIndex Returns the index of Modified Crafting categories. */
 // Path: /data/wow/modified-crafting/category/index
 var ModifiedCraftingCategoryIndex = bridgeModifiedCraftingCategoryIndex
 
@@ -315,9 +321,11 @@ func StringModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -397,7 +405,7 @@ func bridgeModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 		return nil, err
 	}
 
-	resp := &BNetModifiedCraftingCategory{}
+	resp := &ModifiedCraftingCategoryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -405,7 +413,8 @@ func bridgeModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 	return resp, nil
 }
 
-// ModifiedCraftingCategory ModifiedCraftingCategory Returns a Modified Crafting category by ID.
+// ModifiedCraftingCategory
+/* ModifiedCraftingCategory Returns a Modified Crafting category by ID. */
 // Path: /data/wow/modified-crafting/category/{categoryId}
 var ModifiedCraftingCategory = bridgeModifiedCraftingCategory
 
@@ -452,9 +461,11 @@ func StringModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -520,7 +531,7 @@ func bridgeModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 		return nil, err
 	}
 
-	resp := &BNetModifiedCraftingReagentSlotTypeIndex{}
+	resp := &ModifiedCraftingReagentSlotTypeIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -528,7 +539,8 @@ func bridgeModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 	return resp, nil
 }
 
-// ModifiedCraftingReagentSlotTypeIndex ModifiedCraftingReagentSlotTypeIndex Returns the index of Modified Crafting reagent slot types.
+// ModifiedCraftingReagentSlotTypeIndex
+/* ModifiedCraftingReagentSlotTypeIndex Returns the index of Modified Crafting reagent slot types. */
 // Path: /data/wow/modified-crafting/reagent-slot-type/index
 var ModifiedCraftingReagentSlotTypeIndex = bridgeModifiedCraftingReagentSlotTypeIndex
 
@@ -580,9 +592,11 @@ func StringModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -662,7 +676,7 @@ func bridgeModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 		return nil, err
 	}
 
-	resp := &BNetModifiedCraftingReagentSlotType{}
+	resp := &ModifiedCraftingReagentSlotTypeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -670,7 +684,8 @@ func bridgeModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 	return resp, nil
 }
 
-// ModifiedCraftingReagentSlotType ModifiedCraftingReagentSlotType Returns a Modified Crafting reagent slot type by ID.
+// ModifiedCraftingReagentSlotType
+/* ModifiedCraftingReagentSlotType Returns a Modified Crafting reagent slot type by ID. */
 // Path: /data/wow/modified-crafting/reagent-slot-type/{slotTypeId}
 var ModifiedCraftingReagentSlotType = bridgeModifiedCraftingReagentSlotType
 

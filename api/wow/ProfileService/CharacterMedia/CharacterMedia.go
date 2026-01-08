@@ -66,17 +66,21 @@ func StringCharacterMediaSummary(ctx context.Context, fields *CharacterMediaSumm
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterMediaSummary(ctx context.Context, fields *CharacterMediaSumm
 		return nil, err
 	}
 
-	resp := &BNetCharacterMediaSummary{}
+	resp := &CharacterMediaSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterMediaSummary(ctx context.Context, fields *CharacterMediaSumm
 	return resp, nil
 }
 
-// CharacterMediaSummary CharacterMediaSummary Returns a summary of the media assets available for a character (such as an avatar render).
+// CharacterMediaSummary
+/* CharacterMediaSummary Returns a summary of the media assets available for a character (such as an avatar render). */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/character-media
 var CharacterMediaSummary = bridgeCharacterMediaSummary
 

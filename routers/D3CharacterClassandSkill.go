@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/hero/:classSlug", ginGetCharacterClass) //GetCharacterClass Returns a single character class by slug.
+	app.Instance().RegisterRoute("GET", "/d3/data/hero/:classSlug", ginD3CharacterClassandSkillGetCharacterClass) /* GetCharacterClass Returns a single character class by slug. */
 
-	app.Instance().RegisterRoute("GET", "/d3/data/hero/:classSlug/skill/:skillSlug", ginGetApiSkill) //GetApiSkill Returns a single skill by slug for a specific character class.
+	app.Instance().RegisterRoute("GET", "/d3/data/hero/:classSlug/skill/:skillSlug", ginD3CharacterClassandSkillGetApiSkill) /* GetApiSkill Returns a single skill by slug for a specific character class. */
 
 }
 
 
 
 
-func ginGetCharacterClass(c *gin.Context) {
+func ginD3CharacterClassandSkillGetCharacterClass(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3CharacterClassandSkill.GetCharacterClassFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginGetCharacterClass(c *gin.Context) {
 
 
 
-func ginGetApiSkill(c *gin.Context) {
+func ginD3CharacterClassandSkillGetApiSkill(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3CharacterClassandSkill.GetApiSkillFields
 	if err := c.ShouldBindUri(&req); err != nil {

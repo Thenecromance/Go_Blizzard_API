@@ -64,9 +64,11 @@ func StringGetCharacterClass(ctx context.Context, fields *GetCharacterClassField
 		fields.ClassSlug = "barbarian"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -144,7 +146,7 @@ func bridgeGetCharacterClass(ctx context.Context, fields *GetCharacterClassField
 		return nil, err
 	}
 
-	resp := &BNetGetCharacterClass{}
+	resp := &GetCharacterClassModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -152,7 +154,8 @@ func bridgeGetCharacterClass(ctx context.Context, fields *GetCharacterClassField
 	return resp, nil
 }
 
-// GetCharacterClass GetCharacterClass Returns a single character class by slug.
+// GetCharacterClass
+/* GetCharacterClass Returns a single character class by slug. */
 // Path: /d3/data/hero/{classSlug}
 var GetCharacterClass = bridgeGetCharacterClass
 
@@ -200,13 +203,16 @@ func StringGetApiSkill(ctx context.Context, fields *GetApiSkillFields) (string, 
 		fields.ClassSlug = "barbarian"
 	}
 	
+	
 	if fields.SkillSlug == "" {
 		fields.SkillSlug = "bash"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -285,7 +291,7 @@ func bridgeGetApiSkill(ctx context.Context, fields *GetApiSkillFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetGetApiSkill{}
+	resp := &GetApiSkillModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -293,7 +299,8 @@ func bridgeGetApiSkill(ctx context.Context, fields *GetApiSkillFields) (any, err
 	return resp, nil
 }
 
-// GetApiSkill GetApiSkill Returns a single skill by slug for a specific character class.
+// GetApiSkill
+/* GetApiSkill Returns a single skill by slug for a specific character class. */
 // Path: /d3/data/hero/{classSlug}/skill/{skillSlug}
 var GetApiSkill = bridgeGetApiSkill
 

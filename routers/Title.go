@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/title/index", ginTitlesIndex) //TitlesIndex Returns an index of titles.
+	app.Instance().RegisterRoute("GET", "/data/wow/title/index", ginTitleTitlesIndex) /* TitlesIndex Returns an index of titles. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/title/:titleId", ginTitle) //Title Returns a title by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/title/:titleId", ginTitleTitle) /* Title Returns a title by ID. */
 
 }
 
 
 
 
-func ginTitlesIndex(c *gin.Context) {
+func ginTitleTitlesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Title.TitlesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginTitlesIndex(c *gin.Context) {
 
 
 
-func ginTitle(c *gin.Context) {
+func ginTitleTitle(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Title.TitleFields
 	if err := c.ShouldBindUri(&req); err != nil {

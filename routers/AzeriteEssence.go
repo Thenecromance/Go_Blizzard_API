@@ -11,20 +11,20 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/azerite-essence/index", ginAzeriteEssencesIndex) //AzeriteEssencesIndex Returns an index of azerite essences.
+	app.Instance().RegisterRoute("GET", "/data/wow/azerite-essence/index", ginAzeriteEssenceAzeriteEssencesIndex) /* AzeriteEssencesIndex Returns an index of azerite essences. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/azerite-essence/:azeriteEssenceId", ginAzeriteEssence) //AzeriteEssence Returns an azerite essence by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/azerite-essence/:azeriteEssenceId", ginAzeriteEssenceAzeriteEssence) /* AzeriteEssence Returns an azerite essence by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/azerite-essence", ginAzeriteEssenceSearch) //AzeriteEssenceSearch Performs a search of azerite essences. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/azerite-essence", ginAzeriteEssenceAzeriteEssenceSearch) /* AzeriteEssenceSearch Performs a search of azerite essences. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/azerite-essence/:azeriteEssenceId", ginAzeriteEssenceMedia) //AzeriteEssenceMedia Returns media for an azerite essence by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/azerite-essence/:azeriteEssenceId", ginAzeriteEssenceAzeriteEssenceMedia) /* AzeriteEssenceMedia Returns media for an azerite essence by ID. */
 
 }
 
 
 
 
-func ginAzeriteEssencesIndex(c *gin.Context) {
+func ginAzeriteEssenceAzeriteEssencesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_AzeriteEssence.AzeriteEssencesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -47,7 +47,7 @@ func ginAzeriteEssencesIndex(c *gin.Context) {
 
 
 
-func ginAzeriteEssence(c *gin.Context) {
+func ginAzeriteEssenceAzeriteEssence(c *gin.Context) {
 	// binding uri parameters
 	var req wow_AzeriteEssence.AzeriteEssenceFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -70,7 +70,7 @@ func ginAzeriteEssence(c *gin.Context) {
 
 
 
-func ginAzeriteEssenceSearch(c *gin.Context) {
+func ginAzeriteEssenceAzeriteEssenceSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_AzeriteEssence.AzeriteEssenceSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -93,7 +93,7 @@ func ginAzeriteEssenceSearch(c *gin.Context) {
 
 
 
-func ginAzeriteEssenceMedia(c *gin.Context) {
+func ginAzeriteEssenceAzeriteEssenceMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_AzeriteEssence.AzeriteEssenceMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

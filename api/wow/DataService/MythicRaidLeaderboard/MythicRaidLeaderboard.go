@@ -66,17 +66,21 @@ func StringMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 		fields.Raid = "uldir"
 	}
 	
+	
 	if fields.Faction == "" {
 		fields.Faction = "alliance"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 		return nil, err
 	}
 
-	resp := &BNetMythicRaidLeaderboard{}
+	resp := &MythicRaidLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 	return resp, nil
 }
 
-// MythicRaidLeaderboard MythicRaidLeaderboard Returns the leaderboard for a given raid and faction.
+// MythicRaidLeaderboard
+/* MythicRaidLeaderboard Returns the leaderboard for a given raid and faction. */
 // Path: /data/wow/leaderboard/hall-of-fame/{raid}/{faction}
 var MythicRaidLeaderboard = bridgeMythicRaidLeaderboard
 

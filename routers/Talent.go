@@ -11,26 +11,26 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/index", ginTalentTreeIndex) //TalentTreeIndex Returns an index of talent trees.
+	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/index", ginTalentTalentTreeIndex) /* TalentTreeIndex Returns an index of talent trees. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/:talentTreeId/playable-specialization/:specId", ginTalentTree) //TalentTree Returns a talent tree by specialization ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/:talentTreeId/playable-specialization/:specId", ginTalentTalentTree) /* TalentTree Returns a talent tree by specialization ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/:talentTreeId", ginTalentTreeNodes) //TalentTreeNodes Returns all talent tree nodes as well as links to associated playable specializations given a talent tree id. This is useful to generate loadout export codes.
+	app.Instance().RegisterRoute("GET", "/data/wow/talent-tree/:talentTreeId", ginTalentTalentTreeNodes) /* TalentTreeNodes Returns all talent tree nodes as well as links to associated playable specializations given a talent tree id. This is useful to generate loadout export codes. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/talent/index", ginTalentsIndex) //TalentsIndex Returns an index of talents.
+	app.Instance().RegisterRoute("GET", "/data/wow/talent/index", ginTalentTalentsIndex) /* TalentsIndex Returns an index of talents. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/talent/:talentId", ginTalent) //Talent Returns a talent by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/talent/:talentId", ginTalentTalent) /* Talent Returns a talent by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-talent/index", ginPvPTalentsIndex) //PvPTalentsIndex Returns an index of PvP talents.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-talent/index", ginTalentPvPTalentsIndex) /* PvPTalentsIndex Returns an index of PvP talents. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-talent/:pvpTalentId", ginPvPTalent) //PvPTalent Returns a PvP talent by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-talent/:pvpTalentId", ginTalentPvPTalent) /* PvPTalent Returns a PvP talent by ID. */
 
 }
 
 
 
 
-func ginTalentTreeIndex(c *gin.Context) {
+func ginTalentTalentTreeIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.TalentTreeIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -53,7 +53,7 @@ func ginTalentTreeIndex(c *gin.Context) {
 
 
 
-func ginTalentTree(c *gin.Context) {
+func ginTalentTalentTree(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.TalentTreeFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -76,7 +76,7 @@ func ginTalentTree(c *gin.Context) {
 
 
 
-func ginTalentTreeNodes(c *gin.Context) {
+func ginTalentTalentTreeNodes(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.TalentTreeNodesFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -99,7 +99,7 @@ func ginTalentTreeNodes(c *gin.Context) {
 
 
 
-func ginTalentsIndex(c *gin.Context) {
+func ginTalentTalentsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.TalentsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -122,7 +122,7 @@ func ginTalentsIndex(c *gin.Context) {
 
 
 
-func ginTalent(c *gin.Context) {
+func ginTalentTalent(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.TalentFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -145,7 +145,7 @@ func ginTalent(c *gin.Context) {
 
 
 
-func ginPvPTalentsIndex(c *gin.Context) {
+func ginTalentPvPTalentsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.PvPTalentsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -168,7 +168,7 @@ func ginPvPTalentsIndex(c *gin.Context) {
 
 
 
-func ginPvPTalent(c *gin.Context) {
+func ginTalentPvPTalent(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Talent.PvPTalentFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -64,9 +64,11 @@ func StringGetItem(ctx context.Context, fields *GetItemFields) (string, error) {
 		fields.ItemSlugAndId = "corrupted-ashbringer-Unique_Sword_2H_104_x1"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -144,7 +146,7 @@ func bridgeGetItem(ctx context.Context, fields *GetItemFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetGetItem{}
+	resp := &GetItemModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -152,7 +154,8 @@ func bridgeGetItem(ctx context.Context, fields *GetItemFields) (any, error) {
 	return resp, nil
 }
 
-// GetItem GetItem Returns a single item by item slug and ID.
+// GetItem
+/* GetItem Returns a single item by item slug and ID. */
 // Path: /d3/data/item/{itemSlugAndId}
 var GetItem = bridgeGetItem
 

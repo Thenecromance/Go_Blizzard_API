@@ -1,9 +1,9 @@
 package updater
 
 import (
-	"Unofficial_API/bridge/log"
-	"fmt"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type ApiGroup struct {
@@ -11,6 +11,10 @@ type ApiGroup struct {
 	Category     string `json:"category"`
 	ApiGroupName string `json:"name"`    // just like "Achievement API"
 	Apis         []*Api `json:"methods"` // just like "Achievement API"
+}
+
+func (ap *ApiGroup) PackageName() string {
+	return ap.Game + "_" + ap.Category
 }
 
 func (ap *ApiGroup) Fixed() {
@@ -114,7 +118,7 @@ func (a *Api) fixParams() {
 	}
 }
 
-func (a *Api) formatPath(template string, params map[string]string) string {
+/* func (a *Api) formatPath(template string, params map[string]string) string {
 	var args = make([]string, 0)
 	for key, value := range params {
 		placeholder := "{" + key + "}"
@@ -143,13 +147,28 @@ func (a *Api) formatPath(template string, params map[string]string) string {
 	result += ")"
 
 	return result
-}
+} */
 
 func (a *Api) fixPath() {
 	lists := strings.Split(a.Path, "/")
 	for i, segment := range lists {
 		if strings.HasPrefix(segment, "{") && strings.HasSuffix(segment, "}") {
 			paramName := strings.ReplaceAll(strings.ReplaceAll(segment, "{", ""), "}", "")
+
+			lists[i] = ":" + paramName // just mark it
+		}
+
+		if strings.HasPrefix(segment, ":") {
+			paramName := strings.ReplaceAll(strings.ReplaceAll(segment, ":", ""), "}", "")
+
+			// bypass regionID and regionId
+			if paramName == "regionID" {
+				paramName = "regionId"
+			}
+			if paramName == "realmID" {
+				paramName = "realmId"
+			}
+
 			lists[i] = ":" + paramName // just mark it
 		}
 	}
@@ -173,7 +192,7 @@ func (p *Parameters) fixed() {
 	}
 
 	if strings.Contains(p.SourceName, "{") && strings.Contains(p.SourceName, "}") {
-		fmt.Printf("found binding uri param: %s\n", p.SourceName)
+		// fmt.Printf("found binding uri param: %s\n", p.SourceName)
 		p.SourceName = strings.ReplaceAll(p.SourceName, "{", "") // remove
 		p.SourceName = strings.ReplaceAll(p.SourceName, "}", "")
 		p.IsBindingUri = true

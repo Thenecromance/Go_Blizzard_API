@@ -3,27 +3,30 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/api/StarCraftII/Community/Profile"
 	"Unofficial_API/app"
+	"Unofficial_API/api/StarCraftII/Community/Profile"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/sc2/static/profile/:regionId", ginStatic) //Static Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
+	app.Instance().RegisterRoute("GET", "/sc2/static/profile/:regionId", ginProfileStatic) /* Static Returns all static SC2 profile data (achievements, categories, criteria, and rewards). */
 
-	app.Instance().RegisterRoute("GET", "/sc2/metadata/profile/:regionId/:realmId/:profileId", ginMetadata) //Metadata Returns metadata for an individual's profile.
+	app.Instance().RegisterRoute("GET", "/sc2/metadata/profile/:regionId/:realmId/:profileId", ginProfileMetadata) /* Metadata Returns metadata for an individual's profile. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId", ginProfile) //Profile Returns data about an individual SC2 profile.
+	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId", ginProfileProfile) /* Profile Returns data about an individual SC2 profile. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId/ladder/summary", ginLadderSummary) //LadderSummary Returns a ladder summary for an individual SC2 profile.
+	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId/ladder/summary", ginProfileLadderSummary) /* LadderSummary Returns a ladder summary for an individual SC2 profile. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId/ladder/:ladderId", ginLadder) //Ladder Returns data about an individual profile's ladder.
+	app.Instance().RegisterRoute("GET", "/sc2/profile/:regionId/:realmId/:profileId/ladder/:ladderId", ginProfileLadder) /* Ladder Returns data about an individual profile's ladder. */
 
 }
 
-func ginStatic(c *gin.Context) {
+
+
+
+func ginProfileStatic(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Profile.StaticFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -44,7 +47,9 @@ func ginStatic(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginMetadata(c *gin.Context) {
+
+
+func ginProfileMetadata(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Profile.MetadataFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -65,7 +70,9 @@ func ginMetadata(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginProfile(c *gin.Context) {
+
+
+func ginProfileProfile(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Profile.ProfileFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -86,7 +93,9 @@ func ginProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginLadderSummary(c *gin.Context) {
+
+
+func ginProfileLadderSummary(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Profile.LadderSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -107,7 +116,9 @@ func ginLadderSummary(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginLadder(c *gin.Context) {
+
+
+func ginProfileLadder(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Profile.LadderFields
 	if err := c.ShouldBindUri(&req); err != nil {

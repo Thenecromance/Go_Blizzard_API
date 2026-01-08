@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/guild-crest/index", ginGuildCrestComponentsIndex) //GuildCrestComponentsIndex Returns an index of guild crest media.
+	app.Instance().RegisterRoute("GET", "/data/wow/guild-crest/index", ginGuildCrestGuildCrestComponentsIndex) /* GuildCrestComponentsIndex Returns an index of guild crest media. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/guild-crest/border/:borderId", ginGuildCrestBorderMedia) //GuildCrestBorderMedia Returns media for a guild crest border by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/guild-crest/border/:borderId", ginGuildCrestGuildCrestBorderMedia) /* GuildCrestBorderMedia Returns media for a guild crest border by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/guild-crest/emblem/:emblemId", ginGuildCrestEmblemMedia) //GuildCrestEmblemMedia Returns media for a guild crest emblem by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/guild-crest/emblem/:emblemId", ginGuildCrestGuildCrestEmblemMedia) /* GuildCrestEmblemMedia Returns media for a guild crest emblem by ID. */
 
 }
 
 
 
 
-func ginGuildCrestComponentsIndex(c *gin.Context) {
+func ginGuildCrestGuildCrestComponentsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_GuildCrest.GuildCrestComponentsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginGuildCrestComponentsIndex(c *gin.Context) {
 
 
 
-func ginGuildCrestBorderMedia(c *gin.Context) {
+func ginGuildCrestGuildCrestBorderMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_GuildCrest.GuildCrestBorderMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginGuildCrestBorderMedia(c *gin.Context) {
 
 
 
-func ginGuildCrestEmblemMedia(c *gin.Context) {
+func ginGuildCrestGuildCrestEmblemMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_GuildCrest.GuildCrestEmblemMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

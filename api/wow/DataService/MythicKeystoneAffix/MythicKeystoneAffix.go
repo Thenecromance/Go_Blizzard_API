@@ -7,7 +7,7 @@ package wow_MythicKeystoneAffix
 import (
 	"context"
 	"encoding/json"
-
+	
 	"io"
 	"net/http"
 
@@ -16,8 +16,11 @@ import (
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
+
 	"github.com/jtacoma/uritemplates"
+
 )
+
 
 // ==============================================================================================
 // API: MythicKeystoneAffixesIndex
@@ -25,7 +28,7 @@ import (
 
 type MythicKeystoneAffixesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
+	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -56,14 +59,17 @@ func StringMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-
+	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -80,16 +86,17 @@ func StringMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-
+	
 	req.URL.Path = fields.Path
+	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-
+	
 	q.Add("namespace", fields.Namespace)
-
+	
 	q.Add("locale", fields.Locale)
-
+	
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -112,7 +119,7 @@ func StringMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 func bridgeMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeystoneAffixesIndexFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-		// Design Scheme: Check if a custom CN handler is registered at runtime.
+        // Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneAffixesIndex != nil {
 			return CNHookMythicKeystoneAffixesIndex(ctx, fields)
@@ -127,7 +134,7 @@ func bridgeMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneAffixesIndex{}
+	resp := &MythicKeystoneAffixesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -135,18 +142,20 @@ func bridgeMythicKeystoneAffixesIndex(ctx context.Context, fields *MythicKeyston
 	return resp, nil
 }
 
-// MythicKeystoneAffixesIndex MythicKeystoneAffixesIndex Returns an index of mythic keystone affixes.
+// MythicKeystoneAffixesIndex
+/* MythicKeystoneAffixesIndex Returns an index of mythic keystone affixes. */
 // Path: /data/wow/keystone-affix/index
 var MythicKeystoneAffixesIndex = bridgeMythicKeystoneAffixesIndex
+
 
 // ==============================================================================================
 // API: MythicKeystoneAffix
 // ==============================================================================================
 
 type MythicKeystoneAffixFields struct {
-	KeystoneAffixId int    `uri:"keystoneAffixId" binding:"required"` // The ID of the mythic keystone affix.
-	Namespace       string `form:"namespace,default=static-us"`       // The namespace to use to locate this document.
-	Locale          string `form:"locale,default=en_US"`              // The locale to reflect in localized data.
+	KeystoneAffixId int `uri:"keystoneAffixId" binding:"required"` // The ID of the mythic keystone affix.
+		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -177,18 +186,21 @@ func StringMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-
+	
 	if fields.KeystoneAffixId == 0 {
 		fields.KeystoneAffixId = 1
 	}
-
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-
+	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -205,7 +217,7 @@ func StringMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-
+	
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -213,6 +225,7 @@ func StringMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 
 	pathValues := map[string]interface{}{
 		"keystoneAffixId": fields.KeystoneAffixId,
+		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -220,14 +233,15 @@ func StringMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 		return "", err
 	}
 	req.URL.Path = expandedPath
+	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-
+	
 	q.Add("namespace", fields.Namespace)
-
+	
 	q.Add("locale", fields.Locale)
-
+	
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -250,7 +264,7 @@ func StringMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 func bridgeMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-		// Design Scheme: Check if a custom CN handler is registered at runtime.
+        // Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneAffix != nil {
 			return CNHookMythicKeystoneAffix(ctx, fields)
@@ -265,7 +279,7 @@ func bridgeMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneAffix{}
+	resp := &MythicKeystoneAffixModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -273,18 +287,20 @@ func bridgeMythicKeystoneAffix(ctx context.Context, fields *MythicKeystoneAffixF
 	return resp, nil
 }
 
-// MythicKeystoneAffix MythicKeystoneAffix Returns a mythic keystone affix by ID.
+// MythicKeystoneAffix
+/* MythicKeystoneAffix Returns a mythic keystone affix by ID. */
 // Path: /data/wow/keystone-affix/{keystoneAffixId}
 var MythicKeystoneAffix = bridgeMythicKeystoneAffix
+
 
 // ==============================================================================================
 // API: MythicKeystoneAffixMedia
 // ==============================================================================================
 
 type MythicKeystoneAffixMediaFields struct {
-	KeystoneAffixId int    `uri:"keystoneAffixId" binding:"required"` // The ID of the mythic keystone affix.
-	Namespace       string `form:"namespace,default=static-us"`       // The namespace to use to locate this document.
-	Locale          string `form:"locale,default=en_US"`              // The locale to reflect in localized data.
+	KeystoneAffixId int `uri:"keystoneAffixId" binding:"required"` // The ID of the mythic keystone affix.
+		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -315,18 +331,21 @@ func StringMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-
+	
 	if fields.KeystoneAffixId == 0 {
 		fields.KeystoneAffixId = 1
 	}
-
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-
+	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -343,7 +362,7 @@ func StringMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-
+	
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -351,6 +370,7 @@ func StringMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 
 	pathValues := map[string]interface{}{
 		"keystoneAffixId": fields.KeystoneAffixId,
+		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -358,14 +378,15 @@ func StringMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 		return "", err
 	}
 	req.URL.Path = expandedPath
+	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-
+	
 	q.Add("namespace", fields.Namespace)
-
+	
 	q.Add("locale", fields.Locale)
-
+	
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -388,7 +409,7 @@ func StringMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 func bridgeMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneAffixMediaFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-		// Design Scheme: Check if a custom CN handler is registered at runtime.
+        // Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneAffixMedia != nil {
 			return CNHookMythicKeystoneAffixMedia(ctx, fields)
@@ -403,7 +424,7 @@ func bridgeMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneAffixMedia{}
+	resp := &MythicKeystoneAffixMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -411,6 +432,8 @@ func bridgeMythicKeystoneAffixMedia(ctx context.Context, fields *MythicKeystoneA
 	return resp, nil
 }
 
-// MythicKeystoneAffixMedia MythicKeystoneAffixMedia Returns media for a mythic keystone affix by ID.
+// MythicKeystoneAffixMedia
+/* MythicKeystoneAffixMedia Returns media for a mythic keystone affix by ID. */
 // Path: /data/wow/media/keystone-affix/{keystoneAffixId}
 var MythicKeystoneAffixMedia = bridgeMythicKeystoneAffixMedia
+

@@ -64,9 +64,11 @@ func StringPetsIndex(ctx context.Context, fields *PetsIndexFields) (string, erro
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePetsIndex(ctx context.Context, fields *PetsIndexFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetPetsIndex{}
+	resp := &PetsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePetsIndex(ctx context.Context, fields *PetsIndexFields) (any, error) 
 	return resp, nil
 }
 
-// PetsIndex PetsIndex Returns an index of battle pets.
+// PetsIndex
+/* PetsIndex Returns an index of battle pets. */
 // Path: /data/wow/pet/index
 var PetsIndex = bridgePetsIndex
 
@@ -192,9 +195,11 @@ func StringPet(ctx context.Context, fields *PetFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePet(ctx context.Context, fields *PetFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetPet{}
+	resp := &PetModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePet(ctx context.Context, fields *PetFields) (any, error) {
 	return resp, nil
 }
 
-// Pet Pet Returns a battle pets by ID.
+// Pet
+/* Pet Returns a battle pets by ID. */
 // Path: /data/wow/pet/{petId}
 var Pet = bridgePet
 
@@ -334,9 +340,11 @@ func StringPetMedia(ctx context.Context, fields *PetMediaFields) (string, error)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgePetMedia(ctx context.Context, fields *PetMediaFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetPetMedia{}
+	resp := &PetMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgePetMedia(ctx context.Context, fields *PetMediaFields) (any, error) {
 	return resp, nil
 }
 
-// PetMedia PetMedia Returns media for a battle pet by ID.
+// PetMedia
+/* PetMedia Returns media for a battle pet by ID. */
 // Path: /data/wow/media/pet/{petId}
 var PetMedia = bridgePetMedia
 
@@ -471,9 +480,11 @@ func StringPetAbilitiesIndex(ctx context.Context, fields *PetAbilitiesIndexField
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +550,7 @@ func bridgePetAbilitiesIndex(ctx context.Context, fields *PetAbilitiesIndexField
 		return nil, err
 	}
 
-	resp := &BNetPetAbilitiesIndex{}
+	resp := &PetAbilitiesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +558,8 @@ func bridgePetAbilitiesIndex(ctx context.Context, fields *PetAbilitiesIndexField
 	return resp, nil
 }
 
-// PetAbilitiesIndex PetAbilitiesIndex Returns an index of pet abilities.
+// PetAbilitiesIndex
+/* PetAbilitiesIndex Returns an index of pet abilities. */
 // Path: /data/wow/pet-ability/index
 var PetAbilitiesIndex = bridgePetAbilitiesIndex
 
@@ -599,9 +611,11 @@ func StringPetAbility(ctx context.Context, fields *PetAbilityFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -681,7 +695,7 @@ func bridgePetAbility(ctx context.Context, fields *PetAbilityFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetPetAbility{}
+	resp := &PetAbilityModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -689,7 +703,8 @@ func bridgePetAbility(ctx context.Context, fields *PetAbilityFields) (any, error
 	return resp, nil
 }
 
-// PetAbility PetAbility Returns a pet ability by ID.
+// PetAbility
+/* PetAbility Returns a pet ability by ID. */
 // Path: /data/wow/pet-ability/{petAbilityId}
 var PetAbility = bridgePetAbility
 
@@ -741,9 +756,11 @@ func StringPetAbilityMedia(ctx context.Context, fields *PetAbilityMediaFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -823,7 +840,7 @@ func bridgePetAbilityMedia(ctx context.Context, fields *PetAbilityMediaFields) (
 		return nil, err
 	}
 
-	resp := &BNetPetAbilityMedia{}
+	resp := &PetAbilityMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -831,7 +848,8 @@ func bridgePetAbilityMedia(ctx context.Context, fields *PetAbilityMediaFields) (
 	return resp, nil
 }
 
-// PetAbilityMedia PetAbilityMedia Returns media for a pet ability by ID.
+// PetAbilityMedia
+/* PetAbilityMedia Returns media for a pet ability by ID. */
 // Path: /data/wow/media/pet-ability/{petAbilityId}
 var PetAbilityMedia = bridgePetAbilityMedia
 

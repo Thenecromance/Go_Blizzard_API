@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/act", ginGetActIndex) //GetActIndex Returns an index of acts.
+	app.Instance().RegisterRoute("GET", "/d3/data/act", ginD3ActGetActIndex) /* GetActIndex Returns an index of acts. */
 
-	app.Instance().RegisterRoute("GET", "/d3/data/act/:actId", ginGetAct) //GetAct Returns a single act by ID.
+	app.Instance().RegisterRoute("GET", "/d3/data/act/:actId", ginD3ActGetAct) /* GetAct Returns a single act by ID. */
 
 }
 
 
 
 
-func ginGetActIndex(c *gin.Context) {
+func ginD3ActGetActIndex(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Act.GetActIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginGetActIndex(c *gin.Context) {
 
 
 
-func ginGetAct(c *gin.Context) {
+func ginD3ActGetAct(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Act.GetActFields
 	if err := c.ShouldBindUri(&req); err != nil {

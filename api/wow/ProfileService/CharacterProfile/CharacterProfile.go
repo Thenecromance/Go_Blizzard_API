@@ -66,17 +66,21 @@ func StringCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 		return nil, err
 	}
 
-	resp := &BNetCharacterProfileSummary{}
+	resp := &CharacterProfileSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 	return resp, nil
 }
 
-// CharacterProfileSummary CharacterProfileSummary Returns a profile summary for a character.
+// CharacterProfileSummary
+/* CharacterProfileSummary Returns a profile summary for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}
 var CharacterProfileSummary = bridgeCharacterProfileSummary
 
@@ -214,17 +219,21 @@ func StringCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 		return nil, err
 	}
 
-	resp := &BNetCharacterProfileStatus{}
+	resp := &CharacterProfileStatusModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 	return resp, nil
 }
 
-// CharacterProfileStatus CharacterProfileStatus Returns the status and a unique ID for a character. A client should delete information about a character from their application if any of the following conditions occur:<ul><li>an HTTP 404 Not Found error is returned</li><li>the is_valid value is false</li><li>the returned character ID doesn't match the previously recorded value for the character</li></ul>The following example illustrates how to use this endpoint:<ol><li>A client requests and stores information about a character, including its unique character ID and the timestamp of the request.</li><li>After 30 days, the client makes a request to the status endpoint to verify if the character information is still valid.</li><li>If character cannot be found, is not valid, or the characters IDs do not match, the client removes the information from their application.</li><li>If the character is valid and the character IDs match, the client retains the data for another 30 days.</li></ol>
+// CharacterProfileStatus
+/* CharacterProfileStatus Returns the status and a unique ID for a character. A client should delete information about a character from their application if any of the following conditions occur:<ul><li>an HTTP 404 Not Found error is returned</li><li>the is_valid value is false</li><li>the returned character ID doesn't match the previously recorded value for the character</li></ul>The following example illustrates how to use this endpoint:<ol><li>A client requests and stores information about a character, including its unique character ID and the timestamp of the request.</li><li>After 30 days, the client makes a request to the status endpoint to verify if the character information is still valid.</li><li>If character cannot be found, is not valid, or the characters IDs do not match, the client removes the information from their application.</li><li>If the character is valid and the character IDs match, the client retains the data for another 30 days.</li></ol> */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/status
 var CharacterProfileStatus = bridgeCharacterProfileStatus
 

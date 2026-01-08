@@ -66,17 +66,21 @@ func StringCharacterQuests(ctx context.Context, fields *CharacterQuestsFields) (
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterQuests(ctx context.Context, fields *CharacterQuestsFields) (
 		return nil, err
 	}
 
-	resp := &BNetCharacterQuests{}
+	resp := &CharacterQuestsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterQuests(ctx context.Context, fields *CharacterQuestsFields) (
 	return resp, nil
 }
 
-// CharacterQuests CharacterQuests Returns a character's active quests as well as a link to the character's completed quests.
+// CharacterQuests
+/* CharacterQuests Returns a character's active quests as well as a link to the character's completed quests. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/quests
 var CharacterQuests = bridgeCharacterQuests
 
@@ -214,17 +219,21 @@ func StringCharacterCompletedQuests(ctx context.Context, fields *CharacterComple
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeCharacterCompletedQuests(ctx context.Context, fields *CharacterComple
 		return nil, err
 	}
 
-	resp := &BNetCharacterCompletedQuests{}
+	resp := &CharacterCompletedQuestsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeCharacterCompletedQuests(ctx context.Context, fields *CharacterComple
 	return resp, nil
 }
 
-// CharacterCompletedQuests CharacterCompletedQuests Returns a list of quests that a character has completed.
+// CharacterCompletedQuests
+/* CharacterCompletedQuests Returns a list of quests that a character has completed. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/quests/completed
 var CharacterCompletedQuests = bridgeCharacterCompletedQuests
 

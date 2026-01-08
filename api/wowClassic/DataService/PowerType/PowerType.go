@@ -64,9 +64,11 @@ func StringPowerTypesIndex(ctx context.Context, fields *PowerTypesIndexFields) (
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePowerTypesIndex(ctx context.Context, fields *PowerTypesIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetPowerTypesIndex{}
+	resp := &PowerTypesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePowerTypesIndex(ctx context.Context, fields *PowerTypesIndexFields) (
 	return resp, nil
 }
 
-// PowerTypesIndex PowerTypesIndex Returns an index of power types.
+// PowerTypesIndex
+/* PowerTypesIndex Returns an index of power types. */
 // Path: /data/wow/power-type/index
 var PowerTypesIndex = bridgePowerTypesIndex
 
@@ -188,9 +191,11 @@ func StringPowerType(ctx context.Context, fields *PowerTypeFields) (string, erro
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -270,7 +275,7 @@ func bridgePowerType(ctx context.Context, fields *PowerTypeFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetPowerType{}
+	resp := &PowerTypeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -278,7 +283,8 @@ func bridgePowerType(ctx context.Context, fields *PowerTypeFields) (any, error) 
 	return resp, nil
 }
 
-// PowerType PowerType Returns a power type by ID.
+// PowerType
+/* PowerType Returns a power type by ID. */
 // Path: /data/wow/power-type/{powerTypeId}
 var PowerType = bridgePowerType
 

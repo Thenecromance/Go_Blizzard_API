@@ -64,9 +64,11 @@ func StringHeirloomIndex(ctx context.Context, fields *HeirloomIndexFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeHeirloomIndex(ctx context.Context, fields *HeirloomIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetHeirloomIndex{}
+	resp := &HeirloomIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeHeirloomIndex(ctx context.Context, fields *HeirloomIndexFields) (any,
 	return resp, nil
 }
 
-// HeirloomIndex HeirloomIndex Returns an index of heirlooms.
+// HeirloomIndex
+/* HeirloomIndex Returns an index of heirlooms. */
 // Path: /data/wow/heirloom/index
 var HeirloomIndex = bridgeHeirloomIndex
 
@@ -192,9 +195,11 @@ func StringHeirloom(ctx context.Context, fields *HeirloomFields) (string, error)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeHeirloom(ctx context.Context, fields *HeirloomFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetHeirloom{}
+	resp := &HeirloomModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeHeirloom(ctx context.Context, fields *HeirloomFields) (any, error) {
 	return resp, nil
 }
 
-// Heirloom Heirloom Returns an heirloom by id.
+// Heirloom
+/* Heirloom Returns an heirloom by id. */
 // Path: /data/wow/heirloom/{heirloomId}
 var Heirloom = bridgeHeirloom
 

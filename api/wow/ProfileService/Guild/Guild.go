@@ -66,17 +66,21 @@ func StringGuild(ctx context.Context, fields *GuildFields) (string, error) {
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.NameSlug == "" {
 		fields.NameSlug = "guild-slug"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeGuild(ctx context.Context, fields *GuildFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetGuild{}
+	resp := &GuildModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeGuild(ctx context.Context, fields *GuildFields) (any, error) {
 	return resp, nil
 }
 
-// Guild Guild Returns a single guild by its name and realm.
+// Guild
+/* Guild Returns a single guild by its name and realm. */
 // Path: /data/wow/guild/{realmSlug}/{nameSlug}
 var Guild = bridgeGuild
 
@@ -214,17 +219,21 @@ func StringGuildActivity(ctx context.Context, fields *GuildActivityFields) (stri
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.NameSlug == "" {
 		fields.NameSlug = "guild-slug"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeGuildActivity(ctx context.Context, fields *GuildActivityFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetGuildActivity{}
+	resp := &GuildActivityModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeGuildActivity(ctx context.Context, fields *GuildActivityFields) (any,
 	return resp, nil
 }
 
-// GuildActivity GuildActivity Returns a single guild's activity by name and realm.
+// GuildActivity
+/* GuildActivity Returns a single guild's activity by name and realm. */
 // Path: /data/wow/guild/{realmSlug}/{nameSlug}/activity
 var GuildActivity = bridgeGuildActivity
 
@@ -362,17 +372,21 @@ func StringGuildAchievements(ctx context.Context, fields *GuildAchievementsField
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.NameSlug == "" {
 		fields.NameSlug = "guild-slug"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -453,7 +467,7 @@ func bridgeGuildAchievements(ctx context.Context, fields *GuildAchievementsField
 		return nil, err
 	}
 
-	resp := &BNetGuildAchievements{}
+	resp := &GuildAchievementsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -461,7 +475,8 @@ func bridgeGuildAchievements(ctx context.Context, fields *GuildAchievementsField
 	return resp, nil
 }
 
-// GuildAchievements GuildAchievements Returns a single guild's achievements by name and realm.
+// GuildAchievements
+/* GuildAchievements Returns a single guild's achievements by name and realm. */
 // Path: /data/wow/guild/{realmSlug}/{nameSlug}/achievements
 var GuildAchievements = bridgeGuildAchievements
 
@@ -510,17 +525,21 @@ func StringGuildRoster(ctx context.Context, fields *GuildRosterFields) (string, 
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.NameSlug == "" {
 		fields.NameSlug = "guild-slug"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -601,7 +620,7 @@ func bridgeGuildRoster(ctx context.Context, fields *GuildRosterFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetGuildRoster{}
+	resp := &GuildRosterModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -609,7 +628,8 @@ func bridgeGuildRoster(ctx context.Context, fields *GuildRosterFields) (any, err
 	return resp, nil
 }
 
-// GuildRoster GuildRoster Returns a single guild's roster by its name and realm.
+// GuildRoster
+/* GuildRoster Returns a single guild's roster by its name and realm. */
 // Path: /data/wow/guild/{realmSlug}/{nameSlug}/roster
 var GuildRoster = bridgeGuildRoster
 

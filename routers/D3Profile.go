@@ -11,20 +11,20 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/profile/:account/", ginGetApiAccount) //GetApiAccount Returns the specified account profile.
+	app.Instance().RegisterRoute("GET", "/d3/profile/:account/", ginD3ProfileGetApiAccount) /* GetApiAccount Returns the specified account profile. */
 
-	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId", ginGetApiHero) //GetApiHero Returns a single hero.
+	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId", ginD3ProfileGetApiHero) /* GetApiHero Returns a single hero. */
 
-	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId/items", ginGetApiDetailedHeroItems) //GetApiDetailedHeroItems Returns a list of items for the specified hero.
+	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId/items", ginD3ProfileGetApiDetailedHeroItems) /* GetApiDetailedHeroItems Returns a list of items for the specified hero. */
 
-	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId/follower-items", ginGetApiDetailedFollowerItems) //GetApiDetailedFollowerItems Returns a list of items for the specified hero's followers.
+	app.Instance().RegisterRoute("GET", "/d3/profile/:account/hero/:heroId/follower-items", ginD3ProfileGetApiDetailedFollowerItems) /* GetApiDetailedFollowerItems Returns a list of items for the specified hero's followers. */
 
 }
 
 
 
 
-func ginGetApiAccount(c *gin.Context) {
+func ginD3ProfileGetApiAccount(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Profile.GetApiAccountFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -47,7 +47,7 @@ func ginGetApiAccount(c *gin.Context) {
 
 
 
-func ginGetApiHero(c *gin.Context) {
+func ginD3ProfileGetApiHero(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Profile.GetApiHeroFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -70,7 +70,7 @@ func ginGetApiHero(c *gin.Context) {
 
 
 
-func ginGetApiDetailedHeroItems(c *gin.Context) {
+func ginD3ProfileGetApiDetailedHeroItems(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Profile.GetApiDetailedHeroItemsFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -93,7 +93,7 @@ func ginGetApiDetailedHeroItems(c *gin.Context) {
 
 
 
-func ginGetApiDetailedFollowerItems(c *gin.Context) {
+func ginD3ProfileGetApiDetailedFollowerItems(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Profile.GetApiDetailedFollowerItemsFields
 	if err := c.ShouldBindUri(&req); err != nil {

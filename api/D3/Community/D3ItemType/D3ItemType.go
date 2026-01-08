@@ -63,6 +63,7 @@ func StringGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 		fields.Locale = "en_US"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -125,7 +126,7 @@ func bridgeGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 		return nil, err
 	}
 
-	resp := &BNetGetItemTypeIndex{}
+	resp := &GetItemTypeIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -133,7 +134,8 @@ func bridgeGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 	return resp, nil
 }
 
-// GetItemTypeIndex GetItemTypeIndex Returns an index of item types.
+// GetItemTypeIndex
+/* GetItemTypeIndex Returns an index of item types. */
 // Path: /d3/data/item-type
 var GetItemTypeIndex = bridgeGetItemTypeIndex
 
@@ -180,9 +182,11 @@ func StringGetItemType(ctx context.Context, fields *GetItemTypeFields) (string, 
 		fields.ItemTypeSlug = "sword2h"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -260,7 +264,7 @@ func bridgeGetItemType(ctx context.Context, fields *GetItemTypeFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetGetItemType{}
+	resp := &GetItemTypeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -268,7 +272,8 @@ func bridgeGetItemType(ctx context.Context, fields *GetItemTypeFields) (any, err
 	return resp, nil
 }
 
-// GetItemType GetItemType Returns a single item type by slug.
+// GetItemType
+/* GetItemType Returns a single item type by slug. */
 // Path: /d3/data/item-type/{itemTypeSlug}
 var GetItemType = bridgeGetItemType
 

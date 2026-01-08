@@ -137,7 +137,7 @@ func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetProfile{}
+	resp := &ProfileModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -145,7 +145,8 @@ func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
 	return resp, nil
 }
 
-// Profile Profile Retrieves data about an individual SC2 profile.
+// Profile
+/* Profile Retrieves data about an individual SC2 profile. */
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId
 var Profile = bridgeProfile
 
@@ -265,7 +266,7 @@ func bridgeLadders(ctx context.Context, fields *LaddersFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetLadders{}
+	resp := &LaddersModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -273,7 +274,8 @@ func bridgeLadders(ctx context.Context, fields *LaddersFields) (any, error) {
 	return resp, nil
 }
 
-// Ladders Ladders Retrieves data about an individual SC2 profile's ladders.
+// Ladders
+/* Ladders Retrieves data about an individual SC2 profile's ladders. */
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId/ladders
 var Ladders = bridgeLadders
 
@@ -393,7 +395,7 @@ func bridgeMatchHistory(ctx context.Context, fields *MatchHistoryFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetMatchHistory{}
+	resp := &MatchHistoryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -401,7 +403,8 @@ func bridgeMatchHistory(ctx context.Context, fields *MatchHistoryFields) (any, e
 	return resp, nil
 }
 
-// MatchHistory MatchHistory Returns data about an individual SC2 profile's match history.
+// MatchHistory
+/* MatchHistory Returns data about an individual SC2 profile's match history. */
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId/matches
 var MatchHistory = bridgeMatchHistory
 
@@ -519,7 +522,7 @@ func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetLadder{}
+	resp := &LadderModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -527,7 +530,8 @@ func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
 	return resp, nil
 }
 
-// Ladder Ladder Returns data about an individual SC2 ladder.
+// Ladder
+/* Ladder Returns data about an individual SC2 ladder. */
 // Path: /sc2/legacy/ladder/:regionId/:ladderId
 var Ladder = bridgeLadder
 
@@ -643,7 +647,7 @@ func bridgeAchievements(ctx context.Context, fields *AchievementsFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetAchievements{}
+	resp := &AchievementsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -651,7 +655,8 @@ func bridgeAchievements(ctx context.Context, fields *AchievementsFields) (any, e
 	return resp, nil
 }
 
-// Achievements Achievements Returns data about the achievements available in SC2.
+// Achievements
+/* Achievements Returns data about the achievements available in SC2. */
 // Path: /sc2/legacy/data/achievements/:regionId
 var Achievements = bridgeAchievements
 
@@ -767,7 +772,7 @@ func bridgeRewards(ctx context.Context, fields *RewardsFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetRewards{}
+	resp := &RewardsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -775,7 +780,8 @@ func bridgeRewards(ctx context.Context, fields *RewardsFields) (any, error) {
 	return resp, nil
 }
 
-// Rewards Rewards Returns data about the rewards available in SC2.
+// Rewards
+/* Rewards Returns data about the rewards available in SC2. */
 // Path: /sc2/legacy/data/rewards/:regionId
 var Rewards = bridgeRewards
 

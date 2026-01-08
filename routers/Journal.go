@@ -11,28 +11,28 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-expansion/index", ginJournalExpansionsIndex) //JournalExpansionsIndex Returns an index of journal expansions.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-expansion/index", ginJournalJournalExpansionsIndex) /* JournalExpansionsIndex Returns an index of journal expansions. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-expansion/:journalExpansionId", ginJournalExpansion) //JournalExpansion Returns a journal expansion by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-expansion/:journalExpansionId", ginJournalJournalExpansion) /* JournalExpansion Returns a journal expansion by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-encounter/index", ginJournalEncountersIndex) //JournalEncountersIndex Returns an index of journal encounters.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-encounter/index", ginJournalJournalEncountersIndex) /* JournalEncountersIndex Returns an index of journal encounters. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-encounter/:journalEncounterId", ginJournalEncounter) //JournalEncounter Returns a journal encounter by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-encounter/:journalEncounterId", ginJournalJournalEncounter) /* JournalEncounter Returns a journal encounter by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/journal-encounter", ginJournalEncounterSearch) //JournalEncounterSearch Performs a search of journal encounters. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/journal-encounter", ginJournalJournalEncounterSearch) /* JournalEncounterSearch Performs a search of journal encounters. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-instance/index", ginJournalInstancesIndex) //JournalInstancesIndex Returns an index of journal instances.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-instance/index", ginJournalJournalInstancesIndex) /* JournalInstancesIndex Returns an index of journal instances. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/journal-instance/:journalInstanceId", ginJournalInstance) //JournalInstance Returns a journal instance.
+	app.Instance().RegisterRoute("GET", "/data/wow/journal-instance/:journalInstanceId", ginJournalJournalInstance) /* JournalInstance Returns a journal instance. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/journal-instance/:journalInstanceId", ginJournalInstanceMedia) //JournalInstanceMedia Returns media for a journal instance by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/journal-instance/:journalInstanceId", ginJournalJournalInstanceMedia) /* JournalInstanceMedia Returns media for a journal instance by ID. */
 
 }
 
 
 
 
-func ginJournalExpansionsIndex(c *gin.Context) {
+func ginJournalJournalExpansionsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalExpansionsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -55,7 +55,7 @@ func ginJournalExpansionsIndex(c *gin.Context) {
 
 
 
-func ginJournalExpansion(c *gin.Context) {
+func ginJournalJournalExpansion(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalExpansionFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -78,7 +78,7 @@ func ginJournalExpansion(c *gin.Context) {
 
 
 
-func ginJournalEncountersIndex(c *gin.Context) {
+func ginJournalJournalEncountersIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalEncountersIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -101,7 +101,7 @@ func ginJournalEncountersIndex(c *gin.Context) {
 
 
 
-func ginJournalEncounter(c *gin.Context) {
+func ginJournalJournalEncounter(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalEncounterFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -124,7 +124,7 @@ func ginJournalEncounter(c *gin.Context) {
 
 
 
-func ginJournalEncounterSearch(c *gin.Context) {
+func ginJournalJournalEncounterSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalEncounterSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -147,7 +147,7 @@ func ginJournalEncounterSearch(c *gin.Context) {
 
 
 
-func ginJournalInstancesIndex(c *gin.Context) {
+func ginJournalJournalInstancesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalInstancesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -170,7 +170,7 @@ func ginJournalInstancesIndex(c *gin.Context) {
 
 
 
-func ginJournalInstance(c *gin.Context) {
+func ginJournalJournalInstance(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalInstanceFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -193,7 +193,7 @@ func ginJournalInstance(c *gin.Context) {
 
 
 
-func ginJournalInstanceMedia(c *gin.Context) {
+func ginJournalJournalInstanceMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Journal.JournalInstanceMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

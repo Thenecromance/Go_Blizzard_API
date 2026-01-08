@@ -66,17 +66,21 @@ func StringCharacterEncountersSummary(ctx context.Context, fields *CharacterEnco
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterEncountersSummary(ctx context.Context, fields *CharacterEnco
 		return nil, err
 	}
 
-	resp := &BNetCharacterEncountersSummary{}
+	resp := &CharacterEncountersSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterEncountersSummary(ctx context.Context, fields *CharacterEnco
 	return resp, nil
 }
 
-// CharacterEncountersSummary CharacterEncountersSummary Returns a summary of a character's encounters.
+// CharacterEncountersSummary
+/* CharacterEncountersSummary Returns a summary of a character's encounters. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/encounters
 var CharacterEncountersSummary = bridgeCharacterEncountersSummary
 
@@ -214,17 +219,21 @@ func StringCharacterDungeons(ctx context.Context, fields *CharacterDungeonsField
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeCharacterDungeons(ctx context.Context, fields *CharacterDungeonsField
 		return nil, err
 	}
 
-	resp := &BNetCharacterDungeons{}
+	resp := &CharacterDungeonsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeCharacterDungeons(ctx context.Context, fields *CharacterDungeonsField
 	return resp, nil
 }
 
-// CharacterDungeons CharacterDungeons Returns a summary of a character's completed dungeons.
+// CharacterDungeons
+/* CharacterDungeons Returns a summary of a character's completed dungeons. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/encounters/dungeons
 var CharacterDungeons = bridgeCharacterDungeons
 
@@ -362,17 +372,21 @@ func StringCharacterRaids(ctx context.Context, fields *CharacterRaidsFields) (st
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -453,7 +467,7 @@ func bridgeCharacterRaids(ctx context.Context, fields *CharacterRaidsFields) (an
 		return nil, err
 	}
 
-	resp := &BNetCharacterRaids{}
+	resp := &CharacterRaidsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -461,7 +475,8 @@ func bridgeCharacterRaids(ctx context.Context, fields *CharacterRaidsFields) (an
 	return resp, nil
 }
 
-// CharacterRaids CharacterRaids Returns a summary of a character's completed raids.
+// CharacterRaids
+/* CharacterRaids Returns a summary of a character's completed raids. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/encounters/raids
 var CharacterRaids = bridgeCharacterRaids
 

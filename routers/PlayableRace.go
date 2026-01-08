@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-race/index", ginPlayableRacesIndex) //PlayableRacesIndex Returns an index of playable races.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-race/index", ginPlayableRacePlayableRacesIndex) /* PlayableRacesIndex Returns an index of playable races. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-race/:playableRaceId", ginPlayableRace) //PlayableRace Returns a playable race by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-race/:playableRaceId", ginPlayableRacePlayableRace) /* PlayableRace Returns a playable race by ID. */
 
 }
 
 
 
 
-func ginPlayableRacesIndex(c *gin.Context) {
+func ginPlayableRacePlayableRacesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PlayableRace.PlayableRacesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginPlayableRacesIndex(c *gin.Context) {
 
 
 
-func ginPlayableRace(c *gin.Context) {
+func ginPlayableRacePlayableRace(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PlayableRace.PlayableRaceFields
 	if err := c.ShouldBindUri(&req); err != nil {

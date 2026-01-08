@@ -63,6 +63,7 @@ func StringGetActIndex(ctx context.Context, fields *GetActIndexFields) (string, 
 		fields.Locale = "en_US"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -125,7 +126,7 @@ func bridgeGetActIndex(ctx context.Context, fields *GetActIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetGetActIndex{}
+	resp := &GetActIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -133,7 +134,8 @@ func bridgeGetActIndex(ctx context.Context, fields *GetActIndexFields) (any, err
 	return resp, nil
 }
 
-// GetActIndex GetActIndex Returns an index of acts.
+// GetActIndex
+/* GetActIndex Returns an index of acts. */
 // Path: /d3/data/act
 var GetActIndex = bridgeGetActIndex
 
@@ -183,6 +185,7 @@ func StringGetAct(ctx context.Context, fields *GetActFields) (string, error) {
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -260,7 +263,7 @@ func bridgeGetAct(ctx context.Context, fields *GetActFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetGetAct{}
+	resp := &GetActModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -268,7 +271,8 @@ func bridgeGetAct(ctx context.Context, fields *GetActFields) (any, error) {
 	return resp, nil
 }
 
-// GetAct GetAct Returns a single act by ID.
+// GetAct
+/* GetAct Returns a single act by ID. */
 // Path: /d3/data/act/{actId}
 var GetAct = bridgeGetAct
 

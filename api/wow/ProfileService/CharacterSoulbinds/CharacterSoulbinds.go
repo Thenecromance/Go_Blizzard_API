@@ -66,17 +66,21 @@ func StringCharacterSoulbinds(ctx context.Context, fields *CharacterSoulbindsFie
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterSoulbinds(ctx context.Context, fields *CharacterSoulbindsFie
 		return nil, err
 	}
 
-	resp := &BNetCharacterSoulbinds{}
+	resp := &CharacterSoulbindsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterSoulbinds(ctx context.Context, fields *CharacterSoulbindsFie
 	return resp, nil
 }
 
-// CharacterSoulbinds CharacterSoulbinds Returns a character's soulbinds.
+// CharacterSoulbinds
+/* CharacterSoulbinds Returns a character's soulbinds. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/soulbinds
 var CharacterSoulbinds = bridgeCharacterSoulbinds
 

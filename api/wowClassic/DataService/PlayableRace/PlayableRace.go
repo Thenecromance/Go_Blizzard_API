@@ -64,9 +64,11 @@ func StringPlayableRacesIndex(ctx context.Context, fields *PlayableRacesIndexFie
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePlayableRacesIndex(ctx context.Context, fields *PlayableRacesIndexFie
 		return nil, err
 	}
 
-	resp := &BNetPlayableRacesIndex{}
+	resp := &PlayableRacesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePlayableRacesIndex(ctx context.Context, fields *PlayableRacesIndexFie
 	return resp, nil
 }
 
-// PlayableRacesIndex PlayableRacesIndex Returns an index of playable races.
+// PlayableRacesIndex
+/* PlayableRacesIndex Returns an index of playable races. */
 // Path: /data/wow/playable-race/index
 var PlayableRacesIndex = bridgePlayableRacesIndex
 
@@ -192,9 +195,11 @@ func StringPlayableRace(ctx context.Context, fields *PlayableRaceFields) (string
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePlayableRace(ctx context.Context, fields *PlayableRaceFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetPlayableRace{}
+	resp := &PlayableRaceModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePlayableRace(ctx context.Context, fields *PlayableRaceFields) (any, e
 	return resp, nil
 }
 
-// PlayableRace PlayableRace Returns a playable race by ID.
+// PlayableRace
+/* PlayableRace Returns a playable race by ID. */
 // Path: /data/wow/playable-race/{playableRaceId}
 var PlayableRace = bridgePlayableRace
 

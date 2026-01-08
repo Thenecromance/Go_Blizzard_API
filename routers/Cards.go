@@ -11,19 +11,19 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginCardsearch) //Cardsearch Returns an up-to-date list of all cards matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides'>Card Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginCardsCardsearch) /* Cardsearch Returns an up-to-date list of all cards matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides'>Card Search Guide</a>. */
 
-	/*app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginDetailedcardsearchexample) //Detailedcardsearchexample Returns a specific card by using detailed search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>.
+	//app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginCardsDetailedcardsearchexample) /* Detailedcardsearchexample Returns a specific card by using detailed search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>. */
+	//
+	//app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginCardsBattlegroundscardsearch) /* Battlegroundscardsearch Returns an up-to-date list of all cards matching the search criteria for the specified game mode. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>. */
+	//
+	//app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginCardsMercenariescardsearch) /* Mercenariescardsearch Returns an up-to-date list of all cards matching the search criteria for the specified game mode. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginBattlegroundscardsearch) //Battlegroundscardsearch Returns an up-to-date list of all cards matching the search criteria for the specified game mode. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>.
-
-	app.Instance().RegisterRoute("GET", "/hearthstone/cards", ginMercenariescardsearch) //Mercenariescardsearch Returns an up-to-date list of all cards matching the search criteria for the specified game mode. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>.
-	*/
-	app.Instance().RegisterRoute("GET", "/hearthstone/cards/:idorslug", ginFetchonecard) //Fetchonecard Returns the card with an ID or slug that matches the one you specify. For more information, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/cards/:idorslug", ginCardsFetchonecard) /* Fetchonecard Returns the card with an ID or slug that matches the one you specify. For more information, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>. */
 
 }
 
-func ginCardsearch(c *gin.Context) {
+func ginCardsCardsearch(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Cards.CardsearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -44,7 +44,7 @@ func ginCardsearch(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginDetailedcardsearchexample(c *gin.Context) {
+func ginCardsDetailedcardsearchexample(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Cards.DetailedcardsearchexampleFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -65,7 +65,7 @@ func ginDetailedcardsearchexample(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginBattlegroundscardsearch(c *gin.Context) {
+func ginCardsBattlegroundscardsearch(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Cards.BattlegroundscardsearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -86,7 +86,7 @@ func ginBattlegroundscardsearch(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginMercenariescardsearch(c *gin.Context) {
+func ginCardsMercenariescardsearch(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Cards.MercenariescardsearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -107,7 +107,7 @@ func ginMercenariescardsearch(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginFetchonecard(c *gin.Context) {
+func ginCardsFetchonecard(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Cards.FetchonecardFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -3,27 +3,30 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/api/StarCraftII/Community/Legacy"
 	"Unofficial_API/app"
+	"Unofficial_API/api/StarCraftII/Community/Legacy"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId", ginLegacyProfile) //Profile Retrieves data about an individual SC2 profile.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId", ginLegacyProfile) /* Profile Retrieves data about an individual SC2 profile. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/ladders", ginLegacyLadders) //Ladders Retrieves data about an individual SC2 profile's ladders.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/ladders", ginLegacyLadders) /* Ladders Retrieves data about an individual SC2 profile's ladders. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/matches", ginMatchHistory) //MatchHistory Returns data about an individual SC2 profile's match history.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/profile/:regionId/:realmId/:profileId/matches", ginLegacyMatchHistory) /* MatchHistory Returns data about an individual SC2 profile's match history. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/ladder/:regionId/:ladderId", ginLegacyLadder) //Ladder Returns data about an individual SC2 ladder.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/ladder/:regionId/:ladderId", ginLegacyLadder) /* Ladder Returns data about an individual SC2 ladder. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/achievements/:regionId", ginAchievements) //Achievements Returns data about the achievements available in SC2.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/achievements/:regionId", ginLegacyAchievements) /* Achievements Returns data about the achievements available in SC2. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/rewards/:regionId", ginRewards) //Rewards Returns data about the rewards available in SC2.
+	app.Instance().RegisterRoute("GET", "/sc2/legacy/data/rewards/:regionId", ginLegacyRewards) /* Rewards Returns data about the rewards available in SC2. */
 
 }
+
+
+
 
 func ginLegacyProfile(c *gin.Context) {
 	// binding uri parameters
@@ -46,6 +49,8 @@ func ginLegacyProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+
+
 func ginLegacyLadders(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Legacy.LaddersFields
@@ -67,7 +72,9 @@ func ginLegacyLadders(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginMatchHistory(c *gin.Context) {
+
+
+func ginLegacyMatchHistory(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Legacy.MatchHistoryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -87,6 +94,8 @@ func ginMatchHistory(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+
 
 func ginLegacyLadder(c *gin.Context) {
 	// binding uri parameters
@@ -109,7 +118,9 @@ func ginLegacyLadder(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginAchievements(c *gin.Context) {
+
+
+func ginLegacyAchievements(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Legacy.AchievementsFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -130,7 +141,9 @@ func ginAchievements(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginRewards(c *gin.Context) {
+
+
+func ginLegacyRewards(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Legacy.RewardsFields
 	if err := c.ShouldBindUri(&req); err != nil {

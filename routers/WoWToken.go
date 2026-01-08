@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/token/index", ginWoWTokenIndexCN) //WoWTokenIndexCN Returns the WoW Token index.
+	app.Instance().RegisterRoute("GET", "/data/wow/token/index", ginWoWTokenWoWTokenIndexCN) /* WoWTokenIndexCN Returns the WoW Token index. */
 
 }
 
 
 
 
-func ginWoWTokenIndexCN(c *gin.Context) {
+func ginWoWTokenWoWTokenIndexCN(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_WoWToken.WoWTokenIndexCNFields
 	if err := c.ShouldBindUri(&req); err != nil {

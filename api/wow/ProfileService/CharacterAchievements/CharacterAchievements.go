@@ -66,17 +66,21 @@ func StringCharacterAchievementsSummary(ctx context.Context, fields *CharacterAc
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterAchievementsSummary(ctx context.Context, fields *CharacterAc
 		return nil, err
 	}
 
-	resp := &BNetCharacterAchievementsSummary{}
+	resp := &CharacterAchievementsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterAchievementsSummary(ctx context.Context, fields *CharacterAc
 	return resp, nil
 }
 
-// CharacterAchievementsSummary CharacterAchievementsSummary Returns a summary of the achievements a character has completed.
+// CharacterAchievementsSummary
+/* CharacterAchievementsSummary Returns a summary of the achievements a character has completed. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/achievements
 var CharacterAchievementsSummary = bridgeCharacterAchievementsSummary
 
@@ -214,17 +219,21 @@ func StringCharacterAchievementStatistics(ctx context.Context, fields *Character
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeCharacterAchievementStatistics(ctx context.Context, fields *Character
 		return nil, err
 	}
 
-	resp := &BNetCharacterAchievementStatistics{}
+	resp := &CharacterAchievementStatisticsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeCharacterAchievementStatistics(ctx context.Context, fields *Character
 	return resp, nil
 }
 
-// CharacterAchievementStatistics CharacterAchievementStatistics Returns a character's statistics as they pertain to achievements.
+// CharacterAchievementStatistics
+/* CharacterAchievementStatistics Returns a character's statistics as they pertain to achievements. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/achievements/statistics
 var CharacterAchievementStatistics = bridgeCharacterAchievementStatistics
 

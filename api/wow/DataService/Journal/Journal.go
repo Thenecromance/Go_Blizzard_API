@@ -66,9 +66,11 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 		return nil, err
 	}
 
-	resp := &BNetJournalExpansionsIndex{}
+	resp := &JournalExpansionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 	return resp, nil
 }
 
-// JournalExpansionsIndex JournalExpansionsIndex Returns an index of journal expansions.
+// JournalExpansionsIndex
+/* JournalExpansionsIndex Returns an index of journal expansions. */
 // Path: /data/wow/journal-expansion/index
 var JournalExpansionsIndex = bridgeJournalExpansionsIndex
 
@@ -194,9 +197,11 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +281,7 @@ func bridgeJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 		return nil, err
 	}
 
-	resp := &BNetJournalExpansion{}
+	resp := &JournalExpansionModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +289,8 @@ func bridgeJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 	return resp, nil
 }
 
-// JournalExpansion JournalExpansion Returns a journal expansion by ID.
+// JournalExpansion
+/* JournalExpansion Returns a journal expansion by ID. */
 // Path: /data/wow/journal-expansion/{journalExpansionId}
 var JournalExpansion = bridgeJournalExpansion
 
@@ -331,9 +337,11 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -399,7 +407,7 @@ func bridgeJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 		return nil, err
 	}
 
-	resp := &BNetJournalEncountersIndex{}
+	resp := &JournalEncountersIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -407,7 +415,8 @@ func bridgeJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 	return resp, nil
 }
 
-// JournalEncountersIndex JournalEncountersIndex Returns an index of journal encounters.
+// JournalEncountersIndex
+/* JournalEncountersIndex Returns an index of journal encounters. */
 // Path: /data/wow/journal-encounter/index
 var JournalEncountersIndex = bridgeJournalEncountersIndex
 
@@ -459,9 +468,11 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -541,7 +552,7 @@ func bridgeJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 		return nil, err
 	}
 
-	resp := &BNetJournalEncounter{}
+	resp := &JournalEncounterModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -549,7 +560,8 @@ func bridgeJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 	return resp, nil
 }
 
-// JournalEncounter JournalEncounter Returns a journal encounter by ID.
+// JournalEncounter
+/* JournalEncounter Returns a journal encounter by ID. */
 // Path: /data/wow/journal-encounter/{journalEncounterId}
 var JournalEncounter = bridgeJournalEncounter
 
@@ -598,13 +610,16 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Instancenameen_US == "" {
 		fields.Instancenameen_US = "Deadmines"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -678,7 +693,7 @@ func bridgeJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 		return nil, err
 	}
 
-	resp := &BNetJournalEncounterSearch{}
+	resp := &JournalEncounterSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -686,7 +701,8 @@ func bridgeJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 	return resp, nil
 }
 
-// JournalEncounterSearch JournalEncounterSearch Performs a search of journal encounters. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// JournalEncounterSearch
+/* JournalEncounterSearch Performs a search of journal encounters. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/journal-encounter
 var JournalEncounterSearch = bridgeJournalEncounterSearch
 
@@ -733,9 +749,11 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -801,7 +819,7 @@ func bridgeJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 		return nil, err
 	}
 
-	resp := &BNetJournalInstancesIndex{}
+	resp := &JournalInstancesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -809,7 +827,8 @@ func bridgeJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 	return resp, nil
 }
 
-// JournalInstancesIndex JournalInstancesIndex Returns an index of journal instances.
+// JournalInstancesIndex
+/* JournalInstancesIndex Returns an index of journal instances. */
 // Path: /data/wow/journal-instance/index
 var JournalInstancesIndex = bridgeJournalInstancesIndex
 
@@ -861,9 +880,11 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -943,7 +964,7 @@ func bridgeJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 		return nil, err
 	}
 
-	resp := &BNetJournalInstance{}
+	resp := &JournalInstanceModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -951,7 +972,8 @@ func bridgeJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 	return resp, nil
 }
 
-// JournalInstance JournalInstance Returns a journal instance.
+// JournalInstance
+/* JournalInstance Returns a journal instance. */
 // Path: /data/wow/journal-instance/{journalInstanceId}
 var JournalInstance = bridgeJournalInstance
 
@@ -1003,9 +1025,11 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1085,7 +1109,7 @@ func bridgeJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 		return nil, err
 	}
 
-	resp := &BNetJournalInstanceMedia{}
+	resp := &JournalInstanceMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1093,7 +1117,8 @@ func bridgeJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 	return resp, nil
 }
 
-// JournalInstanceMedia JournalInstanceMedia Returns media for a journal instance by ID.
+// JournalInstanceMedia
+/* JournalInstanceMedia Returns media for a journal instance by ID. */
 // Path: /data/wow/media/journal-instance/{journalInstanceId}
 var JournalInstanceMedia = bridgeJournalInstanceMedia
 

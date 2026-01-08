@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/index", ginConnectedRealmsIndex) //ConnectedRealmsIndex Returns an index of connected realms.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/index", ginConnectedRealmConnectedRealmsIndex) /* ConnectedRealmsIndex Returns an index of connected realms. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId", ginConnectedRealm) //ConnectedRealm Returns a connected realm by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId", ginConnectedRealmConnectedRealm) /* ConnectedRealm Returns a connected realm by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/connected-realm", ginConnectedRealmsSearch) //ConnectedRealmsSearch Performs a search of connected realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/connected-realm", ginConnectedRealmConnectedRealmsSearch) /* ConnectedRealmsSearch Performs a search of connected realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginConnectedRealmsIndex(c *gin.Context) {
+func ginConnectedRealmConnectedRealmsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_ConnectedRealm.ConnectedRealmsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginConnectedRealmsIndex(c *gin.Context) {
 
 
 
-func ginConnectedRealm(c *gin.Context) {
+func ginConnectedRealmConnectedRealm(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_ConnectedRealm.ConnectedRealmFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginConnectedRealm(c *gin.Context) {
 
 
 
-func ginConnectedRealmsSearch(c *gin.Context) {
+func ginConnectedRealmConnectedRealmsSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_ConnectedRealm.ConnectedRealmsSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

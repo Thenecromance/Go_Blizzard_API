@@ -64,9 +64,11 @@ func StringPlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 		return nil, err
 	}
 
-	resp := &BNetPlayableClassesIndex{}
+	resp := &PlayableClassesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 	return resp, nil
 }
 
-// PlayableClassesIndex PlayableClassesIndex Returns an index of playable classes.
+// PlayableClassesIndex
+/* PlayableClassesIndex Returns an index of playable classes. */
 // Path: /data/wow/playable-class/index
 var PlayableClassesIndex = bridgePlayableClassesIndex
 
@@ -192,9 +195,11 @@ func StringPlayableClass(ctx context.Context, fields *PlayableClassFields) (stri
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePlayableClass(ctx context.Context, fields *PlayableClassFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetPlayableClass{}
+	resp := &PlayableClassModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePlayableClass(ctx context.Context, fields *PlayableClassFields) (any,
 	return resp, nil
 }
 
-// PlayableClass PlayableClass Returns a playable class by ID.
+// PlayableClass
+/* PlayableClass Returns a playable class by ID. */
 // Path: /data/wow/playable-class/{classId}
 var PlayableClass = bridgePlayableClass
 
@@ -334,9 +340,11 @@ func StringPlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgePlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 		return nil, err
 	}
 
-	resp := &BNetPlayableClassMedia{}
+	resp := &PlayableClassMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgePlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 	return resp, nil
 }
 
-// PlayableClassMedia PlayableClassMedia Returns media for a playable class by ID.
+// PlayableClassMedia
+/* PlayableClassMedia Returns media for a playable class by ID. */
 // Path: /data/wow/media/playable-class/{playableClassId}
 var PlayableClassMedia = bridgePlayableClassMedia
 

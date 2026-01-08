@@ -67,21 +67,26 @@ func StringCharacterPvPBracketStatistics(ctx context.Context, fields *CharacterP
 		fields.RealmSlug = "whitemane"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.PvpBracket == "" {
 		fields.PvpBracket = "3v3"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -163,7 +168,7 @@ func bridgeCharacterPvPBracketStatistics(ctx context.Context, fields *CharacterP
 		return nil, err
 	}
 
-	resp := &BNetCharacterPvPBracketStatistics{}
+	resp := &CharacterPvPBracketStatisticsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -171,7 +176,8 @@ func bridgeCharacterPvPBracketStatistics(ctx context.Context, fields *CharacterP
 	return resp, nil
 }
 
-// CharacterPvPBracketStatistics CharacterPvPBracketStatistics Returns the PvP bracket statistics for a character.
+// CharacterPvPBracketStatistics
+/* CharacterPvPBracketStatistics Returns the PvP bracket statistics for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/pvp-bracket/{pvpBracket}
 var CharacterPvPBracketStatistics = bridgeCharacterPvPBracketStatistics
 
@@ -220,17 +226,21 @@ func StringCharacterPvPSummary(ctx context.Context, fields *CharacterPvPSummaryF
 		fields.RealmSlug = "whitemane"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -311,7 +321,7 @@ func bridgeCharacterPvPSummary(ctx context.Context, fields *CharacterPvPSummaryF
 		return nil, err
 	}
 
-	resp := &BNetCharacterPvPSummary{}
+	resp := &CharacterPvPSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -319,7 +329,8 @@ func bridgeCharacterPvPSummary(ctx context.Context, fields *CharacterPvPSummaryF
 	return resp, nil
 }
 
-// CharacterPvPSummary CharacterPvPSummary Returns a PvP summary for a character.
+// CharacterPvPSummary
+/* CharacterPvPSummary Returns a PvP summary for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/pvp-summary
 var CharacterPvPSummary = bridgeCharacterPvPSummary
 

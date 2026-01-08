@@ -64,6 +64,7 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 		fields.Locale = "en_US"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -140,7 +141,7 @@ func bridgeGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetGetApiAccount{}
+	resp := &GetApiAccountModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -148,7 +149,8 @@ func bridgeGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (any,
 	return resp, nil
 }
 
-// GetApiAccount GetApiAccount Returns the specified account profile.
+// GetApiAccount
+/* GetApiAccount Returns the specified account profile. */
 // Path: /d3/profile/{account}/
 var GetApiAccount = bridgeGetApiAccount
 
@@ -195,6 +197,7 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -273,7 +276,7 @@ func bridgeGetApiHero(ctx context.Context, fields *GetApiHeroFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetGetApiHero{}
+	resp := &GetApiHeroModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -281,7 +284,8 @@ func bridgeGetApiHero(ctx context.Context, fields *GetApiHeroFields) (any, error
 	return resp, nil
 }
 
-// GetApiHero GetApiHero Returns a single hero.
+// GetApiHero
+/* GetApiHero Returns a single hero. */
 // Path: /d3/profile/{account}/hero/{heroId}
 var GetApiHero = bridgeGetApiHero
 
@@ -328,6 +332,7 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -406,7 +411,7 @@ func bridgeGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 		return nil, err
 	}
 
-	resp := &BNetGetApiDetailedHeroItems{}
+	resp := &GetApiDetailedHeroItemsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -414,7 +419,8 @@ func bridgeGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 	return resp, nil
 }
 
-// GetApiDetailedHeroItems GetApiDetailedHeroItems Returns a list of items for the specified hero.
+// GetApiDetailedHeroItems
+/* GetApiDetailedHeroItems Returns a list of items for the specified hero. */
 // Path: /d3/profile/{account}/hero/{heroId}/items
 var GetApiDetailedHeroItems = bridgeGetApiDetailedHeroItems
 
@@ -461,6 +467,7 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +546,7 @@ func bridgeGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 		return nil, err
 	}
 
-	resp := &BNetGetApiDetailedFollowerItems{}
+	resp := &GetApiDetailedFollowerItemsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +554,8 @@ func bridgeGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 	return resp, nil
 }
 
-// GetApiDetailedFollowerItems GetApiDetailedFollowerItems Returns a list of items for the specified hero's followers.
+// GetApiDetailedFollowerItems
+/* GetApiDetailedFollowerItems Returns a list of items for the specified hero's followers. */
 // Path: /d3/profile/{account}/hero/{heroId}/follower-items
 var GetApiDetailedFollowerItems = bridgeGetApiDetailedFollowerItems
 

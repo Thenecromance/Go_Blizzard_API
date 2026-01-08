@@ -69,9 +69,11 @@ func StringMythicKeystoneLeaderboardsIndex(ctx context.Context, fields *MythicKe
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -151,7 +153,7 @@ func bridgeMythicKeystoneLeaderboardsIndex(ctx context.Context, fields *MythicKe
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneLeaderboardsIndex{}
+	resp := &MythicKeystoneLeaderboardsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -159,7 +161,8 @@ func bridgeMythicKeystoneLeaderboardsIndex(ctx context.Context, fields *MythicKe
 	return resp, nil
 }
 
-// MythicKeystoneLeaderboardsIndex MythicKeystoneLeaderboardsIndex Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm.
+// MythicKeystoneLeaderboardsIndex
+/* MythicKeystoneLeaderboardsIndex Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm. */
 // Path: /data/wow/connected-realm/{connectedRealmId}/mythic-leaderboard/index
 var MythicKeystoneLeaderboardsIndex = bridgeMythicKeystoneLeaderboardsIndex
 
@@ -221,9 +224,11 @@ func StringMythicKeystoneLeaderboard(ctx context.Context, fields *MythicKeystone
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +310,7 @@ func bridgeMythicKeystoneLeaderboard(ctx context.Context, fields *MythicKeystone
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneLeaderboard{}
+	resp := &MythicKeystoneLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +318,8 @@ func bridgeMythicKeystoneLeaderboard(ctx context.Context, fields *MythicKeystone
 	return resp, nil
 }
 
-// MythicKeystoneLeaderboard MythicKeystoneLeaderboard Returns a weekly Mythic Keystone Leaderboard by period.
+// MythicKeystoneLeaderboard
+/* MythicKeystoneLeaderboard Returns a weekly Mythic Keystone Leaderboard by period. */
 // Path: /data/wow/connected-realm/{connectedRealmId}/mythic-leaderboard/{dungeonId}/period/{period}
 var MythicKeystoneLeaderboard = bridgeMythicKeystoneLeaderboard
 

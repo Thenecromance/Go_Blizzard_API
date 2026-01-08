@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/leaderboard/hall-of-fame/:raid/:faction", ginMythicRaidLeaderboard) //MythicRaidLeaderboard Returns the leaderboard for a given raid and faction.
+	app.Instance().RegisterRoute("GET", "/data/wow/leaderboard/hall-of-fame/:raid/:faction", ginMythicRaidLeaderboardMythicRaidLeaderboard) /* MythicRaidLeaderboard Returns the leaderboard for a given raid and faction. */
 
 }
 
 
 
 
-func ginMythicRaidLeaderboard(c *gin.Context) {
+func ginMythicRaidLeaderboardMythicRaidLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicRaidLeaderboard.MythicRaidLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {

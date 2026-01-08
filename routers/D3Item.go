@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/item/:itemSlugAndId", ginGetItem) //GetItem Returns a single item by item slug and ID.
+	app.Instance().RegisterRoute("GET", "/d3/data/item/:itemSlugAndId", ginD3ItemGetItem) /* GetItem Returns a single item by item slug and ID. */
 
 }
 
 
 
 
-func ginGetItem(c *gin.Context) {
+func ginD3ItemGetItem(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Item.GetItemFields
 	if err := c.ShouldBindUri(&req); err != nil {

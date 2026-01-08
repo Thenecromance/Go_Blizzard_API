@@ -66,9 +66,11 @@ func StringDecorIndex(ctx context.Context, fields *DecorIndexFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeDecorIndex(ctx context.Context, fields *DecorIndexFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetDecorIndex{}
+	resp := &DecorIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeDecorIndex(ctx context.Context, fields *DecorIndexFields) (any, error
 	return resp, nil
 }
 
-// DecorIndex DecorIndex Returns an index of decor.
+// DecorIndex
+/* DecorIndex Returns an index of decor. */
 // Path: /data/wow/decor/index
 var DecorIndex = bridgeDecorIndex
 
@@ -190,13 +193,16 @@ func StringDecor(ctx context.Context, fields *DecorFields) (string, error) {
 		fields.DecorId = "80"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +282,7 @@ func bridgeDecor(ctx context.Context, fields *DecorFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetDecor{}
+	resp := &DecorModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +290,8 @@ func bridgeDecor(ctx context.Context, fields *DecorFields) (any, error) {
 	return resp, nil
 }
 
-// Decor Decor Returns a decor by ID.
+// Decor
+/* Decor Returns a decor by ID. */
 // Path: /data/wow/decor/{decorId}
 var Decor = bridgeDecor
 
@@ -333,13 +340,16 @@ func StringDecorSearch(ctx context.Context, fields *DecorSearchFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Fireplace"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -413,7 +423,7 @@ func bridgeDecorSearch(ctx context.Context, fields *DecorSearchFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetDecorSearch{}
+	resp := &DecorSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -421,7 +431,8 @@ func bridgeDecorSearch(ctx context.Context, fields *DecorSearchFields) (any, err
 	return resp, nil
 }
 
-// DecorSearch DecorSearch Performs a search of decor. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// DecorSearch
+/* DecorSearch Performs a search of decor. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/decor
 var DecorSearch = bridgeDecorSearch
 
@@ -468,9 +479,11 @@ func StringFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (string
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -536,7 +549,7 @@ func bridgeFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetFixtureIndex{}
+	resp := &FixtureIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -544,7 +557,8 @@ func bridgeFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (any, e
 	return resp, nil
 }
 
-// FixtureIndex FixtureIndex Returns an index of fixtures.
+// FixtureIndex
+/* FixtureIndex Returns an index of fixtures. */
 // Path: /data/wow/fixture/index
 var FixtureIndex = bridgeFixtureIndex
 
@@ -592,13 +606,16 @@ func StringFixture(ctx context.Context, fields *FixtureFields) (string, error) {
 		fields.DecorId = "141"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -678,7 +695,7 @@ func bridgeFixture(ctx context.Context, fields *FixtureFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetFixture{}
+	resp := &FixtureModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -686,7 +703,8 @@ func bridgeFixture(ctx context.Context, fields *FixtureFields) (any, error) {
 	return resp, nil
 }
 
-// Fixture Fixture Returns a fixture by ID.
+// Fixture
+/* Fixture Returns a fixture by ID. */
 // Path: /data/wow/fixture/{fixtureId}
 var Fixture = bridgeFixture
 
@@ -735,13 +753,16 @@ func StringFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Roof"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -815,7 +836,7 @@ func bridgeFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetFixtureSearch{}
+	resp := &FixtureSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -823,7 +844,8 @@ func bridgeFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (any,
 	return resp, nil
 }
 
-// FixtureSearch FixtureSearch Performs a search of fixtures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// FixtureSearch
+/* FixtureSearch Performs a search of fixtures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/fixture
 var FixtureSearch = bridgeFixtureSearch
 
@@ -870,9 +892,11 @@ func StringFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -938,7 +962,7 @@ func bridgeFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 		return nil, err
 	}
 
-	resp := &BNetFixtureHookIndex{}
+	resp := &FixtureHookIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -946,7 +970,8 @@ func bridgeFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 	return resp, nil
 }
 
-// FixtureHookIndex FixtureHookIndex Returns an index of fixture hooks.
+// FixtureHookIndex
+/* FixtureHookIndex Returns an index of fixture hooks. */
 // Path: /data/wow/fixture-hook/index
 var FixtureHookIndex = bridgeFixtureHookIndex
 
@@ -994,13 +1019,16 @@ func StringFixtureHook(ctx context.Context, fields *FixtureHookFields) (string, 
 		fields.FixtureHookId = "2503"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1080,7 +1108,7 @@ func bridgeFixtureHook(ctx context.Context, fields *FixtureHookFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetFixtureHook{}
+	resp := &FixtureHookModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1088,7 +1116,8 @@ func bridgeFixtureHook(ctx context.Context, fields *FixtureHookFields) (any, err
 	return resp, nil
 }
 
-// FixtureHook FixtureHook Returns a fixture hook by ID.
+// FixtureHook
+/* FixtureHook Returns a fixture hook by ID. */
 // Path: /data/wow/fixture-hook/{fixtureHookId}
 var FixtureHook = bridgeFixtureHook
 
@@ -1136,9 +1165,11 @@ func StringFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -1210,7 +1241,7 @@ func bridgeFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 		return nil, err
 	}
 
-	resp := &BNetFixtureHookSearch{}
+	resp := &FixtureHookSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1218,7 +1249,8 @@ func bridgeFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 	return resp, nil
 }
 
-// FixtureHookSearch FixtureHookSearch Performs a search of fixture hooks. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// FixtureHookSearch
+/* FixtureHookSearch Performs a search of fixture hooks. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/fixture-hook
 var FixtureHookSearch = bridgeFixtureHookSearch
 
@@ -1265,9 +1297,11 @@ func StringRoomIndex(ctx context.Context, fields *RoomIndexFields) (string, erro
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1333,7 +1367,7 @@ func bridgeRoomIndex(ctx context.Context, fields *RoomIndexFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetRoomIndex{}
+	resp := &RoomIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1341,7 +1375,8 @@ func bridgeRoomIndex(ctx context.Context, fields *RoomIndexFields) (any, error) 
 	return resp, nil
 }
 
-// RoomIndex RoomIndex Returns an index of rooms.
+// RoomIndex
+/* RoomIndex Returns an index of rooms. */
 // Path: /data/wow/room/index
 var RoomIndex = bridgeRoomIndex
 
@@ -1389,13 +1424,16 @@ func StringRoom(ctx context.Context, fields *RoomFields) (string, error) {
 		fields.RoomId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1475,7 +1513,7 @@ func bridgeRoom(ctx context.Context, fields *RoomFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetRoom{}
+	resp := &RoomModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1483,7 +1521,8 @@ func bridgeRoom(ctx context.Context, fields *RoomFields) (any, error) {
 	return resp, nil
 }
 
-// Room Room Returns a room by ID.
+// Room
+/* Room Returns a room by ID. */
 // Path: /data/wow/room/{roomId}
 var Room = bridgeRoom
 
@@ -1532,13 +1571,16 @@ func StringRoomSearch(ctx context.Context, fields *RoomSearchFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Square"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -1612,7 +1654,7 @@ func bridgeRoomSearch(ctx context.Context, fields *RoomSearchFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetRoomSearch{}
+	resp := &RoomSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1620,7 +1662,8 @@ func bridgeRoomSearch(ctx context.Context, fields *RoomSearchFields) (any, error
 	return resp, nil
 }
 
-// RoomSearch RoomSearch Performs a search of rooms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// RoomSearch
+/* RoomSearch Performs a search of rooms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/room
 var RoomSearch = bridgeRoomSearch
 

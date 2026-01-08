@@ -133,7 +133,7 @@ func bridgePlayer(ctx context.Context, fields *PlayerFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetPlayer{}
+	resp := &PlayerModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -141,7 +141,8 @@ func bridgePlayer(ctx context.Context, fields *PlayerFields) (any, error) {
 	return resp, nil
 }
 
-// Player Player Returns metadata for an individual's account.
+// Player
+/* Player Returns metadata for an individual's account. */
 // Path: /sc2/player/:accountId
 var Player = bridgePlayer
 

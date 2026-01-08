@@ -64,6 +64,7 @@ func StringStatic(ctx context.Context, fields *StaticFields) (string, error) {
 		fields.Locale = "en_US"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -140,7 +141,7 @@ func bridgeStatic(ctx context.Context, fields *StaticFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetStatic{}
+	resp := &StaticModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -148,7 +149,8 @@ func bridgeStatic(ctx context.Context, fields *StaticFields) (any, error) {
 	return resp, nil
 }
 
-// Static Static Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
+// Static
+/* Static Returns all static SC2 profile data (achievements, categories, criteria, and rewards). */
 // Path: /sc2/static/profile/:regionId
 var Static = bridgeStatic
 
@@ -196,6 +198,7 @@ func StringMetadata(ctx context.Context, fields *MetadataFields) (string, error)
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -275,7 +278,7 @@ func bridgeMetadata(ctx context.Context, fields *MetadataFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetMetadata{}
+	resp := &MetadataModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -283,7 +286,8 @@ func bridgeMetadata(ctx context.Context, fields *MetadataFields) (any, error) {
 	return resp, nil
 }
 
-// Metadata Metadata Returns metadata for an individual's profile.
+// Metadata
+/* Metadata Returns metadata for an individual's profile. */
 // Path: /sc2/metadata/profile/:regionId/:realmId/:profileId
 var Metadata = bridgeMetadata
 
@@ -331,6 +335,7 @@ func StringProfile(ctx context.Context, fields *ProfileFields) (string, error) {
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -410,7 +415,7 @@ func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetProfile{}
+	resp := &ProfileModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -418,7 +423,8 @@ func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
 	return resp, nil
 }
 
-// Profile Profile Returns data about an individual SC2 profile.
+// Profile
+/* Profile Returns data about an individual SC2 profile. */
 // Path: /sc2/profile/:regionID/:realmID/:profileId
 var Profile = bridgeProfile
 
@@ -466,6 +472,7 @@ func StringLadderSummary(ctx context.Context, fields *LadderSummaryFields) (stri
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -545,7 +552,7 @@ func bridgeLadderSummary(ctx context.Context, fields *LadderSummaryFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetLadderSummary{}
+	resp := &LadderSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -553,7 +560,8 @@ func bridgeLadderSummary(ctx context.Context, fields *LadderSummaryFields) (any,
 	return resp, nil
 }
 
-// LadderSummary LadderSummary Returns a ladder summary for an individual SC2 profile.
+// LadderSummary
+/* LadderSummary Returns a ladder summary for an individual SC2 profile. */
 // Path: /sc2/profile/:regionId/:realmId/:profileId/ladder/summary
 var LadderSummary = bridgeLadderSummary
 
@@ -602,6 +610,7 @@ func StringLadder(ctx context.Context, fields *LadderFields) (string, error) {
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -682,7 +691,7 @@ func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetLadder{}
+	resp := &LadderModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -690,7 +699,8 @@ func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
 	return resp, nil
 }
 
-// Ladder Ladder Returns data about an individual profile's ladder.
+// Ladder
+/* Ladder Returns data about an individual profile's ladder. */
 // Path: /sc2/profile/:regionId/:realmId/:profileId/ladder/:ladderId
 var Ladder = bridgeLadder
 

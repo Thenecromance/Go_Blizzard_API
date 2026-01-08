@@ -118,7 +118,7 @@ func bridgeSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetSeasonIndex{}
+	resp := &SeasonIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -126,7 +126,8 @@ func bridgeSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (any, err
 	return resp, nil
 }
 
-// SeasonIndex SeasonIndex Returns an index of available seasons.
+// SeasonIndex
+/* SeasonIndex Returns an index of available seasons. */
 // Path: /data/d3/season/
 var SeasonIndex = bridgeSeasonIndex
 
@@ -246,7 +247,7 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetSeason{}
+	resp := &SeasonModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -254,7 +255,8 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 	return resp, nil
 }
 
-// Season Season Returns a leaderboard list for the specified season.
+// Season
+/* Season Returns a leaderboard list for the specified season. */
 // Path: /data/d3/season/:id
 var Season = bridgeSeason
 
@@ -304,6 +306,7 @@ func StringSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 	if fields.Leaderboard == "" {
 		fields.Leaderboard = "achievement-points"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -380,7 +383,7 @@ func bridgeSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 		return nil, err
 	}
 
-	resp := &BNetSeasonLeaderboard{}
+	resp := &SeasonLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -388,7 +391,8 @@ func bridgeSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 	return resp, nil
 }
 
-// SeasonLeaderboard SeasonLeaderboard Returns a the specified leaderboard for the specified season.
+// SeasonLeaderboard
+/* SeasonLeaderboard Returns a the specified leaderboard for the specified season. */
 // Path: /data/d3/season/:id/leaderboard/:leaderboard
 var SeasonLeaderboard = bridgeSeasonLeaderboard
 
@@ -489,7 +493,7 @@ func bridgeEraIndex(ctx context.Context, fields *EraIndexFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetEraIndex{}
+	resp := &EraIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -497,7 +501,8 @@ func bridgeEraIndex(ctx context.Context, fields *EraIndexFields) (any, error) {
 	return resp, nil
 }
 
-// EraIndex EraIndex Returns an index of available eras.
+// EraIndex
+/* EraIndex Returns an index of available eras. */
 // Path: /data/d3/era/
 var EraIndex = bridgeEraIndex
 
@@ -617,7 +622,7 @@ func bridgeEra(ctx context.Context, fields *EraFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetEra{}
+	resp := &EraModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -625,7 +630,8 @@ func bridgeEra(ctx context.Context, fields *EraFields) (any, error) {
 	return resp, nil
 }
 
-// Era Era Returns a leaderboard list for a particular era.
+// Era
+/* Era Returns a leaderboard list for a particular era. */
 // Path: /data/d3/era/:id
 var Era = bridgeEra
 
@@ -675,6 +681,7 @@ func StringEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (st
 	if fields.Leaderboard == "" {
 		fields.Leaderboard = "rift-barbarian"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -751,7 +758,7 @@ func bridgeEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (an
 		return nil, err
 	}
 
-	resp := &BNetEraLeaderboard{}
+	resp := &EraLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -759,7 +766,8 @@ func bridgeEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (an
 	return resp, nil
 }
 
-// EraLeaderboard EraLeaderboard Returns the specified leaderboard for the specified era.
+// EraLeaderboard
+/* EraLeaderboard Returns the specified leaderboard for the specified era. */
 // Path: /data/d3/era/:id/leaderboard/:leaderboard
 var EraLeaderboard = bridgeEraLeaderboard
 

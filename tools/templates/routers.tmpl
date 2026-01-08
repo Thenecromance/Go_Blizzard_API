@@ -11,22 +11,14 @@ import (
 
 func init() {
 {{range .Apis}}
-	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{.Name}}) //{{.Description}}
+	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{$.ApiGroupName}}{{.Name}}) /* {{.Description}} */
 {{end}}
 }
 
 {{range .Apis}}
-{{/*
-type {{.Name}}Request struct {
-{{range .Params}}
-	{{if .IsBindingUri}}{{.Name}} {{.Type}} `uri:"{{.ParamName}}" binding:"required"`// {{.Description}}
-	{{else}}{{.Name}} {{.Type}} `form:"{{.ParamName}},default={{.DefaultValue}}"` // {{.Description}}
-	{{end}}
-{{end}}
-}
-*/}}
 
-func gin{{.Name}}(c *gin.Context) {
+
+func gin{{$.ApiGroupName}}{{.Name}}(c *gin.Context) {
 	// binding uri parameters
 	var req {{$.Game}}_{{$.ApiGroupName}}.{{.Name}}Fields
 	if err := c.ShouldBindUri(&req); err != nil {

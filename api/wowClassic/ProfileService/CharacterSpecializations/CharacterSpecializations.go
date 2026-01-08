@@ -66,17 +66,21 @@ func StringCharacterSpecializationsSummary(ctx context.Context, fields *Characte
 		fields.RealmSlug = "whitemane"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterSpecializationsSummary(ctx context.Context, fields *Characte
 		return nil, err
 	}
 
-	resp := &BNetCharacterSpecializationsSummary{}
+	resp := &CharacterSpecializationsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterSpecializationsSummary(ctx context.Context, fields *Characte
 	return resp, nil
 }
 
-// CharacterSpecializationsSummary CharacterSpecializationsSummary Returns a summary of a character's specializations.
+// CharacterSpecializationsSummary
+/* CharacterSpecializationsSummary Returns a summary of a character's specializations. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/specializations
 var CharacterSpecializationsSummary = bridgeCharacterSpecializationsSummary
 

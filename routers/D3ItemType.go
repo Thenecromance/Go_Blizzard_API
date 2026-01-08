@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/item-type", ginGetItemTypeIndex) //GetItemTypeIndex Returns an index of item types.
+	app.Instance().RegisterRoute("GET", "/d3/data/item-type", ginD3ItemTypeGetItemTypeIndex) /* GetItemTypeIndex Returns an index of item types. */
 
-	app.Instance().RegisterRoute("GET", "/d3/data/item-type/:itemTypeSlug", ginGetItemType) //GetItemType Returns a single item type by slug.
+	app.Instance().RegisterRoute("GET", "/d3/data/item-type/:itemTypeSlug", ginD3ItemTypeGetItemType) /* GetItemType Returns a single item type by slug. */
 
 }
 
 
 
 
-func ginGetItemTypeIndex(c *gin.Context) {
+func ginD3ItemTypeGetItemTypeIndex(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3ItemType.GetItemTypeIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginGetItemTypeIndex(c *gin.Context) {
 
 
 
-func ginGetItemType(c *gin.Context) {
+func ginD3ItemTypeGetItemType(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3ItemType.GetItemTypeFields
 	if err := c.ShouldBindUri(&req); err != nil {

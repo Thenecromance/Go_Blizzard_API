@@ -97,7 +97,7 @@ func updateApi(f *Fields) {
 func main() {
 	updateApi(&Fields{
 		Api:    true,
-		Model:  true,
+		Model:  false,
 		Router: true,
 
 		Wow:        true,

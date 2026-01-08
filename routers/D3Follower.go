@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/follower/:followerSlug", ginGetFollower) //GetFollower Returns a single follower by slug.
+	app.Instance().RegisterRoute("GET", "/d3/data/follower/:followerSlug", ginD3FollowerGetFollower) /* GetFollower Returns a single follower by slug. */
 
 }
 
 
 
 
-func ginGetFollower(c *gin.Context) {
+func ginD3FollowerGetFollower(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3Follower.GetFollowerFields
 	if err := c.ShouldBindUri(&req); err != nil {

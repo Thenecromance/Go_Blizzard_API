@@ -1,66 +1,115 @@
-# Unofficial API 
+# Unofficial API for Blizzard Games
 
-## Important Notice
+[English](README.md) | [中文](README_CN.md)
 
-1. If you want to use this project to collect data, you need to set up a cookie in player.go -->StringPlayerSummary method. (This is because XXX restricts access to player data through their official API. By using cookies, you can access data just as you log in through a web browser. Please ensure that you abide by the relevant company's terms of service when using this method.)
-2. Since the front ends corresponding to different game projects are not in the same group, various methods may vary. Therefore, please use them with caution
-3. It is currently in the early stage of development and has not undergone detailed testing
+This project is an **Unofficial Go SDK and Proxy Server** for Blizzard games. It provides comprehensive type-safe structs and methods to interact with Blizzard APIs, and also includes a Gin-based web server that acts as a proxy/gateway.
 
+> **Disclaimer**: This project is an unofficial API wrapper and is not affiliated with, endorsed, sponsored, or specifically approved by Blizzard Entertainment, Inc.
 
-## Prepare to support games 
+## 🚀 Features
 
-- World of Warcraft
-- World of Warcraft Classic
-- Hearthstone
-- Warcraft II
+- **Multi-Game Support**: World of Warcraft, WoW Classic, Hearthstone, Diablo 3, and StarCraft II.
+- **Type-Safe SDK**: Auto-generated Go structs from official API documentation.
+- **Proxy Server**: Built-in Gin server (`:80`) exposing REST endpoints.
+- **Smart Routing**: Unified interface for API calls.
+- **Extensible**: Customizable Request and Logger interfaces.
 
-## Features
+## 🎮 Supported Games
 
-### 📦 Data Models (`/model`)
-Comprehensive Go structs with JSON tags for automatic unmarshalling of API responses:
-- **Player**: Core character info, attributes, guild, realm, and active spec.
-- **Mythic Keystone Profile**: Current mythic rating, best runs, season history, and dungeon details.
-- **Equipment**: Detailed breakdown of equipped items, stats, enchantments, set bonuses, and transmog info.
-- **Keystone Season**: Seasonal data including affixes and specific run history.
+- **World of Warcraft** (Retail)
+- **World of Warcraft Classic**
+- **Hearthstone**
+- **Diablo 3**
+- **StarCraft II**
 
-### 🛠 Interfaces (`/Interface`)
-Flexible interfaces to allow dependency injection for core infrastructure:
-- **Request**: Abstract HTTP client interface (`GET`, `POST`, etc.) to support different networking libraries.
-- **Logger**: Abstract logging interface.
+## ⚠️ Important Notice
 
-### ⚡ Internal Utilities (`/internal`)
-- **Token Caching**: In-memory caching mechanism for handling authentication tokens or session identifiers.
+1. **Cookie Usage**: Some endpoints (especially player profile data) may require a cookie setup (e.g. `StringCharacterProfileSummary` in `CharacterProfile.go`) to bypass official API restrictions. Please ensure compliance with Terms of Service.
+2. **Beta Status**: The project is in early development. API methods may vary across games.
 
+## 🛠 Usage
 
-## Usage Example
+### 1. Run as Proxy Server
+The project includes a web server that wraps the API calls.
 
-### Parsing Player Data
+```bash
+go run main.go
+# Server starts on port 80
+```
 
-| Method Start with | Description                      | Return Type          |
-|-------------------|----------------------------------|----------------------|
-| String**          | Fetch json data (standard)       | string               |
-| CN**              | Marshal data (China)             | struct in the same file     |
-| BNet**            | Convert Data to BNet Portal data | struct in the model folder  |
+### 2. Use as Go Library (SDK)
 
-## Project Structure
+You can import the generated packages directly to make API calls in your Go application.
+
+#### Code Snippet
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	// Import the specific game/service package
+	"Unofficial_API/api/wow/DataService/Achievement"
+)
+
+func main() {
+	ctx := context.Background()
+
+	// 1. Define Request Parameters
+	req := &wow_Achievement.AchievementFields{
+		AchievementId: 6,
+	}
+
+	// 2. Call the API
+	// Returns (any, error)
+	resp, err := wow_Achievement.Achievement(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+
+	// 3. Type Assert to access specific fields
+	// The response is automatically unmarshalled into the correct model
+	model := resp.(*wow_Achievement.AchievementModel)
+	fmt.Printf("Achievement Name: %s\n", model.Name)
+}
+```
+
+## 🏗 Project Structure
 
 ```
 /Unofficial_API
-├── Interface/       # Core interfaces (Request, Logger)
-├── internal/        # Internal logic (Token caching)
-├── model/           # Data structures (Player, Equipment, Mythic+, etc.)
-├── utils/           # Utility functions (Cache implementation)
-├── go.mod           # Module definition
-└── README.md        # Documentation
+├───api             // Auto-generated API client code (SDK)
+│   ├───wow
+│   ├───D3
+│   ├───...
+├───app             // Gin Server application logic
+├───routers         // Http Routes definitions for the Proxy Server
+├───bridge          // Core infrastructure (HTTP Client implementation)
+├───global          // Global constants and configurations
+├───Interface       // Interfaces (Logger, Request)
+├───internal        // Internal utilities (Token management, etc.)
+├───tools           // Code generation tools
+│   ├───updater     // Logic to fetch docs and generate 'api/' code
+└───utils           // General utilities
 ```
 
-## Dependencies
+## method Convention
 
-- `github.com/jinzhu/copier`: Used for deep copying structures.
+| Method Prefix | Description | Return Type |
+|---|---|---|
+| **(No Prefix)** | **Recommended**. Main entry point. Handles request & unmarshalling. | `interface{}` (Ptr to Model) |
+| `String**` | Fetch raw JSON string. | `string` |
+| `bridge**` | Internal logic (Decodes JSON to Struct). | `interface{}` |
+| `CNHook**` | Extension point for China region logic. | `func` |
 
-## Disclaimer
+## 📦 Dependencies
 
-This project is an unofficial API wrapper and is not affiliated with, endorsed, sponsored, or specifically approved by Blizzard Entertainment, Inc. World of Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries. All data gathered by this tool belongs to their respective owners.
+- **Web Framework**: `github.com/gin-gonic/gin`
+- **JSON Handling**: `github.com/bytedance/sonic` (High performance)
+- **Logging**: `github.com/sirupsen/logrus`
+- **Config**: `github.com/spf13/viper`
+- **Code Gen**: `github.com/twpayne/go-jsonstruct`
 
 ## License
 

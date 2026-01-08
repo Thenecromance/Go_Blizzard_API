@@ -64,9 +64,11 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetPvPSeasonsIndex{}
+	resp := &PvPSeasonsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 	return resp, nil
 }
 
-// PvPSeasonsIndex PvPSeasonsIndex Returns an index of PvP seasons.
+// PvPSeasonsIndex
+/* PvPSeasonsIndex Returns an index of PvP seasons. */
 // Path: /data/wow/pvp-season/index
 var PvPSeasonsIndex = bridgePvPSeasonsIndex
 
@@ -192,9 +195,11 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePvPSeason(ctx context.Context, fields *PvPSeasonFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetPvPSeason{}
+	resp := &PvPSeasonModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePvPSeason(ctx context.Context, fields *PvPSeasonFields) (any, error) 
 	return resp, nil
 }
 
-// PvPSeason PvPSeason Returns a PvP season by ID.
+// PvPSeason
+/* PvPSeason Returns a PvP season by ID. */
 // Path: /data/wow/pvp-season/{pvpSeasonId}
 var PvPSeason = bridgePvPSeason
 
@@ -334,9 +340,11 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgePvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 		return nil, err
 	}
 
-	resp := &BNetPvPLeaderboardsIndex{}
+	resp := &PvPLeaderboardsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgePvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 	return resp, nil
 }
 
-// PvPLeaderboardsIndex PvPLeaderboardsIndex Returns an index of PvP leaderboards for a PvP season.
+// PvPLeaderboardsIndex
+/* PvPLeaderboardsIndex Returns an index of PvP leaderboards for a PvP season. */
 // Path: /data/wow/pvp-season/{pvpSeasonId}/pvp-leaderboard/index
 var PvPLeaderboardsIndex = bridgePvPLeaderboardsIndex
 
@@ -477,13 +486,16 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 		fields.PvpBracket = "3v3"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -564,7 +576,7 @@ func bridgePvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (an
 		return nil, err
 	}
 
-	resp := &BNetPvPLeaderboard{}
+	resp := &PvPLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -572,7 +584,8 @@ func bridgePvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (an
 	return resp, nil
 }
 
-// PvPLeaderboard PvPLeaderboard Returns the PvP leaderboard of a specific PvP bracket for a PvP season.
+// PvPLeaderboard
+/* PvPLeaderboard Returns the PvP leaderboard of a specific PvP bracket for a PvP season. */
 // Path: /data/wow/pvp-season/{pvpSeasonId}/pvp-leaderboard/{pvpBracket}
 var PvPLeaderboard = bridgePvPLeaderboard
 
@@ -624,9 +637,11 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -706,7 +721,7 @@ func bridgePvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetPvPRewardsIndex{}
+	resp := &PvPRewardsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -714,7 +729,8 @@ func bridgePvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 	return resp, nil
 }
 
-// PvPRewardsIndex PvPRewardsIndex Returns an index of PvP rewards for a PvP season.
+// PvPRewardsIndex
+/* PvPRewardsIndex Returns an index of PvP rewards for a PvP season. */
 // Path: /data/wow/pvp-season/{pvpSeasonId}/pvp-reward/index
 var PvPRewardsIndex = bridgePvPRewardsIndex
 

@@ -66,9 +66,11 @@ func StringAzeriteEssencesIndex(ctx context.Context, fields *AzeriteEssencesInde
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeAzeriteEssencesIndex(ctx context.Context, fields *AzeriteEssencesInde
 		return nil, err
 	}
 
-	resp := &BNetAzeriteEssencesIndex{}
+	resp := &AzeriteEssencesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeAzeriteEssencesIndex(ctx context.Context, fields *AzeriteEssencesInde
 	return resp, nil
 }
 
-// AzeriteEssencesIndex AzeriteEssencesIndex Returns an index of azerite essences.
+// AzeriteEssencesIndex
+/* AzeriteEssencesIndex Returns an index of azerite essences. */
 // Path: /data/wow/azerite-essence/index
 var AzeriteEssencesIndex = bridgeAzeriteEssencesIndex
 
@@ -190,13 +193,16 @@ func StringAzeriteEssence(ctx context.Context, fields *AzeriteEssenceFields) (st
 		fields.AzeriteEssenceId = "2"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +282,7 @@ func bridgeAzeriteEssence(ctx context.Context, fields *AzeriteEssenceFields) (an
 		return nil, err
 	}
 
-	resp := &BNetAzeriteEssence{}
+	resp := &AzeriteEssenceModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +290,8 @@ func bridgeAzeriteEssence(ctx context.Context, fields *AzeriteEssenceFields) (an
 	return resp, nil
 }
 
-// AzeriteEssence AzeriteEssence Returns an azerite essence by ID.
+// AzeriteEssence
+/* AzeriteEssence Returns an azerite essence by ID. */
 // Path: /data/wow/azerite-essence/{azeriteEssenceId}
 var AzeriteEssence = bridgeAzeriteEssence
 
@@ -333,6 +340,7 @@ func StringAzeriteEssenceSearch(ctx context.Context, fields *AzeriteEssenceSearc
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Allowed_specializationsid == 0 {
 		fields.Allowed_specializationsid = 65
 	}
@@ -340,6 +348,7 @@ func StringAzeriteEssenceSearch(ctx context.Context, fields *AzeriteEssenceSearc
 	if fields.Orderby == "" {
 		fields.Orderby = "name"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -413,7 +422,7 @@ func bridgeAzeriteEssenceSearch(ctx context.Context, fields *AzeriteEssenceSearc
 		return nil, err
 	}
 
-	resp := &BNetAzeriteEssenceSearch{}
+	resp := &AzeriteEssenceSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -421,7 +430,8 @@ func bridgeAzeriteEssenceSearch(ctx context.Context, fields *AzeriteEssenceSearc
 	return resp, nil
 }
 
-// AzeriteEssenceSearch AzeriteEssenceSearch Performs a search of azerite essences. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// AzeriteEssenceSearch
+/* AzeriteEssenceSearch Performs a search of azerite essences. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/azerite-essence
 var AzeriteEssenceSearch = bridgeAzeriteEssenceSearch
 
@@ -473,9 +483,11 @@ func StringAzeriteEssenceMedia(ctx context.Context, fields *AzeriteEssenceMediaF
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -555,7 +567,7 @@ func bridgeAzeriteEssenceMedia(ctx context.Context, fields *AzeriteEssenceMediaF
 		return nil, err
 	}
 
-	resp := &BNetAzeriteEssenceMedia{}
+	resp := &AzeriteEssenceMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -563,7 +575,8 @@ func bridgeAzeriteEssenceMedia(ctx context.Context, fields *AzeriteEssenceMediaF
 	return resp, nil
 }
 
-// AzeriteEssenceMedia AzeriteEssenceMedia Returns media for an azerite essence by ID.
+// AzeriteEssenceMedia
+/* AzeriteEssenceMedia Returns media for an azerite essence by ID. */
 // Path: /data/wow/media/azerite-essence/{azeriteEssenceId}
 var AzeriteEssenceMedia = bridgeAzeriteEssenceMedia
 

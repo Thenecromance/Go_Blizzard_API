@@ -66,9 +66,11 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 		return nil, err
 	}
 
-	resp := &BNetCreatureFamiliesIndex{}
+	resp := &CreatureFamiliesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 	return resp, nil
 }
 
-// CreatureFamiliesIndex CreatureFamiliesIndex Returns an index of creature families.
+// CreatureFamiliesIndex
+/* CreatureFamiliesIndex Returns an index of creature families. */
 // Path: /data/wow/creature-family/index
 var CreatureFamiliesIndex = bridgeCreatureFamiliesIndex
 
@@ -194,9 +197,11 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +281,7 @@ func bridgeCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (an
 		return nil, err
 	}
 
-	resp := &BNetCreatureFamily{}
+	resp := &CreatureFamilyModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +289,8 @@ func bridgeCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (an
 	return resp, nil
 }
 
-// CreatureFamily CreatureFamily Returns a creature family by ID.
+// CreatureFamily
+/* CreatureFamily Returns a creature family by ID. */
 // Path: /data/wow/creature-family/{creatureFamilyId}
 var CreatureFamily = bridgeCreatureFamily
 
@@ -331,9 +337,11 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -399,7 +407,7 @@ func bridgeCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 		return nil, err
 	}
 
-	resp := &BNetCreatureTypesIndex{}
+	resp := &CreatureTypesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -407,7 +415,8 @@ func bridgeCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 	return resp, nil
 }
 
-// CreatureTypesIndex CreatureTypesIndex Returns an index of creature types.
+// CreatureTypesIndex
+/* CreatureTypesIndex Returns an index of creature types. */
 // Path: /data/wow/creature-type/index
 var CreatureTypesIndex = bridgeCreatureTypesIndex
 
@@ -459,9 +468,11 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -541,7 +552,7 @@ func bridgeCreatureType(ctx context.Context, fields *CreatureTypeFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetCreatureType{}
+	resp := &CreatureTypeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -549,7 +560,8 @@ func bridgeCreatureType(ctx context.Context, fields *CreatureTypeFields) (any, e
 	return resp, nil
 }
 
-// CreatureType CreatureType Returns a creature type by ID.
+// CreatureType
+/* CreatureType Returns a creature type by ID. */
 // Path: /data/wow/creature-type/{creatureTypeId}
 var CreatureType = bridgeCreatureType
 
@@ -601,9 +613,11 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -683,7 +697,7 @@ func bridgeCreature(ctx context.Context, fields *CreatureFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetCreature{}
+	resp := &CreatureModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -691,7 +705,8 @@ func bridgeCreature(ctx context.Context, fields *CreatureFields) (any, error) {
 	return resp, nil
 }
 
-// Creature Creature Returns a creature by ID.
+// Creature
+/* Creature Returns a creature by ID. */
 // Path: /data/wow/creature/{creatureId}
 var Creature = bridgeCreature
 
@@ -740,13 +755,16 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Dragon"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -820,7 +838,7 @@ func bridgeCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (an
 		return nil, err
 	}
 
-	resp := &BNetCreatureSearch{}
+	resp := &CreatureSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -828,7 +846,8 @@ func bridgeCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (an
 	return resp, nil
 }
 
-// CreatureSearch CreatureSearch Performs a search of creatures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// CreatureSearch
+/* CreatureSearch Performs a search of creatures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/creature
 var CreatureSearch = bridgeCreatureSearch
 
@@ -880,9 +899,11 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -962,7 +983,7 @@ func bridgeCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 		return nil, err
 	}
 
-	resp := &BNetCreatureDisplayMedia{}
+	resp := &CreatureDisplayMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -970,7 +991,8 @@ func bridgeCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 	return resp, nil
 }
 
-// CreatureDisplayMedia CreatureDisplayMedia Returns media for a creature display by ID.
+// CreatureDisplayMedia
+/* CreatureDisplayMedia Returns media for a creature display by ID. */
 // Path: /data/wow/media/creature-display/{creatureDisplayId}
 var CreatureDisplayMedia = bridgeCreatureDisplayMedia
 
@@ -1022,9 +1044,11 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 		fields.Namespace = "static-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1104,7 +1128,7 @@ func bridgeCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 		return nil, err
 	}
 
-	resp := &BNetCreatureFamilyMedia{}
+	resp := &CreatureFamilyMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1112,7 +1136,8 @@ func bridgeCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 	return resp, nil
 }
 
-// CreatureFamilyMedia CreatureFamilyMedia Returns media for a creature family by ID.
+// CreatureFamilyMedia
+/* CreatureFamilyMedia Returns media for a creature family by ID. */
 // Path: /data/wow/media/creature-family/{creatureFamilyId}
 var CreatureFamilyMedia = bridgeCreatureFamilyMedia
 

@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/power-type/index", ginPowerTypesIndex) //PowerTypesIndex Returns an index of power types.
+	app.Instance().RegisterRoute("GET", "/data/wow/power-type/index", ginPowerTypePowerTypesIndex) /* PowerTypesIndex Returns an index of power types. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/power-type/:powerTypeId", ginPowerType) //PowerType Returns a power type by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/power-type/:powerTypeId", ginPowerTypePowerType) /* PowerType Returns a power type by ID. */
 
 }
 
 
 
 
-func ginPowerTypesIndex(c *gin.Context) {
+func ginPowerTypePowerTypesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PowerType.PowerTypesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginPowerTypesIndex(c *gin.Context) {
 
 
 
-func ginPowerType(c *gin.Context) {
+func ginPowerTypePowerType(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PowerType.PowerTypeFields
 	if err := c.ShouldBindUri(&req); err != nil {

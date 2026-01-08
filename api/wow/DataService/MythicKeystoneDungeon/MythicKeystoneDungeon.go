@@ -64,9 +64,11 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneIndex{}
+	resp := &MythicKeystoneIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 	return resp, nil
 }
 
-// MythicKeystoneIndex MythicKeystoneIndex Returns an index of links to other documents related to Mythic Keystone dungeons.
+// MythicKeystoneIndex
+/* MythicKeystoneIndex Returns an index of links to other documents related to Mythic Keystone dungeons. */
 // Path: /data/wow/mythic-keystone/index
 var MythicKeystoneIndex = bridgeMythicKeystoneIndex
 
@@ -187,9 +190,11 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -255,7 +260,7 @@ func bridgeMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneDungeonsIndex{}
+	resp := &MythicKeystoneDungeonsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -263,7 +268,8 @@ func bridgeMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 	return resp, nil
 }
 
-// MythicKeystoneDungeonsIndex MythicKeystoneDungeonsIndex Returns an index of Mythic Keystone dungeons.
+// MythicKeystoneDungeonsIndex
+/* MythicKeystoneDungeonsIndex Returns an index of Mythic Keystone dungeons. */
 // Path: /data/wow/mythic-keystone/dungeon/index
 var MythicKeystoneDungeonsIndex = bridgeMythicKeystoneDungeonsIndex
 
@@ -315,9 +321,11 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -397,7 +405,7 @@ func bridgeMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneDungeon{}
+	resp := &MythicKeystoneDungeonModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -405,7 +413,8 @@ func bridgeMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 	return resp, nil
 }
 
-// MythicKeystoneDungeon MythicKeystoneDungeon Returns a Mythic Keystone dungeon by ID.
+// MythicKeystoneDungeon
+/* MythicKeystoneDungeon Returns a Mythic Keystone dungeon by ID. */
 // Path: /data/wow/mythic-keystone/dungeon/{dungeonId}
 var MythicKeystoneDungeon = bridgeMythicKeystoneDungeon
 
@@ -452,9 +461,11 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -520,7 +531,7 @@ func bridgeMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystonePeriodsIndex{}
+	resp := &MythicKeystonePeriodsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -528,7 +539,8 @@ func bridgeMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 	return resp, nil
 }
 
-// MythicKeystonePeriodsIndex MythicKeystonePeriodsIndex Returns an index of Mythic Keystone periods.
+// MythicKeystonePeriodsIndex
+/* MythicKeystonePeriodsIndex Returns an index of Mythic Keystone periods. */
 // Path: /data/wow/mythic-keystone/period/index
 var MythicKeystonePeriodsIndex = bridgeMythicKeystonePeriodsIndex
 
@@ -580,9 +592,11 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -662,7 +676,7 @@ func bridgeMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystonePeriod{}
+	resp := &MythicKeystonePeriodModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -670,7 +684,8 @@ func bridgeMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 	return resp, nil
 }
 
-// MythicKeystonePeriod MythicKeystonePeriod Returns a Mythic Keystone period by ID.
+// MythicKeystonePeriod
+/* MythicKeystonePeriod Returns a Mythic Keystone period by ID. */
 // Path: /data/wow/mythic-keystone/period/{periodId}
 var MythicKeystonePeriod = bridgeMythicKeystonePeriod
 
@@ -717,9 +732,11 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -785,7 +802,7 @@ func bridgeMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneSeasonsIndex{}
+	resp := &MythicKeystoneSeasonsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -793,7 +810,8 @@ func bridgeMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 	return resp, nil
 }
 
-// MythicKeystoneSeasonsIndex MythicKeystoneSeasonsIndex Returns an index of Mythic Keystone seasons.
+// MythicKeystoneSeasonsIndex
+/* MythicKeystoneSeasonsIndex Returns an index of Mythic Keystone seasons. */
 // Path: /data/wow/mythic-keystone/season/index
 var MythicKeystoneSeasonsIndex = bridgeMythicKeystoneSeasonsIndex
 
@@ -845,9 +863,11 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -927,7 +947,7 @@ func bridgeMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 		return nil, err
 	}
 
-	resp := &BNetMythicKeystoneSeason{}
+	resp := &MythicKeystoneSeasonModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -935,7 +955,8 @@ func bridgeMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 	return resp, nil
 }
 
-// MythicKeystoneSeason MythicKeystoneSeason Returns a Mythic Keystone season by ID.
+// MythicKeystoneSeason
+/* MythicKeystoneSeason Returns a Mythic Keystone season by ID. */
 // Path: /data/wow/mythic-keystone/season/{seasonId}
 var MythicKeystoneSeason = bridgeMythicKeystoneSeason
 

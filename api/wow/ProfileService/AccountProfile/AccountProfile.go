@@ -64,9 +64,11 @@ func StringAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 		return nil, err
 	}
 
-	resp := &BNetAccountProfileSummary{}
+	resp := &AccountProfileSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 	return resp, nil
 }
 
-// AccountProfileSummary AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountProfileSummary
+/* AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow
 var AccountProfileSummary = bridgeAccountProfileSummary
 
@@ -197,9 +200,11 @@ func StringProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -280,7 +285,7 @@ func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 		return nil, err
 	}
 
-	resp := &BNetProtectedCharacterProfileSummary{}
+	resp := &ProtectedCharacterProfileSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -288,7 +293,8 @@ func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 	return resp, nil
 }
 
-// ProtectedCharacterProfileSummary ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// ProtectedCharacterProfileSummary
+/* ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/protected-character/{realmId}-{characterId}
 var ProtectedCharacterProfileSummary = bridgeProtectedCharacterProfileSummary
 
@@ -335,9 +341,11 @@ func StringAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -403,7 +411,7 @@ func bridgeAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 		return nil, err
 	}
 
-	resp := &BNetAccountCollectionsIndex{}
+	resp := &AccountCollectionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -411,7 +419,8 @@ func bridgeAccountCollectionsIndex(ctx context.Context, fields *AccountCollectio
 	return resp, nil
 }
 
-// AccountCollectionsIndex AccountCollectionsIndex Returns an index of collection types for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountCollectionsIndex
+/* AccountCollectionsIndex Returns an index of collection types for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections
 var AccountCollectionsIndex = bridgeAccountCollectionsIndex
 
@@ -458,9 +467,11 @@ func StringAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -526,7 +537,7 @@ func bridgeAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 		return nil, err
 	}
 
-	resp := &BNetAccountDecorCollectionSummary{}
+	resp := &AccountDecorCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -534,7 +545,8 @@ func bridgeAccountDecorCollectionSummary(ctx context.Context, fields *AccountDec
 	return resp, nil
 }
 
-// AccountDecorCollectionSummary AccountDecorCollectionSummary Returns a summary of the housing decor an account has collected.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountDecorCollectionSummary
+/* AccountDecorCollectionSummary Returns a summary of the housing decor an account has collected.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/decor
 var AccountDecorCollectionSummary = bridgeAccountDecorCollectionSummary
 
@@ -581,9 +593,11 @@ func StringAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -649,7 +663,7 @@ func bridgeAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 		return nil, err
 	}
 
-	resp := &BNetAccountHeirloomsCollectionSummary{}
+	resp := &AccountHeirloomsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -657,7 +671,8 @@ func bridgeAccountHeirloomsCollectionSummary(ctx context.Context, fields *Accoun
 	return resp, nil
 }
 
-// AccountHeirloomsCollectionSummary AccountHeirloomsCollectionSummary Returns a summary of the heirlooms an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountHeirloomsCollectionSummary
+/* AccountHeirloomsCollectionSummary Returns a summary of the heirlooms an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/heirlooms
 var AccountHeirloomsCollectionSummary = bridgeAccountHeirloomsCollectionSummary
 
@@ -704,9 +719,11 @@ func StringAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -772,7 +789,7 @@ func bridgeAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 		return nil, err
 	}
 
-	resp := &BNetAccountMountsCollectionSummary{}
+	resp := &AccountMountsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -780,7 +797,8 @@ func bridgeAccountMountsCollectionSummary(ctx context.Context, fields *AccountMo
 	return resp, nil
 }
 
-// AccountMountsCollectionSummary AccountMountsCollectionSummary Returns a summary of the mounts an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountMountsCollectionSummary
+/* AccountMountsCollectionSummary Returns a summary of the mounts an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/mounts
 var AccountMountsCollectionSummary = bridgeAccountMountsCollectionSummary
 
@@ -827,9 +845,11 @@ func StringAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -895,7 +915,7 @@ func bridgeAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 		return nil, err
 	}
 
-	resp := &BNetAccountPetsCollectionSummary{}
+	resp := &AccountPetsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -903,7 +923,8 @@ func bridgeAccountPetsCollectionSummary(ctx context.Context, fields *AccountPets
 	return resp, nil
 }
 
-// AccountPetsCollectionSummary AccountPetsCollectionSummary Returns a summary of the battle pets an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountPetsCollectionSummary
+/* AccountPetsCollectionSummary Returns a summary of the battle pets an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/pets
 var AccountPetsCollectionSummary = bridgeAccountPetsCollectionSummary
 
@@ -950,9 +971,11 @@ func StringAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1018,7 +1041,7 @@ func bridgeAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 		return nil, err
 	}
 
-	resp := &BNetAccountToysCollectionSummary{}
+	resp := &AccountToysCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1026,7 +1049,8 @@ func bridgeAccountToysCollectionSummary(ctx context.Context, fields *AccountToys
 	return resp, nil
 }
 
-// AccountToysCollectionSummary AccountToysCollectionSummary Returns a summary of the toys an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountToysCollectionSummary
+/* AccountToysCollectionSummary Returns a summary of the toys an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/toys
 var AccountToysCollectionSummary = bridgeAccountToysCollectionSummary
 
@@ -1073,9 +1097,11 @@ func StringAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1141,7 +1167,7 @@ func bridgeAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 		return nil, err
 	}
 
-	resp := &BNetAccountTransmogCollectionSummary{}
+	resp := &AccountTransmogCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1149,7 +1175,8 @@ func bridgeAccountTransmogCollectionSummary(ctx context.Context, fields *Account
 	return resp, nil
 }
 
-// AccountTransmogCollectionSummary AccountTransmogCollectionSummary Returns a summary of the transmog unlocks an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountTransmogCollectionSummary
+/* AccountTransmogCollectionSummary Returns a summary of the transmog unlocks an account has obtained.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/collections/transmogs
 var AccountTransmogCollectionSummary = bridgeAccountTransmogCollectionSummary
 

@@ -62,9 +62,11 @@ func StringWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (stri
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -130,7 +132,7 @@ func bridgeWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetWoWTokenIndex{}
+	resp := &WoWTokenIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -138,7 +140,8 @@ func bridgeWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (any,
 	return resp, nil
 }
 
-// WoWTokenIndex WoWTokenIndex Returns the WoW Token index.
+// WoWTokenIndex
+/* WoWTokenIndex Returns the WoW Token index. */
 // Path: /data/wow/token/index
 var WoWTokenIndex = bridgeWoWTokenIndex
 
@@ -185,9 +188,11 @@ func StringWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 		fields.Namespace = "dynamic-cn"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "zh_CN"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -253,7 +258,7 @@ func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 		return nil, err
 	}
 
-	resp := &BNetWoWTokenIndexCN{}
+	resp := &WoWTokenIndexCNModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -261,7 +266,8 @@ func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 	return resp, nil
 }
 
-// WoWTokenIndexCN WoWTokenIndexCN Returns the WoW Token index.
+// WoWTokenIndexCN
+/* WoWTokenIndexCN Returns the WoW Token index. */
 // Path: /data/wow/token/index
 var WoWTokenIndexCN = bridgeWoWTokenIndexCN
 

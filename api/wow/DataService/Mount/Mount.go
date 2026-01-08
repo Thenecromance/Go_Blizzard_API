@@ -66,9 +66,11 @@ func StringMountsIndex(ctx context.Context, fields *MountsIndexFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -134,7 +136,7 @@ func bridgeMountsIndex(ctx context.Context, fields *MountsIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetMountsIndex{}
+	resp := &MountsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -142,7 +144,8 @@ func bridgeMountsIndex(ctx context.Context, fields *MountsIndexFields) (any, err
 	return resp, nil
 }
 
-// MountsIndex MountsIndex Returns an index of mounts.
+// MountsIndex
+/* MountsIndex Returns an index of mounts. */
 // Path: /data/wow/mount/index
 var MountsIndex = bridgeMountsIndex
 
@@ -194,9 +197,11 @@ func StringMount(ctx context.Context, fields *MountFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -276,7 +281,7 @@ func bridgeMount(ctx context.Context, fields *MountFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetMount{}
+	resp := &MountModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -284,7 +289,8 @@ func bridgeMount(ctx context.Context, fields *MountFields) (any, error) {
 	return resp, nil
 }
 
-// Mount Mount Returns a mount by ID.
+// Mount
+/* Mount Returns a mount by ID. */
 // Path: /data/wow/mount/{mountId}
 var Mount = bridgeMount
 
@@ -333,13 +339,16 @@ func StringMountSearch(ctx context.Context, fields *MountSearchFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Turtle"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -413,7 +422,7 @@ func bridgeMountSearch(ctx context.Context, fields *MountSearchFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetMountSearch{}
+	resp := &MountSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -421,7 +430,8 @@ func bridgeMountSearch(ctx context.Context, fields *MountSearchFields) (any, err
 	return resp, nil
 }
 
-// MountSearch MountSearch Performs a search of mounts. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// MountSearch
+/* MountSearch Performs a search of mounts. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/mount
 var MountSearch = bridgeMountSearch
 

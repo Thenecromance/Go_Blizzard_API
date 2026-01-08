@@ -64,9 +64,11 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetTalentTreeIndex{}
+	resp := &TalentTreeIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 	return resp, nil
 }
 
-// TalentTreeIndex TalentTreeIndex Returns an index of talent trees.
+// TalentTreeIndex
+/* TalentTreeIndex Returns an index of talent trees. */
 // Path: /data/wow/talent-tree/index
 var TalentTreeIndex = bridgeTalentTreeIndex
 
@@ -197,9 +200,11 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -280,7 +285,7 @@ func bridgeTalentTree(ctx context.Context, fields *TalentTreeFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetTalentTree{}
+	resp := &TalentTreeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -288,7 +293,8 @@ func bridgeTalentTree(ctx context.Context, fields *TalentTreeFields) (any, error
 	return resp, nil
 }
 
-// TalentTree TalentTree Returns a talent tree by specialization ID.
+// TalentTree
+/* TalentTree Returns a talent tree by specialization ID. */
 // Path: /data/wow/talent-tree/{talentTreeId}/playable-specialization/{specId}
 var TalentTree = bridgeTalentTree
 
@@ -340,9 +346,11 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -422,7 +430,7 @@ func bridgeTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 		return nil, err
 	}
 
-	resp := &BNetTalentTreeNodes{}
+	resp := &TalentTreeNodesModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -430,7 +438,8 @@ func bridgeTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 	return resp, nil
 }
 
-// TalentTreeNodes TalentTreeNodes Returns all talent tree nodes as well as links to associated playable specializations given a talent tree id. This is useful to generate loadout export codes.
+// TalentTreeNodes
+/* TalentTreeNodes Returns all talent tree nodes as well as links to associated playable specializations given a talent tree id. This is useful to generate loadout export codes. */
 // Path: /data/wow/talent-tree/{talentTreeId}
 var TalentTreeNodes = bridgeTalentTreeNodes
 
@@ -477,9 +486,11 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -545,7 +556,7 @@ func bridgeTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetTalentsIndex{}
+	resp := &TalentsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -553,7 +564,8 @@ func bridgeTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (any, e
 	return resp, nil
 }
 
-// TalentsIndex TalentsIndex Returns an index of talents.
+// TalentsIndex
+/* TalentsIndex Returns an index of talents. */
 // Path: /data/wow/talent/index
 var TalentsIndex = bridgeTalentsIndex
 
@@ -605,9 +617,11 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -687,7 +701,7 @@ func bridgeTalent(ctx context.Context, fields *TalentFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetTalent{}
+	resp := &TalentModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -695,7 +709,8 @@ func bridgeTalent(ctx context.Context, fields *TalentFields) (any, error) {
 	return resp, nil
 }
 
-// Talent Talent Returns a talent by ID.
+// Talent
+/* Talent Returns a talent by ID. */
 // Path: /data/wow/talent/{talentId}
 var Talent = bridgeTalent
 
@@ -742,9 +757,11 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -810,7 +827,7 @@ func bridgePvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetPvPTalentsIndex{}
+	resp := &PvPTalentsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -818,7 +835,8 @@ func bridgePvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 	return resp, nil
 }
 
-// PvPTalentsIndex PvPTalentsIndex Returns an index of PvP talents.
+// PvPTalentsIndex
+/* PvPTalentsIndex Returns an index of PvP talents. */
 // Path: /data/wow/pvp-talent/index
 var PvPTalentsIndex = bridgePvPTalentsIndex
 
@@ -870,9 +888,11 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -952,7 +972,7 @@ func bridgePvPTalent(ctx context.Context, fields *PvPTalentFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetPvPTalent{}
+	resp := &PvPTalentModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -960,7 +980,8 @@ func bridgePvPTalent(ctx context.Context, fields *PvPTalentFields) (any, error) 
 	return resp, nil
 }
 
-// PvPTalent PvPTalent Returns a PvP talent by ID.
+// PvPTalent
+/* PvPTalent Returns a PvP talent by ID. */
 // Path: /data/wow/pvp-talent/{pvpTalentId}
 var PvPTalent = bridgePvPTalent
 

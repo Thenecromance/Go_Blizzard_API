@@ -66,17 +66,21 @@ func StringCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 		return nil, err
 	}
 
-	resp := &BNetCharacterCollectionsIndex{}
+	resp := &CharacterCollectionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 	return resp, nil
 }
 
-// CharacterCollectionsIndex CharacterCollectionsIndex Returns an index of collection types for a character.
+// CharacterCollectionsIndex
+/* CharacterCollectionsIndex Returns an index of collection types for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections
 var CharacterCollectionsIndex = bridgeCharacterCollectionsIndex
 
@@ -214,17 +219,21 @@ func StringCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -305,7 +314,7 @@ func bridgeCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 		return nil, err
 	}
 
-	resp := &BNetCharacterDecorCollectionSummary{}
+	resp := &CharacterDecorCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -313,7 +322,8 @@ func bridgeCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 	return resp, nil
 }
 
-// CharacterDecorCollectionSummary CharacterDecorCollectionSummary Returns a summary of the housing decor collection a character has obtained.
+// CharacterDecorCollectionSummary
+/* CharacterDecorCollectionSummary Returns a summary of the housing decor collection a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/decor
 var CharacterDecorCollectionSummary = bridgeCharacterDecorCollectionSummary
 
@@ -362,17 +372,21 @@ func StringCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -453,7 +467,7 @@ func bridgeCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 		return nil, err
 	}
 
-	resp := &BNetCharacterHeirloomsCollectionSummary{}
+	resp := &CharacterHeirloomsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -461,7 +475,8 @@ func bridgeCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 	return resp, nil
 }
 
-// CharacterHeirloomsCollectionSummary CharacterHeirloomsCollectionSummary Returns a summary of the heirlooms a character has obtained.
+// CharacterHeirloomsCollectionSummary
+/* CharacterHeirloomsCollectionSummary Returns a summary of the heirlooms a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/heirlooms
 var CharacterHeirloomsCollectionSummary = bridgeCharacterHeirloomsCollectionSummary
 
@@ -510,17 +525,21 @@ func StringCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -601,7 +620,7 @@ func bridgeCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 		return nil, err
 	}
 
-	resp := &BNetCharacterMountsCollectionSummary{}
+	resp := &CharacterMountsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -609,7 +628,8 @@ func bridgeCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 	return resp, nil
 }
 
-// CharacterMountsCollectionSummary CharacterMountsCollectionSummary Returns a summary of the mounts a character has obtained.
+// CharacterMountsCollectionSummary
+/* CharacterMountsCollectionSummary Returns a summary of the mounts a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/mounts
 var CharacterMountsCollectionSummary = bridgeCharacterMountsCollectionSummary
 
@@ -658,17 +678,21 @@ func StringCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -749,7 +773,7 @@ func bridgeCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 		return nil, err
 	}
 
-	resp := &BNetCharacterPetsCollectionSummary{}
+	resp := &CharacterPetsCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -757,7 +781,8 @@ func bridgeCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 	return resp, nil
 }
 
-// CharacterPetsCollectionSummary CharacterPetsCollectionSummary Returns a summary of the battle pets a character has obtained.
+// CharacterPetsCollectionSummary
+/* CharacterPetsCollectionSummary Returns a summary of the battle pets a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/pets
 var CharacterPetsCollectionSummary = bridgeCharacterPetsCollectionSummary
 
@@ -806,17 +831,21 @@ func StringCharacterToysCollectionSummary(ctx context.Context, fields *Character
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -897,7 +926,7 @@ func bridgeCharacterToysCollectionSummary(ctx context.Context, fields *Character
 		return nil, err
 	}
 
-	resp := &BNetCharacterToysCollectionSummary{}
+	resp := &CharacterToysCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -905,7 +934,8 @@ func bridgeCharacterToysCollectionSummary(ctx context.Context, fields *Character
 	return resp, nil
 }
 
-// CharacterToysCollectionSummary CharacterToysCollectionSummary Returns a summary of the toys a character has obtained.
+// CharacterToysCollectionSummary
+/* CharacterToysCollectionSummary Returns a summary of the toys a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/toys
 var CharacterToysCollectionSummary = bridgeCharacterToysCollectionSummary
 
@@ -954,17 +984,21 @@ func StringCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1045,7 +1079,7 @@ func bridgeCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 		return nil, err
 	}
 
-	resp := &BNetCharacterTransmogCollectionSummary{}
+	resp := &CharacterTransmogCollectionSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1053,7 +1087,8 @@ func bridgeCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 	return resp, nil
 }
 
-// CharacterTransmogCollectionSummary CharacterTransmogCollectionSummary Returns a summary of the transmog unlocks a character has obtained.
+// CharacterTransmogCollectionSummary
+/* CharacterTransmogCollectionSummary Returns a summary of the transmog unlocks a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/transmogs
 var CharacterTransmogCollectionSummary = bridgeCharacterTransmogCollectionSummary
 

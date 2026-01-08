@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/region/index", ginRegionsIndex) //RegionsIndex Returns an index of regions.
+	app.Instance().RegisterRoute("GET", "/data/wow/region/index", ginRegionRegionsIndex) /* RegionsIndex Returns an index of regions. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/region/:regionId", ginRegion) //Region Returns a region by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/region/:regionId", ginRegionRegion) /* Region Returns a region by ID. */
 
 }
 
 
 
 
-func ginRegionsIndex(c *gin.Context) {
+func ginRegionRegionsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Region.RegionsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginRegionsIndex(c *gin.Context) {
 
 
 
-func ginRegion(c *gin.Context) {
+func ginRegionRegion(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Region.RegionFields
 	if err := c.ShouldBindUri(&req); err != nil {

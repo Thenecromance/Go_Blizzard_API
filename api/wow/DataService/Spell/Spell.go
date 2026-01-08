@@ -71,9 +71,11 @@ func StringSpell(ctx context.Context, fields *SpellFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -153,7 +155,7 @@ func bridgeSpell(ctx context.Context, fields *SpellFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetSpell{}
+	resp := &SpellModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -161,7 +163,8 @@ func bridgeSpell(ctx context.Context, fields *SpellFields) (any, error) {
 	return resp, nil
 }
 
-// Spell Spell Returns a spell by ID.
+// Spell
+/* Spell Returns a spell by ID. */
 // Path: /data/wow/spell/{spellId}
 var Spell = bridgeSpell
 
@@ -213,9 +216,11 @@ func StringSpellMedia(ctx context.Context, fields *SpellMediaFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -295,7 +300,7 @@ func bridgeSpellMedia(ctx context.Context, fields *SpellMediaFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetSpellMedia{}
+	resp := &SpellMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -303,7 +308,8 @@ func bridgeSpellMedia(ctx context.Context, fields *SpellMediaFields) (any, error
 	return resp, nil
 }
 
-// SpellMedia SpellMedia Returns media for a spell by ID.
+// SpellMedia
+/* SpellMedia Returns media for a spell by ID. */
 // Path: /data/wow/media/spell/{spellId}
 var SpellMedia = bridgeSpellMedia
 
@@ -352,13 +358,16 @@ func StringSpellSearch(ctx context.Context, fields *SpellSearchFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Holy Shield"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -432,7 +441,7 @@ func bridgeSpellSearch(ctx context.Context, fields *SpellSearchFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetSpellSearch{}
+	resp := &SpellSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -440,7 +449,8 @@ func bridgeSpellSearch(ctx context.Context, fields *SpellSearchFields) (any, err
 	return resp, nil
 }
 
-// SpellSearch SpellSearch Performs a search of spells. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// SpellSearch
+/* SpellSearch Performs a search of spells. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/spell
 var SpellSearch = bridgeSpellSearch
 

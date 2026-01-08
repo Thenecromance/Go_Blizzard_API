@@ -64,9 +64,11 @@ func StringReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 		return nil, err
 	}
 
-	resp := &BNetReputationFactionsIndex{}
+	resp := &ReputationFactionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 	return resp, nil
 }
 
-// ReputationFactionsIndex ReputationFactionsIndex Returns an index of reputation factions.
+// ReputationFactionsIndex
+/* ReputationFactionsIndex Returns an index of reputation factions. */
 // Path: /data/wow/reputation-faction/index
 var ReputationFactionsIndex = bridgeReputationFactionsIndex
 
@@ -192,9 +195,11 @@ func StringReputationFaction(ctx context.Context, fields *ReputationFactionField
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeReputationFaction(ctx context.Context, fields *ReputationFactionField
 		return nil, err
 	}
 
-	resp := &BNetReputationFaction{}
+	resp := &ReputationFactionModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeReputationFaction(ctx context.Context, fields *ReputationFactionField
 	return resp, nil
 }
 
-// ReputationFaction ReputationFaction Returns a single reputation faction by ID.
+// ReputationFaction
+/* ReputationFaction Returns a single reputation faction by ID. */
 // Path: /data/wow/reputation-faction/{reputationFactionId}
 var ReputationFaction = bridgeReputationFaction
 
@@ -329,9 +335,11 @@ func StringReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -397,7 +405,7 @@ func bridgeReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 		return nil, err
 	}
 
-	resp := &BNetReputationTiersIndex{}
+	resp := &ReputationTiersIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -405,7 +413,8 @@ func bridgeReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 	return resp, nil
 }
 
-// ReputationTiersIndex ReputationTiersIndex Returns an index of reputation tiers.
+// ReputationTiersIndex
+/* ReputationTiersIndex Returns an index of reputation tiers. */
 // Path: /data/wow/reputation-tiers/index
 var ReputationTiersIndex = bridgeReputationTiersIndex
 
@@ -457,9 +466,11 @@ func StringReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +550,7 @@ func bridgeReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 		return nil, err
 	}
 
-	resp := &BNetReputationTiers{}
+	resp := &ReputationTiersModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +558,8 @@ func bridgeReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 	return resp, nil
 }
 
-// ReputationTiers ReputationTiers Returns a single set of reputation tiers by ID.
+// ReputationTiers
+/* ReputationTiers Returns a single set of reputation tiers by ID. */
 // Path: /data/wow/reputation-tiers/{reputationTiersId}
 var ReputationTiers = bridgeReputationTiers
 

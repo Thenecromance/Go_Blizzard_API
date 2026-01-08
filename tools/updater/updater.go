@@ -1,15 +1,55 @@
 package updater
 
 import (
-	"Unofficial_API/bridge/log"
+	automodel "Unofficial_API/tools/updater/autoModel"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"text/template"
 
 	"github.com/bytedance/sonic"
+	log "github.com/sirupsen/logrus"
 )
+
+func AnyToString(v any) string {
+	switch val := v.(type) {
+	case nil:
+		return ""
+	case string:
+		return val
+	case bool:
+		return strconv.FormatBool(val)
+	case int:
+		return strconv.Itoa(val)
+	case int8:
+		return strconv.FormatInt(int64(val), 10)
+	case int16:
+		return strconv.FormatInt(int64(val), 10)
+	case int32:
+		return strconv.FormatInt(int64(val), 10)
+	case int64:
+		return strconv.FormatInt(val, 10)
+	case uint:
+		return strconv.FormatUint(uint64(val), 10)
+	case uint8:
+		return strconv.FormatUint(uint64(val), 10)
+	case uint16:
+		return strconv.FormatUint(uint64(val), 10)
+	case uint32:
+		return strconv.FormatUint(uint64(val), 10)
+	case uint64:
+		return strconv.FormatUint(val, 10)
+	case float32:
+		return strconv.FormatFloat(float64(val), 'f', -1, 32)
+	case float64:
+		return strconv.FormatFloat(val, 'f', -1, 64)
+	default:
+		return fmt.Sprint(v)
+	}
+}
 
 func RequestApiList(pkgName string, apiPath string, category string) []*ApiGroup {
 	url := apiPath
@@ -122,6 +162,27 @@ func GenerateModels(pkgName string, folder string, apiList []*ApiGroup) {
 				"ApiGroupName": apiGroup.ApiGroupName,
 				"Apis":         apiGroup.Apis,
 				"Name":         api.Name,
+			}
+
+			args := make(map[string]any)
+			for _, param := range api.Params {
+				if param.Type == "string" { // todo: this part of code need to be improved
+					args[param.SourceName] = AnyToString(param.DefaultValue)
+					continue
+				} else {
+					args[param.ParamName] = AnyToString(param.DefaultValue)
+
+				}
+			}
+
+			str, err := automodel.Request(&automodel.Fields{
+				Method:      api.Method,
+				Path:        api.Path,
+				StructName:  api.Name + "Model",
+				PackageName: pkgName + "_" + apiGroup.ApiGroupName,
+				Params:      args})
+			if err == nil {
+				data["AutoModel"] = str
 			}
 
 			if err := writeFile(modelFilePath, t, data); err != nil {

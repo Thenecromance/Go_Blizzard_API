@@ -11,20 +11,20 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/index", ginReputationFactionsIndex) //ReputationFactionsIndex Returns an index of reputation factions.
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/index", ginReputationsReputationFactionsIndex) /* ReputationFactionsIndex Returns an index of reputation factions. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/:reputationFactionId", ginReputationFaction) //ReputationFaction Returns a single reputation faction by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-faction/:reputationFactionId", ginReputationsReputationFaction) /* ReputationFaction Returns a single reputation faction by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/index", ginReputationTiersIndex) //ReputationTiersIndex Returns an index of reputation tiers.
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/index", ginReputationsReputationTiersIndex) /* ReputationTiersIndex Returns an index of reputation tiers. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/:reputationTiersId", ginReputationTiers) //ReputationTiers Returns a single set of reputation tiers by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/reputation-tiers/:reputationTiersId", ginReputationsReputationTiers) /* ReputationTiers Returns a single set of reputation tiers by ID. */
 
 }
 
 
 
 
-func ginReputationFactionsIndex(c *gin.Context) {
+func ginReputationsReputationFactionsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Reputations.ReputationFactionsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -47,7 +47,7 @@ func ginReputationFactionsIndex(c *gin.Context) {
 
 
 
-func ginReputationFaction(c *gin.Context) {
+func ginReputationsReputationFaction(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Reputations.ReputationFactionFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -70,7 +70,7 @@ func ginReputationFaction(c *gin.Context) {
 
 
 
-func ginReputationTiersIndex(c *gin.Context) {
+func ginReputationsReputationTiersIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Reputations.ReputationTiersIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -93,7 +93,7 @@ func ginReputationTiersIndex(c *gin.Context) {
 
 
 
-func ginReputationTiers(c *gin.Context) {
+func ginReputationsReputationTiers(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Reputations.ReputationTiersFields
 	if err := c.ShouldBindUri(&req); err != nil {

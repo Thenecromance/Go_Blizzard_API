@@ -11,13 +11,13 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/deck", ginGetdeckbycode) //Getdeckbycode Finds a deck by deck code. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/deck", ginDecksGetdeckbycode) /* Getdeckbycode Finds a deck by deck code. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>. */
 
-	//app.Instance().RegisterRoute("GET", "/hearthstone/deck", ginGetdeckbycardlist) //Getdeckbycardlist Finds a deck by list of cards, including the hero. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>.
+	//app.Instance().RegisterRoute("GET", "/hearthstone/deck", ginDecksGetdeckbycardlist) /* Getdeckbycardlist Finds a deck by list of cards, including the hero. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>. */
 
 }
 
-func ginGetdeckbycode(c *gin.Context) {
+func ginDecksGetdeckbycode(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Decks.GetdeckbycodeFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -38,7 +38,7 @@ func ginGetdeckbycode(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginGetdeckbycardlist(c *gin.Context) {
+func ginDecksGetdeckbycardlist(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Decks.GetdeckbycardlistFields
 	if err := c.ShouldBindUri(&req); err != nil {

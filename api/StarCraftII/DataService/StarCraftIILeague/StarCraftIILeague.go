@@ -7,7 +7,7 @@ package StarCraftII_StarCraftIILeague
 import (
 	"context"
 	"encoding/json"
-
+	
 	"io"
 	"net/http"
 
@@ -16,8 +16,11 @@ import (
 	"Unofficial_API/global"
 	"Unofficial_API/utils"
 
+
 	"github.com/jtacoma/uritemplates"
+
 )
+
 
 // ==============================================================================================
 // API: GetLeagueData
@@ -25,10 +28,10 @@ import (
 
 type GetLeagueDataFields struct {
 	SeasonId string `uri:"seasonId" binding:"required"` // The season ID of the data to retrieve.
-	QueueId  string `uri:"queueId" binding:"required"`  // The queue ID of the data to retrieve.
-	TeamType string `uri:"teamType" binding:"required"` // The team type of the data to retrieve.
-	LeagueId string `uri:"leagueId" binding:"required"` // The league ID of the data to retrieve.
-	Locale   string `form:"locale,default=en_US"`       // The locale to reflect in localized data.
+		QueueId string `uri:"queueId" binding:"required"` // The queue ID of the data to retrieve.
+		TeamType string `uri:"teamType" binding:"required"` // The team type of the data to retrieve.
+		LeagueId string `uri:"leagueId" binding:"required"` // The league ID of the data to retrieve.
+		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -59,26 +62,32 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-
+	
 	if fields.SeasonId == "" {
 		fields.SeasonId = "37"
 	}
-
+	
+	
 	if fields.QueueId == "" {
 		fields.QueueId = "201"
 	}
-
+	
+	
 	if fields.TeamType == "" {
 		fields.TeamType = "0"
 	}
-
+	
+	
 	if fields.LeagueId == "" {
 		fields.LeagueId = "6"
 	}
-
+	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -95,7 +104,7 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
-
+	
 	tpl, err := uritemplates.Parse(fields.Path)
 	if err != nil {
 		return "", err
@@ -103,9 +112,10 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 
 	pathValues := map[string]interface{}{
 		"seasonId": fields.SeasonId,
-		"queueId":  fields.QueueId,
+		"queueId": fields.QueueId,
 		"teamType": fields.TeamType,
 		"leagueId": fields.LeagueId,
+		
 	}
 
 	expandedPath, err := tpl.Expand(pathValues)
@@ -113,12 +123,13 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 		return "", err
 	}
 	req.URL.Path = expandedPath
+	
 
 	// 5. Build Query Strings
 	q := req.URL.Query()
-
+	
 	q.Add("locale", fields.Locale)
-
+	
 	req.URL.RawQuery = q.Encode()
 
 	// 6. Execute Request
@@ -141,7 +152,7 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 func bridgeGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (any, error) {
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-		// Design Scheme: Check if a custom CN handler is registered at runtime.
+        // Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetLeagueData != nil {
 			return CNHookGetLeagueData(ctx, fields)
@@ -156,7 +167,7 @@ func bridgeGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetGetLeagueData{}
+	resp := &GetLeagueDataModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -164,12 +175,14 @@ func bridgeGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (any,
 	return resp, nil
 }
 
-// GetLeagueData GetLeagueData Returns data for the specified season, queue, team, and league.
+// GetLeagueData
+/* GetLeagueData Returns data for the specified season, queue, team, and league.
 
-/***queueId**: the standard available queueIds are: `1`=WoL 1v1, `2`=WoL 2v2, `3`=WoL 3v3, `4`=WoL 4v4, `101`=HotS 1v1, `102`=HotS 2v2, `103`=HotS 3v3, `104`=HotS 4v4, `201`=LotV 1v1, `202`=LotV 2v2, `203`=LotV 3v3, `204`=LotV 4v4, `206`=LotV Archon. Note that other available queues may not be listed here.
+**queueId**: the standard available queueIds are: `1`=WoL 1v1, `2`=WoL 2v2, `3`=WoL 3v3, `4`=WoL 4v4, `101`=HotS 1v1, `102`=HotS 2v2, `103`=HotS 3v3, `104`=HotS 4v4, `201`=LotV 1v1, `202`=LotV 2v2, `203`=LotV 3v3, `204`=LotV 4v4, `206`=LotV Archon. Note that other available queues may not be listed here.
 
 **teamType**: there are two available teamTypes: `0`=arranged, `1`=random.
 
-**leagueId**: available leagueIds are: `0`=Bronze, `1`=Silver, `2`=Gold, `3`=Platinum, `4`=Diamond, `5`=Master, `6`=Grandmaster.*/
+**leagueId**: available leagueIds are: `0`=Bronze, `1`=Silver, `2`=Gold, `3`=Platinum, `4`=Diamond, `5`=Master, `6`=Grandmaster. */
 // Path: /data/sc2/league/{seasonId}/{queueId}/{teamType}/{leagueId}
 var GetLeagueData = bridgeGetLeagueData
+

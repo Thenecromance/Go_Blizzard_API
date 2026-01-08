@@ -64,9 +64,11 @@ func StringPvPTiersIndex(ctx context.Context, fields *PvPTiersIndexFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePvPTiersIndex(ctx context.Context, fields *PvPTiersIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetPvPTiersIndex{}
+	resp := &PvPTiersIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePvPTiersIndex(ctx context.Context, fields *PvPTiersIndexFields) (any,
 	return resp, nil
 }
 
-// PvPTiersIndex PvPTiersIndex Returns an index of PvP tiers.
+// PvPTiersIndex
+/* PvPTiersIndex Returns an index of PvP tiers. */
 // Path: /data/wow/pvp-tier/index
 var PvPTiersIndex = bridgePvPTiersIndex
 
@@ -192,9 +195,11 @@ func StringPvPTier(ctx context.Context, fields *PvPTierFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePvPTier(ctx context.Context, fields *PvPTierFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetPvPTier{}
+	resp := &PvPTierModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePvPTier(ctx context.Context, fields *PvPTierFields) (any, error) {
 	return resp, nil
 }
 
-// PvPTier PvPTier Returns a PvP tier by ID.
+// PvPTier
+/* PvPTier Returns a PvP tier by ID. */
 // Path: /data/wow/pvp-tier/{pvpTierId}
 var PvPTier = bridgePvPTier
 
@@ -334,9 +340,11 @@ func StringPvPTierMedia(ctx context.Context, fields *PvPTierMediaFields) (string
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgePvPTierMedia(ctx context.Context, fields *PvPTierMediaFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetPvPTierMedia{}
+	resp := &PvPTierMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgePvPTierMedia(ctx context.Context, fields *PvPTierMediaFields) (any, e
 	return resp, nil
 }
 
-// PvPTierMedia PvPTierMedia Returns media for a PvP tier by ID.
+// PvPTierMedia
+/* PvPTierMedia Returns media for a PvP tier by ID. */
 // Path: /data/wow/media/pvp-tier/{pvpTierId}
 var PvPTierMedia = bridgePvPTierMedia
 

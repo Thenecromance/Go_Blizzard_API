@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/auctions/index", ginAuctionHouseIndex) //AuctionHouseIndex Returns an index of auction houses for a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/auctions/index", ginAuctionHouseAuctionHouseIndex) /* AuctionHouseIndex Returns an index of auction houses for a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/auctions/:auctionHouseId", ginAuctions) //Auctions Returns all active auctions for a specific auction house on a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.<br/><br/>Auction house data updates at a set interval. The value was initially set at 1 hour; however, it might change over time without notice.<br/><br/>Depending on the number of active auctions on the specified connected realm, the response from this endpoint may be rather large, sometimes exceeding 10 MB.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/auctions/:auctionHouseId", ginAuctionHouseAuctions) /* Auctions Returns all active auctions for a specific auction house on a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.<br/><br/>Auction house data updates at a set interval. The value was initially set at 1 hour; however, it might change over time without notice.<br/><br/>Depending on the number of active auctions on the specified connected realm, the response from this endpoint may be rather large, sometimes exceeding 10 MB. */
 
 }
 
 
 
 
-func ginAuctionHouseIndex(c *gin.Context) {
+func ginAuctionHouseAuctionHouseIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_AuctionHouse.AuctionHouseIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginAuctionHouseIndex(c *gin.Context) {
 
 
 
-func ginAuctions(c *gin.Context) {
+func ginAuctionHouseAuctions(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_AuctionHouse.AuctionsFields
 	if err := c.ShouldBindUri(&req); err != nil {

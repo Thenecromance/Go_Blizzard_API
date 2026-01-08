@@ -67,13 +67,16 @@ func StringItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (st
 		fields.AppearanceId = "321"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -153,7 +156,7 @@ func bridgeItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (an
 		return nil, err
 	}
 
-	resp := &BNetItemAppearance{}
+	resp := &ItemAppearanceModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -161,7 +164,8 @@ func bridgeItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (an
 	return resp, nil
 }
 
-// ItemAppearance ItemAppearance Returns an item appearance by ID.
+// ItemAppearance
+/* ItemAppearance Returns an item appearance by ID. */
 // Path: /data/wow/item-appearance/{appearanceId}
 var ItemAppearance = bridgeItemAppearance
 
@@ -210,13 +214,16 @@ func StringItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Slottype == "" {
 		fields.Slottype = "HEAD"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -290,7 +297,7 @@ func bridgeItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 		return nil, err
 	}
 
-	resp := &BNetItemAppearanceSearch{}
+	resp := &ItemAppearanceSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -298,7 +305,8 @@ func bridgeItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 	return resp, nil
 }
 
-// ItemAppearanceSearch ItemAppearanceSearch Performs a search of item appearances. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// ItemAppearanceSearch
+/* ItemAppearanceSearch Performs a search of item appearances. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/item-appearance
 var ItemAppearanceSearch = bridgeItemAppearanceSearch
 
@@ -345,9 +353,11 @@ func StringItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -413,7 +423,7 @@ func bridgeItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 		return nil, err
 	}
 
-	resp := &BNetItemAppearanceSetsIndex{}
+	resp := &ItemAppearanceSetsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -421,7 +431,8 @@ func bridgeItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 	return resp, nil
 }
 
-// ItemAppearanceSetsIndex ItemAppearanceSetsIndex Returns an index of item appearance sets.
+// ItemAppearanceSetsIndex
+/* ItemAppearanceSetsIndex Returns an index of item appearance sets. */
 // Path: /data/wow/item-appearance/set/index
 var ItemAppearanceSetsIndex = bridgeItemAppearanceSetsIndex
 
@@ -473,9 +484,11 @@ func StringItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -555,7 +568,7 @@ func bridgeItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 		return nil, err
 	}
 
-	resp := &BNetItemAppearanceSet{}
+	resp := &ItemAppearanceSetModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -563,7 +576,8 @@ func bridgeItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 	return resp, nil
 }
 
-// ItemAppearanceSet ItemAppearanceSet Returns an item appearance set by ID.
+// ItemAppearanceSet
+/* ItemAppearanceSet Returns an item appearance set by ID. */
 // Path: /data/wow/item-appearance/set/{appearanceSetId}
 var ItemAppearanceSet = bridgeItemAppearanceSet
 
@@ -610,9 +624,11 @@ func StringItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -678,7 +694,7 @@ func bridgeItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 		return nil, err
 	}
 
-	resp := &BNetItemAppearanceSlotIndex{}
+	resp := &ItemAppearanceSlotIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -686,7 +702,8 @@ func bridgeItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 	return resp, nil
 }
 
-// ItemAppearanceSlotIndex ItemAppearanceSlotIndex Returns an index of item appearance slots.
+// ItemAppearanceSlotIndex
+/* ItemAppearanceSlotIndex Returns an index of item appearance slots. */
 // Path: /data/wow/item-appearance/slot/index
 var ItemAppearanceSlotIndex = bridgeItemAppearanceSlotIndex
 
@@ -734,13 +751,16 @@ func StringItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 		fields.SlotType = "HEAD"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -820,7 +840,7 @@ func bridgeItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 		return nil, err
 	}
 
-	resp := &BNetItemAppearanceSlot{}
+	resp := &ItemAppearanceSlotModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -828,7 +848,8 @@ func bridgeItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 	return resp, nil
 }
 
-// ItemAppearanceSlot ItemAppearanceSlot Returns an item appearance slot slot type.
+// ItemAppearanceSlot
+/* ItemAppearanceSlot Returns an item appearance slot slot type. */
 // Path: /data/wow/item-appearance/slot/{slotType}
 var ItemAppearanceSlot = bridgeItemAppearanceSlot
 

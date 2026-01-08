@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-specialization/index", ginPlayableSpecializationsIndex) //PlayableSpecializationsIndex Returns an index of playable specializations.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-specialization/index", ginPlayableSpecializationPlayableSpecializationsIndex) /* PlayableSpecializationsIndex Returns an index of playable specializations. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-specialization/:specId", ginPlayableSpecialization) //PlayableSpecialization Returns a playable specialization by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-specialization/:specId", ginPlayableSpecializationPlayableSpecialization) /* PlayableSpecialization Returns a playable specialization by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/playable-specialization/:specId", ginPlayableSpecializationMedia) //PlayableSpecializationMedia Returns media for a playable specialization by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/playable-specialization/:specId", ginPlayableSpecializationPlayableSpecializationMedia) /* PlayableSpecializationMedia Returns media for a playable specialization by ID. */
 
 }
 
 
 
 
-func ginPlayableSpecializationsIndex(c *gin.Context) {
+func ginPlayableSpecializationPlayableSpecializationsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PlayableSpecialization.PlayableSpecializationsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginPlayableSpecializationsIndex(c *gin.Context) {
 
 
 
-func ginPlayableSpecialization(c *gin.Context) {
+func ginPlayableSpecializationPlayableSpecialization(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PlayableSpecialization.PlayableSpecializationFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginPlayableSpecialization(c *gin.Context) {
 
 
 
-func ginPlayableSpecializationMedia(c *gin.Context) {
+func ginPlayableSpecializationPlayableSpecializationMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PlayableSpecialization.PlayableSpecializationMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

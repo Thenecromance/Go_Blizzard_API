@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/character-media", ginCharacterMediaSummary) //CharacterMediaSummary Returns a summary of the media assets available for a character (such as an avatar render).
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/character-media", ginCharacterMediaCharacterMediaSummary) /* CharacterMediaSummary Returns a summary of the media assets available for a character (such as an avatar render). */
 
 }
 
 
 
 
-func ginCharacterMediaSummary(c *gin.Context) {
+func ginCharacterMediaCharacterMediaSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterMedia.CharacterMediaSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

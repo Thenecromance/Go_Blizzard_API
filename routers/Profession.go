@@ -11,24 +11,24 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/profession/index", ginProfessionsIndex) //ProfessionsIndex Returns an index of professions.
+	app.Instance().RegisterRoute("GET", "/data/wow/profession/index", ginProfessionProfessionsIndex) /* ProfessionsIndex Returns an index of professions. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/profession/:professionId", ginProfession) //Profession Returns a profession by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/profession/:professionId", ginProfessionProfession) /* Profession Returns a profession by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/profession/:professionId", ginProfessionMedia) //ProfessionMedia Returns media for a profession by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/profession/:professionId", ginProfessionProfessionMedia) /* ProfessionMedia Returns media for a profession by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/profession/:professionId/skill-tier/:skillTierId", ginProfessionSkillTier) //ProfessionSkillTier Returns a skill tier for a profession by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/profession/:professionId/skill-tier/:skillTierId", ginProfessionProfessionSkillTier) /* ProfessionSkillTier Returns a skill tier for a profession by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/recipe/:recipeId", ginRecipe) //Recipe Returns a recipe by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/recipe/:recipeId", ginProfessionRecipe) /* Recipe Returns a recipe by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/recipe/:recipeId", ginRecipeMedia) //RecipeMedia Returns media for a recipe by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/recipe/:recipeId", ginProfessionRecipeMedia) /* RecipeMedia Returns media for a recipe by ID. */
 
 }
 
 
 
 
-func ginProfessionsIndex(c *gin.Context) {
+func ginProfessionProfessionsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.ProfessionsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -51,7 +51,7 @@ func ginProfessionsIndex(c *gin.Context) {
 
 
 
-func ginProfession(c *gin.Context) {
+func ginProfessionProfession(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.ProfessionFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -74,7 +74,7 @@ func ginProfession(c *gin.Context) {
 
 
 
-func ginProfessionMedia(c *gin.Context) {
+func ginProfessionProfessionMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.ProfessionMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -97,7 +97,7 @@ func ginProfessionMedia(c *gin.Context) {
 
 
 
-func ginProfessionSkillTier(c *gin.Context) {
+func ginProfessionProfessionSkillTier(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.ProfessionSkillTierFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -120,7 +120,7 @@ func ginProfessionSkillTier(c *gin.Context) {
 
 
 
-func ginRecipe(c *gin.Context) {
+func ginProfessionRecipe(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.RecipeFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -143,7 +143,7 @@ func ginRecipe(c *gin.Context) {
 
 
 
-func ginRecipeMedia(c *gin.Context) {
+func ginProfessionRecipeMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Profession.RecipeMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

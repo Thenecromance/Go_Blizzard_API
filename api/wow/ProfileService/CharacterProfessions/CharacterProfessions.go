@@ -66,17 +66,21 @@ func StringCharacterProfessionsSummary(ctx context.Context, fields *CharacterPro
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterProfessionsSummary(ctx context.Context, fields *CharacterPro
 		return nil, err
 	}
 
-	resp := &BNetCharacterProfessionsSummary{}
+	resp := &CharacterProfessionsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterProfessionsSummary(ctx context.Context, fields *CharacterPro
 	return resp, nil
 }
 
-// CharacterProfessionsSummary CharacterProfessionsSummary Returns a summary of professions for a character.
+// CharacterProfessionsSummary
+/* CharacterProfessionsSummary Returns a summary of professions for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/professions
 var CharacterProfessionsSummary = bridgeCharacterProfessionsSummary
 

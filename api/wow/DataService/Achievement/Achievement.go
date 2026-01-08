@@ -64,9 +64,11 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 		return nil, err
 	}
 
-	resp := &BNetAchievementsIndex{}
+	resp := &AchievementsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 	return resp, nil
 }
 
-// AchievementsIndex AchievementsIndex Returns an index of achievements.
+// AchievementsIndex
+/* AchievementsIndex Returns an index of achievements. */
 // Path: /data/wow/achievement/index
 var AchievementsIndex = bridgeAchievementsIndex
 
@@ -192,9 +195,11 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeAchievement(ctx context.Context, fields *AchievementFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetAchievement{}
+	resp := &AchievementModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeAchievement(ctx context.Context, fields *AchievementFields) (any, err
 	return resp, nil
 }
 
-// Achievement Achievement Returns an achievement by ID.
+// Achievement
+/* Achievement Returns an achievement by ID. */
 // Path: /data/wow/achievement/{achievementId}
 var Achievement = bridgeAchievement
 
@@ -334,9 +340,11 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgeAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 		return nil, err
 	}
 
-	resp := &BNetAchievementMedia{}
+	resp := &AchievementMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgeAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 	return resp, nil
 }
 
-// AchievementMedia AchievementMedia Returns media for an achievement by ID.
+// AchievementMedia
+/* AchievementMedia Returns media for an achievement by ID. */
 // Path: /data/wow/media/achievement/{achievementId}
 var AchievementMedia = bridgeAchievementMedia
 
@@ -471,9 +480,11 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +550,7 @@ func bridgeAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 		return nil, err
 	}
 
-	resp := &BNetAchievementCategoriesIndex{}
+	resp := &AchievementCategoriesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +558,8 @@ func bridgeAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 	return resp, nil
 }
 
-// AchievementCategoriesIndex AchievementCategoriesIndex Returns an index of achievement categories.
+// AchievementCategoriesIndex
+/* AchievementCategoriesIndex Returns an index of achievement categories. */
 // Path: /data/wow/achievement-category/index
 var AchievementCategoriesIndex = bridgeAchievementCategoriesIndex
 
@@ -599,9 +611,11 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -681,7 +695,7 @@ func bridgeAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 		return nil, err
 	}
 
-	resp := &BNetAchievementCategory{}
+	resp := &AchievementCategoryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -689,7 +703,8 @@ func bridgeAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 	return resp, nil
 }
 
-// AchievementCategory AchievementCategory Returns an achievement category by ID.
+// AchievementCategory
+/* AchievementCategory Returns an achievement category by ID. */
 // Path: /data/wow/achievement-category/{achievementCategoryId}
 var AchievementCategory = bridgeAchievementCategory
 

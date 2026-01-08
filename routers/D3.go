@@ -3,29 +3,32 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/api/D3/DataService/D3"
 	"Unofficial_API/app"
+	"Unofficial_API/api/D3/DataService/D3"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/d3/season/", ginSeasonIndex) //SeasonIndex Returns an index of available seasons.
+	app.Instance().RegisterRoute("GET", "/data/d3/season/", ginD3SeasonIndex) /* SeasonIndex Returns an index of available seasons. */
 
-	app.Instance().RegisterRoute("GET", "/data/d3/season/:id", ginD3Season) //Season Returns a leaderboard list for the specified season.
+	app.Instance().RegisterRoute("GET", "/data/d3/season/:id", ginD3Season) /* Season Returns a leaderboard list for the specified season. */
 
-	app.Instance().RegisterRoute("GET", "/data/d3/season/:id/leaderboard/:leaderboard", ginSeasonLeaderboard) //SeasonLeaderboard Returns a the specified leaderboard for the specified season.
+	app.Instance().RegisterRoute("GET", "/data/d3/season/:id/leaderboard/:leaderboard", ginD3SeasonLeaderboard) /* SeasonLeaderboard Returns a the specified leaderboard for the specified season. */
 
-	app.Instance().RegisterRoute("GET", "/data/d3/era/", ginEraIndex) //EraIndex Returns an index of available eras.
+	app.Instance().RegisterRoute("GET", "/data/d3/era/", ginD3EraIndex) /* EraIndex Returns an index of available eras. */
 
-	app.Instance().RegisterRoute("GET", "/data/d3/era/:id", ginEra) //Era Returns a leaderboard list for a particular era.
+	app.Instance().RegisterRoute("GET", "/data/d3/era/:id", ginD3Era) /* Era Returns a leaderboard list for a particular era. */
 
-	app.Instance().RegisterRoute("GET", "/data/d3/era/:id/leaderboard/:leaderboard", ginEraLeaderboard) //EraLeaderboard Returns the specified leaderboard for the specified era.
+	app.Instance().RegisterRoute("GET", "/data/d3/era/:id/leaderboard/:leaderboard", ginD3EraLeaderboard) /* EraLeaderboard Returns the specified leaderboard for the specified era. */
 
 }
 
-func ginSeasonIndex(c *gin.Context) {
+
+
+
+func ginD3SeasonIndex(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3.SeasonIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,6 +48,8 @@ func ginSeasonIndex(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+
 
 func ginD3Season(c *gin.Context) {
 	// binding uri parameters
@@ -67,7 +72,9 @@ func ginD3Season(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginSeasonLeaderboard(c *gin.Context) {
+
+
+func ginD3SeasonLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3.SeasonLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -88,7 +95,9 @@ func ginSeasonLeaderboard(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginEraIndex(c *gin.Context) {
+
+
+func ginD3EraIndex(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3.EraIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -109,7 +118,9 @@ func ginEraIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginEra(c *gin.Context) {
+
+
+func ginD3Era(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3.EraFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -130,7 +141,9 @@ func ginEra(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginEraLeaderboard(c *gin.Context) {
+
+
+func ginD3EraLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3.EraLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {

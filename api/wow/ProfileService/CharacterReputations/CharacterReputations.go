@@ -66,17 +66,21 @@ func StringCharacterReputationsSummary(ctx context.Context, fields *CharacterRep
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterReputationsSummary(ctx context.Context, fields *CharacterRep
 		return nil, err
 	}
 
-	resp := &BNetCharacterReputationsSummary{}
+	resp := &CharacterReputationsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterReputationsSummary(ctx context.Context, fields *CharacterRep
 	return resp, nil
 }
 
-// CharacterReputationsSummary CharacterReputationsSummary Returns a summary of a character's reputations.
+// CharacterReputationsSummary
+/* CharacterReputationsSummary Returns a summary of a character's reputations. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/reputations
 var CharacterReputationsSummary = bridgeCharacterReputationsSummary
 

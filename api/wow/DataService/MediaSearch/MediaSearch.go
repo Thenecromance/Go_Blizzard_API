@@ -66,13 +66,16 @@ func StringMediaSearch(ctx context.Context, fields *MediaSearchFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Tags == "" {
 		fields.Tags = "item"
 	}
 	
+	
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
+	
 	
 	if fields._page == 0 {
 		fields._page = 1
@@ -146,7 +149,7 @@ func bridgeMediaSearch(ctx context.Context, fields *MediaSearchFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetMediaSearch{}
+	resp := &MediaSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -154,7 +157,8 @@ func bridgeMediaSearch(ctx context.Context, fields *MediaSearchFields) (any, err
 	return resp, nil
 }
 
-// MediaSearch MediaSearch Performs a search of all types of media documents. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+// MediaSearch
+/* MediaSearch Performs a search of all types of media documents. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/media
 var MediaSearch = bridgeMediaSearch
 

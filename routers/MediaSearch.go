@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/media", ginMediaSearch) //MediaSearch Performs a search of all types of media documents. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/media", ginMediaSearchMediaSearch) /* MediaSearch Performs a search of all types of media documents. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginMediaSearch(c *gin.Context) {
+func ginMediaSearchMediaSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_MediaSearch.MediaSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

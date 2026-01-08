@@ -66,17 +66,21 @@ func StringCharacterHunterPetsSummary(ctx context.Context, fields *CharacterHunt
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterHunterPetsSummary(ctx context.Context, fields *CharacterHunt
 		return nil, err
 	}
 
-	resp := &BNetCharacterHunterPetsSummary{}
+	resp := &CharacterHunterPetsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterHunterPetsSummary(ctx context.Context, fields *CharacterHunt
 	return resp, nil
 }
 
-// CharacterHunterPetsSummary CharacterHunterPetsSummary If the character is a hunter, returns a summary of the character's hunter pets. Otherwise, returns an HTTP 404 Not Found error.
+// CharacterHunterPetsSummary
+/* CharacterHunterPetsSummary If the character is a hunter, returns a summary of the character's hunter pets. Otherwise, returns an HTTP 404 Not Found error. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/hunter-pets
 var CharacterHunterPetsSummary = bridgeCharacterHunterPetsSummary
 

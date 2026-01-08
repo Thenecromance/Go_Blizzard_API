@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-tier/index", ginPvPTiersIndex) //PvPTiersIndex Returns an index of PvP tiers.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-tier/index", ginPvPTierPvPTiersIndex) /* PvPTiersIndex Returns an index of PvP tiers. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-tier/:pvpTierId", ginPvPTier) //PvPTier Returns a PvP tier by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-tier/:pvpTierId", ginPvPTierPvPTier) /* PvPTier Returns a PvP tier by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/pvp-tier/:pvpTierId", ginPvPTierMedia) //PvPTierMedia Returns media for a PvP tier by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/pvp-tier/:pvpTierId", ginPvPTierPvPTierMedia) /* PvPTierMedia Returns media for a PvP tier by ID. */
 
 }
 
 
 
 
-func ginPvPTiersIndex(c *gin.Context) {
+func ginPvPTierPvPTiersIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PvPTier.PvPTiersIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginPvPTiersIndex(c *gin.Context) {
 
 
 
-func ginPvPTier(c *gin.Context) {
+func ginPvPTierPvPTier(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PvPTier.PvPTierFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginPvPTier(c *gin.Context) {
 
 
 
-func ginPvPTierMedia(c *gin.Context) {
+func ginPvPTierPvPTierMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_PvPTier.PvPTierMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

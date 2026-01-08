@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/equipment", ginCharacterEquipmentSummary) //CharacterEquipmentSummary Returns a summary of the items equipped by a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/equipment", ginCharacterEquipmentCharacterEquipmentSummary) /* CharacterEquipmentSummary Returns a summary of the items equipped by a character. */
 
 }
 
 
 
 
-func ginCharacterEquipmentSummary(c *gin.Context) {
+func ginCharacterEquipmentCharacterEquipmentSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterEquipment.CharacterEquipmentSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -64,9 +64,11 @@ func StringGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (stri
 		fields.Locale = "en_US"
 	}
 	
+	
 	if fields.Code == "" {
 		fields.Code = "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -136,7 +138,7 @@ func bridgeGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetGetdeckbycode{}
+	resp := &GetdeckbycodeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -144,7 +146,8 @@ func bridgeGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (any,
 	return resp, nil
 }
 
-// Getdeckbycode Getdeckbycode Finds a deck by deck code. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>.
+// Getdeckbycode
+/* Getdeckbycode Finds a deck by deck code. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>. */
 // Path: /hearthstone/deck
 var Getdeckbycode = bridgeGetdeckbycode
 
@@ -193,13 +196,16 @@ func StringGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 		fields.Locale = "en_US"
 	}
 	
+	
 	if fields.Ids == "" {
 		fields.Ids = "906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416"
 	}
 	
+	
 	if fields.Hero == "" {
 		fields.Hero = "813"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -269,7 +275,7 @@ func bridgeGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 		return nil, err
 	}
 
-	resp := &BNetGetdeckbycardlist{}
+	resp := &GetdeckbycardlistModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -277,7 +283,8 @@ func bridgeGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 	return resp, nil
 }
 
-// Getdeckbycardlist Getdeckbycardlist Finds a deck by list of cards, including the hero. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>.
+// Getdeckbycardlist
+/* Getdeckbycardlist Finds a deck by list of cards, including the hero. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>. */
 // Path: /hearthstone/deck
 var Getdeckbycardlist = bridgeGetdeckbycardlist
 

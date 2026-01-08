@@ -11,22 +11,22 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/achievement/index", ginAchievementsIndex) //AchievementsIndex Returns an index of achievements.
+	app.Instance().RegisterRoute("GET", "/data/wow/achievement/index", ginAchievementAchievementsIndex) /* AchievementsIndex Returns an index of achievements. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/achievement/:achievementId", ginAchievement) //Achievement Returns an achievement by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/achievement/:achievementId", ginAchievementAchievement) /* Achievement Returns an achievement by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/achievement/:achievementId", ginAchievementMedia) //AchievementMedia Returns media for an achievement by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/achievement/:achievementId", ginAchievementAchievementMedia) /* AchievementMedia Returns media for an achievement by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/achievement-category/index", ginAchievementCategoriesIndex) //AchievementCategoriesIndex Returns an index of achievement categories.
+	app.Instance().RegisterRoute("GET", "/data/wow/achievement-category/index", ginAchievementAchievementCategoriesIndex) /* AchievementCategoriesIndex Returns an index of achievement categories. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/achievement-category/:achievementCategoryId", ginAchievementCategory) //AchievementCategory Returns an achievement category by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/achievement-category/:achievementCategoryId", ginAchievementAchievementCategory) /* AchievementCategory Returns an achievement category by ID. */
 
 }
 
 
 
 
-func ginAchievementsIndex(c *gin.Context) {
+func ginAchievementAchievementsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Achievement.AchievementsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -49,7 +49,7 @@ func ginAchievementsIndex(c *gin.Context) {
 
 
 
-func ginAchievement(c *gin.Context) {
+func ginAchievementAchievement(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Achievement.AchievementFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -72,7 +72,7 @@ func ginAchievement(c *gin.Context) {
 
 
 
-func ginAchievementMedia(c *gin.Context) {
+func ginAchievementAchievementMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Achievement.AchievementMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -95,7 +95,7 @@ func ginAchievementMedia(c *gin.Context) {
 
 
 
-func ginAchievementCategoriesIndex(c *gin.Context) {
+func ginAchievementAchievementCategoriesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Achievement.AchievementCategoriesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -118,7 +118,7 @@ func ginAchievementCategoriesIndex(c *gin.Context) {
 
 
 
-func ginAchievementCategory(c *gin.Context) {
+func ginAchievementAchievementCategory(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Achievement.AchievementCategoryFields
 	if err := c.ShouldBindUri(&req); err != nil {

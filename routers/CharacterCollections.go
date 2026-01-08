@@ -11,26 +11,26 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections", ginCharacterCollectionsIndex) //CharacterCollectionsIndex Returns an index of collection types for a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections", ginCharacterCollectionsCharacterCollectionsIndex) /* CharacterCollectionsIndex Returns an index of collection types for a character. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/decor", ginCharacterDecorCollectionSummary) //CharacterDecorCollectionSummary Returns a summary of the housing decor collection a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/decor", ginCharacterCollectionsCharacterDecorCollectionSummary) /* CharacterDecorCollectionSummary Returns a summary of the housing decor collection a character has obtained. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/heirlooms", ginCharacterHeirloomsCollectionSummary) //CharacterHeirloomsCollectionSummary Returns a summary of the heirlooms a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/heirlooms", ginCharacterCollectionsCharacterHeirloomsCollectionSummary) /* CharacterHeirloomsCollectionSummary Returns a summary of the heirlooms a character has obtained. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/mounts", ginCharacterMountsCollectionSummary) //CharacterMountsCollectionSummary Returns a summary of the mounts a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/mounts", ginCharacterCollectionsCharacterMountsCollectionSummary) /* CharacterMountsCollectionSummary Returns a summary of the mounts a character has obtained. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/pets", ginCharacterPetsCollectionSummary) //CharacterPetsCollectionSummary Returns a summary of the battle pets a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/pets", ginCharacterCollectionsCharacterPetsCollectionSummary) /* CharacterPetsCollectionSummary Returns a summary of the battle pets a character has obtained. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/toys", ginCharacterToysCollectionSummary) //CharacterToysCollectionSummary Returns a summary of the toys a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/toys", ginCharacterCollectionsCharacterToysCollectionSummary) /* CharacterToysCollectionSummary Returns a summary of the toys a character has obtained. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/transmogs", ginCharacterTransmogCollectionSummary) //CharacterTransmogCollectionSummary Returns a summary of the transmog unlocks a character has obtained.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/collections/transmogs", ginCharacterCollectionsCharacterTransmogCollectionSummary) /* CharacterTransmogCollectionSummary Returns a summary of the transmog unlocks a character has obtained. */
 
 }
 
 
 
 
-func ginCharacterCollectionsIndex(c *gin.Context) {
+func ginCharacterCollectionsCharacterCollectionsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterCollectionsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -53,7 +53,7 @@ func ginCharacterCollectionsIndex(c *gin.Context) {
 
 
 
-func ginCharacterDecorCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterDecorCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterDecorCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -76,7 +76,7 @@ func ginCharacterDecorCollectionSummary(c *gin.Context) {
 
 
 
-func ginCharacterHeirloomsCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterHeirloomsCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterHeirloomsCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -99,7 +99,7 @@ func ginCharacterHeirloomsCollectionSummary(c *gin.Context) {
 
 
 
-func ginCharacterMountsCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterMountsCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterMountsCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -122,7 +122,7 @@ func ginCharacterMountsCollectionSummary(c *gin.Context) {
 
 
 
-func ginCharacterPetsCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterPetsCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterPetsCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -145,7 +145,7 @@ func ginCharacterPetsCollectionSummary(c *gin.Context) {
 
 
 
-func ginCharacterToysCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterToysCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterToysCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -168,7 +168,7 @@ func ginCharacterToysCollectionSummary(c *gin.Context) {
 
 
 
-func ginCharacterTransmogCollectionSummary(c *gin.Context) {
+func ginCharacterCollectionsCharacterTransmogCollectionSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterCollections.CharacterTransmogCollectionSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

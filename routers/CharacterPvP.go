@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/pvp-bracket/:pvpBracket", ginCharacterPvPBracketStatistics) //CharacterPvPBracketStatistics Returns the PvP bracket statistics for a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/pvp-bracket/:pvpBracket", ginCharacterPvPCharacterPvPBracketStatistics) /* CharacterPvPBracketStatistics Returns the PvP bracket statistics for a character. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/pvp-summary", ginCharacterPvPSummary) //CharacterPvPSummary Returns a PvP summary for a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/pvp-summary", ginCharacterPvPCharacterPvPSummary) /* CharacterPvPSummary Returns a PvP summary for a character. */
 
 }
 
 
 
 
-func ginCharacterPvPBracketStatistics(c *gin.Context) {
+func ginCharacterPvPCharacterPvPBracketStatistics(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterPvP.CharacterPvPBracketStatisticsFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginCharacterPvPBracketStatistics(c *gin.Context) {
 
 
 
-func ginCharacterPvPSummary(c *gin.Context) {
+func ginCharacterPvPCharacterPvPSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterPvP.CharacterPvPSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

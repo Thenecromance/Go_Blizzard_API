@@ -11,26 +11,26 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/index", ginCovenantIndex) //CovenantIndex Returns an index of covenants.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/index", ginCovenantCovenantIndex) /* CovenantIndex Returns an index of covenants. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/:covenantId", ginCovenant) //Covenant Returns a covenant by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/:covenantId", ginCovenantCovenant) /* Covenant Returns a covenant by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/covenant/:covenantId", ginCovenantMedia) //CovenantMedia Returns media for a covenant by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/covenant/:covenantId", ginCovenantCovenantMedia) /* CovenantMedia Returns media for a covenant by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/soulbind/index", ginSoulbindIndex) //SoulbindIndex Returns an index of soulbinds.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/soulbind/index", ginCovenantSoulbindIndex) /* SoulbindIndex Returns an index of soulbinds. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/soulbind/:soulbindId", ginSoulbind) //Soulbind Returns a soulbind by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/soulbind/:soulbindId", ginCovenantSoulbind) /* Soulbind Returns a soulbind by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/conduit/index", ginConduitIndex) //ConduitIndex Returns an index of conduits.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/conduit/index", ginCovenantConduitIndex) /* ConduitIndex Returns an index of conduits. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/covenant/conduit/:conduitId", ginConduit) //Conduit Returns a conduit by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/covenant/conduit/:conduitId", ginCovenantConduit) /* Conduit Returns a conduit by ID. */
 
 }
 
 
 
 
-func ginCovenantIndex(c *gin.Context) {
+func ginCovenantCovenantIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.CovenantIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -53,7 +53,7 @@ func ginCovenantIndex(c *gin.Context) {
 
 
 
-func ginCovenant(c *gin.Context) {
+func ginCovenantCovenant(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.CovenantFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -76,7 +76,7 @@ func ginCovenant(c *gin.Context) {
 
 
 
-func ginCovenantMedia(c *gin.Context) {
+func ginCovenantCovenantMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.CovenantMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -99,7 +99,7 @@ func ginCovenantMedia(c *gin.Context) {
 
 
 
-func ginSoulbindIndex(c *gin.Context) {
+func ginCovenantSoulbindIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.SoulbindIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -122,7 +122,7 @@ func ginSoulbindIndex(c *gin.Context) {
 
 
 
-func ginSoulbind(c *gin.Context) {
+func ginCovenantSoulbind(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.SoulbindFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -145,7 +145,7 @@ func ginSoulbind(c *gin.Context) {
 
 
 
-func ginConduitIndex(c *gin.Context) {
+func ginCovenantConduitIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.ConduitIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -168,7 +168,7 @@ func ginConduitIndex(c *gin.Context) {
 
 
 
-func ginConduit(c *gin.Context) {
+func ginCovenantConduit(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Covenant.ConduitFields
 	if err := c.ShouldBindUri(&req); err != nil {

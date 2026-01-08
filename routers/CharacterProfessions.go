@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/professions", ginCharacterProfessionsSummary) //CharacterProfessionsSummary Returns a summary of professions for a character.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/professions", ginCharacterProfessionsCharacterProfessionsSummary) /* CharacterProfessionsSummary Returns a summary of professions for a character. */
 
 }
 
 
 
 
-func ginCharacterProfessionsSummary(c *gin.Context) {
+func ginCharacterProfessionsCharacterProfessionsSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterProfessions.CharacterProfessionsSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

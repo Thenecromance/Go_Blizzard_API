@@ -133,7 +133,7 @@ func bridgeGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 		return nil, err
 	}
 
-	resp := &BNetGrandmasterLeaderboard{}
+	resp := &GrandmasterLeaderboardModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -141,7 +141,8 @@ func bridgeGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 	return resp, nil
 }
 
-// GrandmasterLeaderboard GrandmasterLeaderboard Returns ladder data for the current season's grandmaster leaderboard.
+// GrandmasterLeaderboard
+/* GrandmasterLeaderboard Returns ladder data for the current season's grandmaster leaderboard. */
 // Path: /sc2/ladder/grandmaster/:regionId
 var GrandmasterLeaderboard = bridgeGrandmasterLeaderboard
 
@@ -257,7 +258,7 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetSeason{}
+	resp := &SeasonModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -265,7 +266,8 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 	return resp, nil
 }
 
-// Season Season Returns data about the current season.
+// Season
+/* Season Returns data about the current season. */
 // Path: /sc2/ladder/season/:regionId
 var Season = bridgeSeason
 

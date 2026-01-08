@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/appearance", ginCharacterAppearanceSummary) //CharacterAppearanceSummary Returns a summary of a character's appearance settings.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/appearance", ginCharacterAppearanceCharacterAppearanceSummary) /* CharacterAppearanceSummary Returns a summary of a character's appearance settings. */
 
 }
 
 
 
 
-func ginCharacterAppearanceSummary(c *gin.Context) {
+func ginCharacterAppearanceCharacterAppearanceSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterAppearance.CharacterAppearanceSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -64,9 +64,11 @@ func StringNeighborhoodMapIndex(ctx context.Context, fields *NeighborhoodMapInde
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeNeighborhoodMapIndex(ctx context.Context, fields *NeighborhoodMapInde
 		return nil, err
 	}
 
-	resp := &BNetNeighborhoodMapIndex{}
+	resp := &NeighborhoodMapIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeNeighborhoodMapIndex(ctx context.Context, fields *NeighborhoodMapInde
 	return resp, nil
 }
 
-// NeighborhoodMapIndex NeighborhoodMapIndex Returns an index of neighborhood maps.
+// NeighborhoodMapIndex
+/* NeighborhoodMapIndex Returns an index of neighborhood maps. */
 // Path: /data/wow/neighborhood-map/index
 var NeighborhoodMapIndex = bridgeNeighborhoodMapIndex
 
@@ -188,13 +191,16 @@ func StringNeighborhoodMap(ctx context.Context, fields *NeighborhoodMapFields) (
 		fields.NeighborhoodMapId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +280,7 @@ func bridgeNeighborhoodMap(ctx context.Context, fields *NeighborhoodMapFields) (
 		return nil, err
 	}
 
-	resp := &BNetNeighborhoodMap{}
+	resp := &NeighborhoodMapModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +288,8 @@ func bridgeNeighborhoodMap(ctx context.Context, fields *NeighborhoodMapFields) (
 	return resp, nil
 }
 
-// NeighborhoodMap NeighborhoodMap Returns a neighborhood map by ID.
+// NeighborhoodMap
+/* NeighborhoodMap Returns a neighborhood map by ID. */
 // Path: /data/wow/neighborhood-map/{neighborhoodMapId}
 var NeighborhoodMap = bridgeNeighborhoodMap
 
@@ -331,17 +338,21 @@ func StringNeighborhood(ctx context.Context, fields *NeighborhoodFields) (string
 		fields.NeighborhoodMapId = "2"
 	}
 	
+	
 	if fields.NeighborhoodId == "" {
 		fields.NeighborhoodId = "17902"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -422,7 +433,7 @@ func bridgeNeighborhood(ctx context.Context, fields *NeighborhoodFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetNeighborhood{}
+	resp := &NeighborhoodModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -430,7 +441,8 @@ func bridgeNeighborhood(ctx context.Context, fields *NeighborhoodFields) (any, e
 	return resp, nil
 }
 
-// Neighborhood Neighborhood Returns a neighborhood by ID.
+// Neighborhood
+/* Neighborhood Returns a neighborhood by ID. */
 // Path: /data/wow/neighborhood-map/{neighborhoodMapId}/neighborhood/{neighborhoodId}
 var Neighborhood = bridgeNeighborhood
 

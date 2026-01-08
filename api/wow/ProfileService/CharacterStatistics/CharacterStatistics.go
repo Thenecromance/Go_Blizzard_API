@@ -66,17 +66,21 @@ func StringCharacterStatisticsSummary(ctx context.Context, fields *CharacterStat
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterStatisticsSummary(ctx context.Context, fields *CharacterStat
 		return nil, err
 	}
 
-	resp := &BNetCharacterStatisticsSummary{}
+	resp := &CharacterStatisticsSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterStatisticsSummary(ctx context.Context, fields *CharacterStat
 	return resp, nil
 }
 
-// CharacterStatisticsSummary CharacterStatisticsSummary Returns a statistics summary for a character.
+// CharacterStatisticsSummary
+/* CharacterStatisticsSummary Returns a statistics summary for a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/statistics
 var CharacterStatisticsSummary = bridgeCharacterStatisticsSummary
 

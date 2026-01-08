@@ -11,26 +11,26 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/index", ginMythicKeystoneIndex) //MythicKeystoneIndex Returns an index of links to other documents related to Mythic Keystone dungeons.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/index", ginMythicKeystoneDungeonMythicKeystoneIndex) /* MythicKeystoneIndex Returns an index of links to other documents related to Mythic Keystone dungeons. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/index", ginMythicKeystoneDungeonsIndex) //MythicKeystoneDungeonsIndex Returns an index of Mythic Keystone dungeons.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/index", ginMythicKeystoneDungeonMythicKeystoneDungeonsIndex) /* MythicKeystoneDungeonsIndex Returns an index of Mythic Keystone dungeons. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/:dungeonId", ginMythicKeystoneDungeon) //MythicKeystoneDungeon Returns a Mythic Keystone dungeon by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/dungeon/:dungeonId", ginMythicKeystoneDungeonMythicKeystoneDungeon) /* MythicKeystoneDungeon Returns a Mythic Keystone dungeon by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/index", ginMythicKeystonePeriodsIndex) //MythicKeystonePeriodsIndex Returns an index of Mythic Keystone periods.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/index", ginMythicKeystoneDungeonMythicKeystonePeriodsIndex) /* MythicKeystonePeriodsIndex Returns an index of Mythic Keystone periods. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/:periodId", ginMythicKeystonePeriod) //MythicKeystonePeriod Returns a Mythic Keystone period by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/period/:periodId", ginMythicKeystoneDungeonMythicKeystonePeriod) /* MythicKeystonePeriod Returns a Mythic Keystone period by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/index", ginMythicKeystoneSeasonsIndex) //MythicKeystoneSeasonsIndex Returns an index of Mythic Keystone seasons.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/index", ginMythicKeystoneDungeonMythicKeystoneSeasonsIndex) /* MythicKeystoneSeasonsIndex Returns an index of Mythic Keystone seasons. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/:seasonId", ginMythicKeystoneSeason) //MythicKeystoneSeason Returns a Mythic Keystone season by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/mythic-keystone/season/:seasonId", ginMythicKeystoneDungeonMythicKeystoneSeason) /* MythicKeystoneSeason Returns a Mythic Keystone season by ID. */
 
 }
 
 
 
 
-func ginMythicKeystoneIndex(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystoneIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystoneIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -53,7 +53,7 @@ func ginMythicKeystoneIndex(c *gin.Context) {
 
 
 
-func ginMythicKeystoneDungeonsIndex(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystoneDungeonsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystoneDungeonsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -76,7 +76,7 @@ func ginMythicKeystoneDungeonsIndex(c *gin.Context) {
 
 
 
-func ginMythicKeystoneDungeon(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystoneDungeon(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystoneDungeonFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -99,7 +99,7 @@ func ginMythicKeystoneDungeon(c *gin.Context) {
 
 
 
-func ginMythicKeystonePeriodsIndex(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystonePeriodsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystonePeriodsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -122,7 +122,7 @@ func ginMythicKeystonePeriodsIndex(c *gin.Context) {
 
 
 
-func ginMythicKeystonePeriod(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystonePeriod(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystonePeriodFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -145,7 +145,7 @@ func ginMythicKeystonePeriod(c *gin.Context) {
 
 
 
-func ginMythicKeystoneSeasonsIndex(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystoneSeasonsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystoneSeasonsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -168,7 +168,7 @@ func ginMythicKeystoneSeasonsIndex(c *gin.Context) {
 
 
 
-func ginMythicKeystoneSeason(c *gin.Context) {
+func ginMythicKeystoneDungeonMythicKeystoneSeason(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneDungeon.MythicKeystoneSeasonFields
 	if err := c.ShouldBindUri(&req); err != nil {

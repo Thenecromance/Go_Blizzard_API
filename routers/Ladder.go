@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/sc2/ladder/grandmaster/:regionId", ginGrandmasterLeaderboard) //GrandmasterLeaderboard Returns ladder data for the current season's grandmaster leaderboard.
+	app.Instance().RegisterRoute("GET", "/sc2/ladder/grandmaster/:regionId", ginLadderGrandmasterLeaderboard) /* GrandmasterLeaderboard Returns ladder data for the current season's grandmaster leaderboard. */
 
-	app.Instance().RegisterRoute("GET", "/sc2/ladder/season/:regionId", ginSeason) //Season Returns data about the current season.
+	app.Instance().RegisterRoute("GET", "/sc2/ladder/season/:regionId", ginLadderSeason) /* Season Returns data about the current season. */
 
 }
 
 
 
 
-func ginGrandmasterLeaderboard(c *gin.Context) {
+func ginLadderGrandmasterLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Ladder.GrandmasterLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginGrandmasterLeaderboard(c *gin.Context) {
 
 
 
-func ginSeason(c *gin.Context) {
+func ginLadderSeason(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Ladder.SeasonFields
 	if err := c.ShouldBindUri(&req); err != nil {

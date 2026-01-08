@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters", ginCharacterEncountersSummary) //CharacterEncountersSummary Returns a summary of a character's encounters.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters", ginCharacterEncountersCharacterEncountersSummary) /* CharacterEncountersSummary Returns a summary of a character's encounters. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters/dungeons", ginCharacterDungeons) //CharacterDungeons Returns a summary of a character's completed dungeons.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters/dungeons", ginCharacterEncountersCharacterDungeons) /* CharacterDungeons Returns a summary of a character's completed dungeons. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters/raids", ginCharacterRaids) //CharacterRaids Returns a summary of a character's completed raids.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/encounters/raids", ginCharacterEncountersCharacterRaids) /* CharacterRaids Returns a summary of a character's completed raids. */
 
 }
 
 
 
 
-func ginCharacterEncountersSummary(c *gin.Context) {
+func ginCharacterEncountersCharacterEncountersSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterEncounters.CharacterEncountersSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginCharacterEncountersSummary(c *gin.Context) {
 
 
 
-func ginCharacterDungeons(c *gin.Context) {
+func ginCharacterEncountersCharacterDungeons(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterEncounters.CharacterDungeonsFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginCharacterDungeons(c *gin.Context) {
 
 
 
-func ginCharacterRaids(c *gin.Context) {
+func ginCharacterEncountersCharacterRaids(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterEncounters.CharacterRaidsFields
 	if err := c.ShouldBindUri(&req); err != nil {

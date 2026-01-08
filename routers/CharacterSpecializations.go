@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/specializations", ginCharacterSpecializationsSummary) //CharacterSpecializationsSummary Returns a summary of a character's specializations.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/specializations", ginCharacterSpecializationsCharacterSpecializationsSummary) /* CharacterSpecializationsSummary Returns a summary of a character's specializations. */
 
 }
 
 
 
 
-func ginCharacterSpecializationsSummary(c *gin.Context) {
+func ginCharacterSpecializationsCharacterSpecializationsSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterSpecializations.CharacterSpecializationsSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

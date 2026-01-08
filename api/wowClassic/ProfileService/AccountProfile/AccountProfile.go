@@ -64,9 +64,11 @@ func StringAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 		return nil, err
 	}
 
-	resp := &BNetAccountProfileSummary{}
+	resp := &AccountProfileSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeAccountProfileSummary(ctx context.Context, fields *AccountProfileSumm
 	return resp, nil
 }
 
-// AccountProfileSummary AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// AccountProfileSummary
+/* AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow
 var AccountProfileSummary = bridgeAccountProfileSummary
 
@@ -197,9 +200,11 @@ func StringProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -280,7 +285,7 @@ func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 		return nil, err
 	}
 
-	resp := &BNetProtectedCharacterProfileSummary{}
+	resp := &ProtectedCharacterProfileSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -288,7 +293,8 @@ func bridgeProtectedCharacterProfileSummary(ctx context.Context, fields *Protect
 	return resp, nil
 }
 
-// ProtectedCharacterProfileSummary ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+// ProtectedCharacterProfileSummary
+/* ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 // Path: /profile/user/wow/protected-character/{realmId}-{characterId}
 var ProtectedCharacterProfileSummary = bridgeProtectedCharacterProfileSummary
 

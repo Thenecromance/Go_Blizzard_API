@@ -64,9 +64,11 @@ func StringProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 		return nil, err
 	}
 
-	resp := &BNetProfessionsIndex{}
+	resp := &ProfessionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 	return resp, nil
 }
 
-// ProfessionsIndex ProfessionsIndex Returns an index of professions.
+// ProfessionsIndex
+/* ProfessionsIndex Returns an index of professions. */
 // Path: /data/wow/profession/index
 var ProfessionsIndex = bridgeProfessionsIndex
 
@@ -192,9 +195,11 @@ func StringProfession(ctx context.Context, fields *ProfessionFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeProfession(ctx context.Context, fields *ProfessionFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetProfession{}
+	resp := &ProfessionModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeProfession(ctx context.Context, fields *ProfessionFields) (any, error
 	return resp, nil
 }
 
-// Profession Profession Returns a profession by ID.
+// Profession
+/* Profession Returns a profession by ID. */
 // Path: /data/wow/profession/{professionId}
 var Profession = bridgeProfession
 
@@ -334,9 +340,11 @@ func StringProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgeProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 		return nil, err
 	}
 
-	resp := &BNetProfessionMedia{}
+	resp := &ProfessionMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgeProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 	return resp, nil
 }
 
-// ProfessionMedia ProfessionMedia Returns media for a profession by ID.
+// ProfessionMedia
+/* ProfessionMedia Returns media for a profession by ID. */
 // Path: /data/wow/media/profession/{professionId}
 var ProfessionMedia = bridgeProfessionMedia
 
@@ -481,9 +490,11 @@ func StringProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -564,7 +575,7 @@ func bridgeProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 		return nil, err
 	}
 
-	resp := &BNetProfessionSkillTier{}
+	resp := &ProfessionSkillTierModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -572,7 +583,8 @@ func bridgeProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 	return resp, nil
 }
 
-// ProfessionSkillTier ProfessionSkillTier Returns a skill tier for a profession by ID.
+// ProfessionSkillTier
+/* ProfessionSkillTier Returns a skill tier for a profession by ID. */
 // Path: /data/wow/profession/{professionId}/skill-tier/{skillTierId}
 var ProfessionSkillTier = bridgeProfessionSkillTier
 
@@ -624,9 +636,11 @@ func StringRecipe(ctx context.Context, fields *RecipeFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -706,7 +720,7 @@ func bridgeRecipe(ctx context.Context, fields *RecipeFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetRecipe{}
+	resp := &RecipeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -714,7 +728,8 @@ func bridgeRecipe(ctx context.Context, fields *RecipeFields) (any, error) {
 	return resp, nil
 }
 
-// Recipe Recipe Returns a recipe by ID.
+// Recipe
+/* Recipe Returns a recipe by ID. */
 // Path: /data/wow/recipe/{recipeId}
 var Recipe = bridgeRecipe
 
@@ -766,9 +781,11 @@ func StringRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -848,7 +865,7 @@ func bridgeRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetRecipeMedia{}
+	resp := &RecipeMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -856,7 +873,8 @@ func bridgeRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (any, err
 	return resp, nil
 }
 
-// RecipeMedia RecipeMedia Returns media for a recipe by ID.
+// RecipeMedia
+/* RecipeMedia Returns media for a recipe by ID. */
 // Path: /data/wow/media/recipe/{recipeId}
 var RecipeMedia = bridgeRecipeMedia
 

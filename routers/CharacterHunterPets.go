@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/hunter-pets", ginCharacterHunterPetsSummary) //CharacterHunterPetsSummary If the character is a hunter, returns a summary of the character's hunter pets. Otherwise, returns an HTTP 404 Not Found error.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/hunter-pets", ginCharacterHunterPetsCharacterHunterPetsSummary) /* CharacterHunterPetsSummary If the character is a hunter, returns a summary of the character's hunter pets. Otherwise, returns an HTTP 404 Not Found error. */
 
 }
 
 
 
 
-func ginCharacterHunterPetsSummary(c *gin.Context) {
+func ginCharacterHunterPetsCharacterHunterPetsSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterHunterPets.CharacterHunterPetsSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

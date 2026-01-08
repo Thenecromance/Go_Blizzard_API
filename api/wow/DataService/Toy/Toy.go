@@ -64,9 +64,11 @@ func StringToyIndex(ctx context.Context, fields *ToyIndexFields) (string, error)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeToyIndex(ctx context.Context, fields *ToyIndexFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetToyIndex{}
+	resp := &ToyIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeToyIndex(ctx context.Context, fields *ToyIndexFields) (any, error) {
 	return resp, nil
 }
 
-// ToyIndex ToyIndex Returns an index of toys.
+// ToyIndex
+/* ToyIndex Returns an index of toys. */
 // Path: /data/wow/toy/index
 var ToyIndex = bridgeToyIndex
 
@@ -192,9 +195,11 @@ func StringToy(ctx context.Context, fields *ToyFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeToy(ctx context.Context, fields *ToyFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetToy{}
+	resp := &ToyModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeToy(ctx context.Context, fields *ToyFields) (any, error) {
 	return resp, nil
 }
 
-// Toy Toy Returns a toy by id.
+// Toy
+/* Toy Returns a toy by id. */
 // Path: /data/wow/toy/{toyId}
 var Toy = bridgeToy
 

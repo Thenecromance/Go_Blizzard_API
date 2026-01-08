@@ -11,24 +11,24 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-class/index", ginItemClassesIndex) //ItemClassesIndex Returns an index of item classes.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-class/index", ginItemItemClassesIndex) /* ItemClassesIndex Returns an index of item classes. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-class/:itemClassId", ginItemClass) //ItemClass Returns an item class by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-class/:itemClassId", ginItemItemClass) /* ItemClass Returns an item class by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-class/:itemClassId/item-subclass/:itemSubclassId", ginItemSubclass) //ItemSubclass Returns an item subclass by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-class/:itemClassId/item-subclass/:itemSubclassId", ginItemItemSubclass) /* ItemSubclass Returns an item subclass by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item/:itemId", ginItem) //Item Returns an item by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/item/:itemId", ginItemItem) /* Item Returns an item by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/item/:itemId", ginItemMedia) //ItemMedia Returns media for an item by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/item/:itemId", ginItemItemMedia) /* ItemMedia Returns media for an item by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/item", ginItemSearch) //ItemSearch Performs a search of items. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/item", ginItemItemSearch) /* ItemSearch Performs a search of items. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginItemClassesIndex(c *gin.Context) {
+func ginItemItemClassesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemClassesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -51,7 +51,7 @@ func ginItemClassesIndex(c *gin.Context) {
 
 
 
-func ginItemClass(c *gin.Context) {
+func ginItemItemClass(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemClassFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -74,7 +74,7 @@ func ginItemClass(c *gin.Context) {
 
 
 
-func ginItemSubclass(c *gin.Context) {
+func ginItemItemSubclass(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemSubclassFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -97,7 +97,7 @@ func ginItemSubclass(c *gin.Context) {
 
 
 
-func ginItem(c *gin.Context) {
+func ginItemItem(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -120,7 +120,7 @@ func ginItem(c *gin.Context) {
 
 
 
-func ginItemMedia(c *gin.Context) {
+func ginItemItemMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -143,7 +143,7 @@ func ginItemMedia(c *gin.Context) {
 
 
 
-func ginItemSearch(c *gin.Context) {
+func ginItemItemSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Item.ItemSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

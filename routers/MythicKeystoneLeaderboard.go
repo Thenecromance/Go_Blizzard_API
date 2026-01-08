@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/index", ginMythicKeystoneLeaderboardsIndex) //MythicKeystoneLeaderboardsIndex Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/index", ginMythicKeystoneLeaderboardMythicKeystoneLeaderboardsIndex) /* MythicKeystoneLeaderboardsIndex Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/:dungeonId/period/:period", ginMythicKeystoneLeaderboard) //MythicKeystoneLeaderboard Returns a weekly Mythic Keystone Leaderboard by period.
+	app.Instance().RegisterRoute("GET", "/data/wow/connected-realm/:connectedRealmId/mythic-leaderboard/:dungeonId/period/:period", ginMythicKeystoneLeaderboardMythicKeystoneLeaderboard) /* MythicKeystoneLeaderboard Returns a weekly Mythic Keystone Leaderboard by period. */
 
 }
 
 
 
 
-func ginMythicKeystoneLeaderboardsIndex(c *gin.Context) {
+func ginMythicKeystoneLeaderboardMythicKeystoneLeaderboardsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboardsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginMythicKeystoneLeaderboardsIndex(c *gin.Context) {
 
 
 
-func ginMythicKeystoneLeaderboard(c *gin.Context) {
+func ginMythicKeystoneLeaderboardMythicKeystoneLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneLeaderboard.MythicKeystoneLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {

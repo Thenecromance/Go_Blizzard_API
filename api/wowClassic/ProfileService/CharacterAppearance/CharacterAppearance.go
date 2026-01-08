@@ -66,17 +66,21 @@ func StringCharacterAppearanceSummary(ctx context.Context, fields *CharacterAppe
 		fields.RealmSlug = "whitemane"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterAppearanceSummary(ctx context.Context, fields *CharacterAppe
 		return nil, err
 	}
 
-	resp := &BNetCharacterAppearanceSummary{}
+	resp := &CharacterAppearanceSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterAppearanceSummary(ctx context.Context, fields *CharacterAppe
 	return resp, nil
 }
 
-// CharacterAppearanceSummary CharacterAppearanceSummary Returns a summary of a character's appearance settings.
+// CharacterAppearanceSummary
+/* CharacterAppearanceSummary Returns a summary of a character's appearance settings. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/appearance
 var CharacterAppearanceSummary = bridgeCharacterAppearanceSummary
 

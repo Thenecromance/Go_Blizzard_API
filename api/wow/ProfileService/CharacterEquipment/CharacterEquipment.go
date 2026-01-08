@@ -66,17 +66,21 @@ func StringCharacterEquipmentSummary(ctx context.Context, fields *CharacterEquip
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterEquipmentSummary(ctx context.Context, fields *CharacterEquip
 		return nil, err
 	}
 
-	resp := &BNetCharacterEquipmentSummary{}
+	resp := &CharacterEquipmentSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterEquipmentSummary(ctx context.Context, fields *CharacterEquip
 	return resp, nil
 }
 
-// CharacterEquipmentSummary CharacterEquipmentSummary Returns a summary of the items equipped by a character.
+// CharacterEquipmentSummary
+/* CharacterEquipmentSummary Returns a summary of the items equipped by a character. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/equipment
 var CharacterEquipmentSummary = bridgeCharacterEquipmentSummary
 

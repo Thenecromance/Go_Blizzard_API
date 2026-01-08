@@ -69,9 +69,11 @@ func StringAuctionHouseIndex(ctx context.Context, fields *AuctionHouseIndexField
 		fields.Namespace = "dynamic-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -151,7 +153,7 @@ func bridgeAuctionHouseIndex(ctx context.Context, fields *AuctionHouseIndexField
 		return nil, err
 	}
 
-	resp := &BNetAuctionHouseIndex{}
+	resp := &AuctionHouseIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -159,7 +161,8 @@ func bridgeAuctionHouseIndex(ctx context.Context, fields *AuctionHouseIndexField
 	return resp, nil
 }
 
-// AuctionHouseIndex AuctionHouseIndex Returns an index of auction houses for a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.
+// AuctionHouseIndex
+/* AuctionHouseIndex Returns an index of auction houses for a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs. */
 // Path: /data/wow/connected-realm/{connectedRealmId}/auctions/index
 var AuctionHouseIndex = bridgeAuctionHouseIndex
 
@@ -216,9 +219,11 @@ func StringAuctions(ctx context.Context, fields *AuctionsFields) (string, error)
 		fields.Namespace = "dynamic-classic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -299,7 +304,7 @@ func bridgeAuctions(ctx context.Context, fields *AuctionsFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetAuctions{}
+	resp := &AuctionsModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -307,7 +312,8 @@ func bridgeAuctions(ctx context.Context, fields *AuctionsFields) (any, error) {
 	return resp, nil
 }
 
-// Auctions Auctions Returns all active auctions for a specific auction house on a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.<br/><br/>Auction house data updates at a set interval. The value was initially set at 1 hour; however, it might change over time without notice.<br/><br/>Depending on the number of active auctions on the specified connected realm, the response from this endpoint may be rather large, sometimes exceeding 10 MB.
+// Auctions
+/* Auctions Returns all active auctions for a specific auction house on a connected realm.<br/><br/>See the <strong>Connected Realm API</strong> for information about retrieving a list of connected realm IDs.<br/><br/>Auction house data updates at a set interval. The value was initially set at 1 hour; however, it might change over time without notice.<br/><br/>Depending on the number of active auctions on the specified connected realm, the response from this endpoint may be rather large, sometimes exceeding 10 MB. */
 // Path: /data/wow/connected-realm/{connectedRealmId}/auctions/{auctionHouseId}
 var Auctions = bridgeAuctions
 

@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/user/wow", ginAccountProfileSummary) //AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+	app.Instance().RegisterRoute("GET", "/profile/user/wow", ginAccountProfileAccountProfileSummary) /* AccountProfileSummary Returns a profile summary for an account.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 
-	app.Instance().RegisterRoute("GET", "/profile/user/wow/protected-character/:realmId-characterId", ginProtectedCharacterProfileSummary) //ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>.
+	app.Instance().RegisterRoute("GET", "/profile/user/wow/protected-character/:realmId-characterId", ginAccountProfileProtectedCharacterProfileSummary) /* ProtectedCharacterProfileSummary Returns a protected profile summary for a character.<br/><br/>Because this endpoint provides data about the current logged-in user's World of Warcraft account, it requires an access token with the <strong>wow.profile</strong> scope acquired via the <a href="/documentation/guides/using-oauth/authorization-code-flow">Authorization Code Flow</a>. */
 
 }
 
 
 
 
-func ginAccountProfileSummary(c *gin.Context) {
+func ginAccountProfileAccountProfileSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_AccountProfile.AccountProfileSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginAccountProfileSummary(c *gin.Context) {
 
 
 
-func ginProtectedCharacterProfileSummary(c *gin.Context) {
+func ginAccountProfileProtectedCharacterProfileSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_AccountProfile.ProtectedCharacterProfileSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {

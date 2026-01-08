@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/quests", ginCharacterQuests) //CharacterQuests Returns a character's active quests as well as a link to the character's completed quests.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/quests", ginCharacterQuestsCharacterQuests) /* CharacterQuests Returns a character's active quests as well as a link to the character's completed quests. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/quests/completed", ginCharacterCompletedQuests) //CharacterCompletedQuests Returns a list of quests that a character has completed.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/quests/completed", ginCharacterQuestsCharacterCompletedQuests) /* CharacterCompletedQuests Returns a list of quests that a character has completed. */
 
 }
 
 
 
 
-func ginCharacterQuests(c *gin.Context) {
+func ginCharacterQuestsCharacterQuests(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterQuests.CharacterQuestsFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginCharacterQuests(c *gin.Context) {
 
 
 
-func ginCharacterCompletedQuests(c *gin.Context) {
+func ginCharacterQuestsCharacterCompletedQuests(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterQuests.CharacterCompletedQuestsFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/cardbacks", ginCardBackSearch) //CardBackSearch Returns an up-to-date list of all card backs matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-backs'>Card Backs Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/cardbacks", ginCardBacksCardBackSearch) /* CardBackSearch Returns an up-to-date list of all card backs matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-backs'>Card Backs Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/cardbacks/:idorslug", ginFetchonecardback) //Fetchonecardback Returns a specific card back by using card back ID or slug.
+	app.Instance().RegisterRoute("GET", "/hearthstone/cardbacks/:idorslug", ginCardBacksFetchonecardback) /* Fetchonecardback Returns a specific card back by using card back ID or slug. */
 
 }
 
 
 
 
-func ginCardBackSearch(c *gin.Context) {
+func ginCardBacksCardBackSearch(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_CardBacks.CardBackSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginCardBackSearch(c *gin.Context) {
 
 
 
-func ginFetchonecardback(c *gin.Context) {
+func ginCardBacksFetchonecardback(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_CardBacks.FetchonecardbackFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -11,24 +11,24 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/:appearanceId", ginItemAppearance) //ItemAppearance Returns an item appearance by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/:appearanceId", ginItemAppearanceItemAppearance) /* ItemAppearance Returns an item appearance by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/item-appearance", ginItemAppearanceSearch) //ItemAppearanceSearch Performs a search of item appearances. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/item-appearance", ginItemAppearanceItemAppearanceSearch) /* ItemAppearanceSearch Performs a search of item appearances. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/set/index", ginItemAppearanceSetsIndex) //ItemAppearanceSetsIndex Returns an index of item appearance sets.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/set/index", ginItemAppearanceItemAppearanceSetsIndex) /* ItemAppearanceSetsIndex Returns an index of item appearance sets. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/set/:appearanceSetId", ginItemAppearanceSet) //ItemAppearanceSet Returns an item appearance set by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/set/:appearanceSetId", ginItemAppearanceItemAppearanceSet) /* ItemAppearanceSet Returns an item appearance set by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/slot/index", ginItemAppearanceSlotIndex) //ItemAppearanceSlotIndex Returns an index of item appearance slots.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/slot/index", ginItemAppearanceItemAppearanceSlotIndex) /* ItemAppearanceSlotIndex Returns an index of item appearance slots. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/slot/:slotType", ginItemAppearanceSlot) //ItemAppearanceSlot Returns an item appearance slot slot type.
+	app.Instance().RegisterRoute("GET", "/data/wow/item-appearance/slot/:slotType", ginItemAppearanceItemAppearanceSlot) /* ItemAppearanceSlot Returns an item appearance slot slot type. */
 
 }
 
 
 
 
-func ginItemAppearance(c *gin.Context) {
+func ginItemAppearanceItemAppearance(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -51,7 +51,7 @@ func ginItemAppearance(c *gin.Context) {
 
 
 
-func ginItemAppearanceSearch(c *gin.Context) {
+func ginItemAppearanceItemAppearanceSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -74,7 +74,7 @@ func ginItemAppearanceSearch(c *gin.Context) {
 
 
 
-func ginItemAppearanceSetsIndex(c *gin.Context) {
+func ginItemAppearanceItemAppearanceSetsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceSetsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -97,7 +97,7 @@ func ginItemAppearanceSetsIndex(c *gin.Context) {
 
 
 
-func ginItemAppearanceSet(c *gin.Context) {
+func ginItemAppearanceItemAppearanceSet(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceSetFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -120,7 +120,7 @@ func ginItemAppearanceSet(c *gin.Context) {
 
 
 
-func ginItemAppearanceSlotIndex(c *gin.Context) {
+func ginItemAppearanceItemAppearanceSlotIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceSlotIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -143,7 +143,7 @@ func ginItemAppearanceSlotIndex(c *gin.Context) {
 
 
 
-func ginItemAppearanceSlot(c *gin.Context) {
+func ginItemAppearanceItemAppearanceSlot(c *gin.Context) {
 	// binding uri parameters
 	var req wow_ItemAppearance.ItemAppearanceSlotFields
 	if err := c.ShouldBindUri(&req); err != nil {

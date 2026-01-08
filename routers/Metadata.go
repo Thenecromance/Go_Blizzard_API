@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/metadata", ginAllmetadata) //Allmetadata Returns information about the categorization of cards. Metadata includes the card set, set group (for example, Standard or Year of the Dragon), rarity, class, card type, minion type, and keywords. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/metadata", ginMetadataAllmetadata) /* Allmetadata Returns information about the categorization of cards. Metadata includes the card set, set group (for example, Standard or Year of the Dragon), rarity, class, card type, minion type, and keywords. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/hearthstone/metadata/:type", ginSpecificmetadata) //Specificmetadata Returns information about just one type of metadata. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>.
+	app.Instance().RegisterRoute("GET", "/hearthstone/metadata/:type", ginMetadataSpecificmetadata) /* Specificmetadata Returns information about just one type of metadata. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>. */
 
 }
 
 
 
 
-func ginAllmetadata(c *gin.Context) {
+func ginMetadataAllmetadata(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Metadata.AllmetadataFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginAllmetadata(c *gin.Context) {
 
 
 
-func ginSpecificmetadata(c *gin.Context) {
+func ginMetadataSpecificmetadata(c *gin.Context) {
 	// binding uri parameters
 	var req HeartStone_Metadata.SpecificmetadataFields
 	if err := c.ShouldBindUri(&req); err != nil {

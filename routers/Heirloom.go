@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/index", ginHeirloomIndex) //HeirloomIndex Returns an index of heirlooms.
+	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/index", ginHeirloomHeirloomIndex) /* HeirloomIndex Returns an index of heirlooms. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/:heirloomId", ginHeirloom) //Heirloom Returns an heirloom by id.
+	app.Instance().RegisterRoute("GET", "/data/wow/heirloom/:heirloomId", ginHeirloomHeirloom) /* Heirloom Returns an heirloom by id. */
 
 }
 
 
 
 
-func ginHeirloomIndex(c *gin.Context) {
+func ginHeirloomHeirloomIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Heirloom.HeirloomIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginHeirloomIndex(c *gin.Context) {
 
 
 
-func ginHeirloom(c *gin.Context) {
+func ginHeirloomHeirloom(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Heirloom.HeirloomFields
 	if err := c.ShouldBindUri(&req); err != nil {

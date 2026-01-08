@@ -64,9 +64,11 @@ func StringCovenantIndex(ctx context.Context, fields *CovenantIndexFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeCovenantIndex(ctx context.Context, fields *CovenantIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetCovenantIndex{}
+	resp := &CovenantIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeCovenantIndex(ctx context.Context, fields *CovenantIndexFields) (any,
 	return resp, nil
 }
 
-// CovenantIndex CovenantIndex Returns an index of covenants.
+// CovenantIndex
+/* CovenantIndex Returns an index of covenants. */
 // Path: /data/wow/covenant/index
 var CovenantIndex = bridgeCovenantIndex
 
@@ -192,9 +195,11 @@ func StringCovenant(ctx context.Context, fields *CovenantFields) (string, error)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeCovenant(ctx context.Context, fields *CovenantFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetCovenant{}
+	resp := &CovenantModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeCovenant(ctx context.Context, fields *CovenantFields) (any, error) {
 	return resp, nil
 }
 
-// Covenant Covenant Returns a covenant by ID.
+// Covenant
+/* Covenant Returns a covenant by ID. */
 // Path: /data/wow/covenant/{covenantId}
 var Covenant = bridgeCovenant
 
@@ -334,9 +340,11 @@ func StringCovenantMedia(ctx context.Context, fields *CovenantMediaFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgeCovenantMedia(ctx context.Context, fields *CovenantMediaFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetCovenantMedia{}
+	resp := &CovenantMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgeCovenantMedia(ctx context.Context, fields *CovenantMediaFields) (any,
 	return resp, nil
 }
 
-// CovenantMedia CovenantMedia Returns media for a covenant by ID.
+// CovenantMedia
+/* CovenantMedia Returns media for a covenant by ID. */
 // Path: /data/wow/media/covenant/{covenantId}
 var CovenantMedia = bridgeCovenantMedia
 
@@ -471,9 +480,11 @@ func StringSoulbindIndex(ctx context.Context, fields *SoulbindIndexFields) (stri
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +550,7 @@ func bridgeSoulbindIndex(ctx context.Context, fields *SoulbindIndexFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetSoulbindIndex{}
+	resp := &SoulbindIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +558,8 @@ func bridgeSoulbindIndex(ctx context.Context, fields *SoulbindIndexFields) (any,
 	return resp, nil
 }
 
-// SoulbindIndex SoulbindIndex Returns an index of soulbinds.
+// SoulbindIndex
+/* SoulbindIndex Returns an index of soulbinds. */
 // Path: /data/wow/covenant/soulbind/index
 var SoulbindIndex = bridgeSoulbindIndex
 
@@ -599,9 +611,11 @@ func StringSoulbind(ctx context.Context, fields *SoulbindFields) (string, error)
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -681,7 +695,7 @@ func bridgeSoulbind(ctx context.Context, fields *SoulbindFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetSoulbind{}
+	resp := &SoulbindModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -689,7 +703,8 @@ func bridgeSoulbind(ctx context.Context, fields *SoulbindFields) (any, error) {
 	return resp, nil
 }
 
-// Soulbind Soulbind Returns a soulbind by ID.
+// Soulbind
+/* Soulbind Returns a soulbind by ID. */
 // Path: /data/wow/covenant/soulbind/{soulbindId}
 var Soulbind = bridgeSoulbind
 
@@ -736,9 +751,11 @@ func StringConduitIndex(ctx context.Context, fields *ConduitIndexFields) (string
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -804,7 +821,7 @@ func bridgeConduitIndex(ctx context.Context, fields *ConduitIndexFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetConduitIndex{}
+	resp := &ConduitIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -812,7 +829,8 @@ func bridgeConduitIndex(ctx context.Context, fields *ConduitIndexFields) (any, e
 	return resp, nil
 }
 
-// ConduitIndex ConduitIndex Returns an index of conduits.
+// ConduitIndex
+/* ConduitIndex Returns an index of conduits. */
 // Path: /data/wow/covenant/conduit/index
 var ConduitIndex = bridgeConduitIndex
 
@@ -864,9 +882,11 @@ func StringConduit(ctx context.Context, fields *ConduitFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -946,7 +966,7 @@ func bridgeConduit(ctx context.Context, fields *ConduitFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetConduit{}
+	resp := &ConduitModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -954,7 +974,8 @@ func bridgeConduit(ctx context.Context, fields *ConduitFields) (any, error) {
 	return resp, nil
 }
 
-// Conduit Conduit Returns a conduit by ID.
+// Conduit
+/* Conduit Returns a conduit by ID. */
 // Path: /data/wow/covenant/conduit/{conduitId}
 var Conduit = bridgeConduit
 

@@ -64,9 +64,11 @@ func StringRegionsIndex(ctx context.Context, fields *RegionsIndexFields) (string
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeRegionsIndex(ctx context.Context, fields *RegionsIndexFields) (any, e
 		return nil, err
 	}
 
-	resp := &BNetRegionsIndex{}
+	resp := &RegionsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeRegionsIndex(ctx context.Context, fields *RegionsIndexFields) (any, e
 	return resp, nil
 }
 
-// RegionsIndex RegionsIndex Returns an index of regions.
+// RegionsIndex
+/* RegionsIndex Returns an index of regions. */
 // Path: /data/wow/region/index
 var RegionsIndex = bridgeRegionsIndex
 
@@ -192,9 +195,11 @@ func StringRegion(ctx context.Context, fields *RegionFields) (string, error) {
 		fields.Namespace = "dynamic-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeRegion(ctx context.Context, fields *RegionFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetRegion{}
+	resp := &RegionModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeRegion(ctx context.Context, fields *RegionFields) (any, error) {
 	return resp, nil
 }
 
-// Region Region Returns a region by ID.
+// Region
+/* Region Returns a region by ID. */
 // Path: /data/wow/region/{regionId}
 var Region = bridgeRegion
 

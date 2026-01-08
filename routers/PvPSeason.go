@@ -11,28 +11,28 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/index", ginPvPSeasonsIndex) //PvPSeasonsIndex Returns an index of PvP seasons.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/index", ginPvPSeasonPvPSeasonsIndex) /* PvPSeasonsIndex Returns an index of PvP seasons. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/:pvpSeasonId", ginPvPSeason) //PvPSeason Returns a PvP season by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-season/:pvpSeasonId", ginPvPSeasonPvPSeason) /* PvPSeason Returns a PvP season by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/index", ginPvPRegionIndex) //PvPRegionIndex Returns an index of PvP Regions.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/index", ginPvPSeasonPvPRegionIndex) /* PvPRegionIndex Returns an index of PvP Regions. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/index", ginPvPRegionalSeasonIndex) //PvPRegionalSeasonIndex Returns an index of PvP Seasons in a PvP region.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/index", ginPvPSeasonPvPRegionalSeasonIndex) /* PvPRegionalSeasonIndex Returns an index of PvP Seasons in a PvP region. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId", ginPvPRegionalSeason) //PvPRegionalSeason Returns a PvP season by region ID and season ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId", ginPvPSeasonPvPRegionalSeason) /* PvPRegionalSeason Returns a PvP season by region ID and season ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/index", ginPvPLeaderboardsIndex) //PvPLeaderboardsIndex Returns an index of PvP leaderboards for a PvP season in a given PvP region.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/index", ginPvPSeasonPvPLeaderboardsIndex) /* PvPLeaderboardsIndex Returns an index of PvP leaderboards for a PvP season in a given PvP region. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/:pvpBracket", ginPvPLeaderboard) //PvPLeaderboard Returns the PvP leaderboard of a specific PvP bracket for a PvP season in a given PvP region.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-leaderboard/:pvpBracket", ginPvPSeasonPvPLeaderboard) /* PvPLeaderboard Returns the PvP leaderboard of a specific PvP bracket for a PvP season in a given PvP region. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-reward/index", ginPvPRewardsIndex) //PvPRewardsIndex Returns an index of PvP rewards for a PvP season in a given PvP region.
+	app.Instance().RegisterRoute("GET", "/data/wow/pvp-region/:pvpRegionId/pvp-season/:pvpSeasonId/pvp-reward/index", ginPvPSeasonPvPRewardsIndex) /* PvPRewardsIndex Returns an index of PvP rewards for a PvP season in a given PvP region. */
 
 }
 
 
 
 
-func ginPvPSeasonsIndex(c *gin.Context) {
+func ginPvPSeasonPvPSeasonsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPSeasonsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -55,7 +55,7 @@ func ginPvPSeasonsIndex(c *gin.Context) {
 
 
 
-func ginPvPSeason(c *gin.Context) {
+func ginPvPSeasonPvPSeason(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPSeasonFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -78,7 +78,7 @@ func ginPvPSeason(c *gin.Context) {
 
 
 
-func ginPvPRegionIndex(c *gin.Context) {
+func ginPvPSeasonPvPRegionIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPRegionIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -101,7 +101,7 @@ func ginPvPRegionIndex(c *gin.Context) {
 
 
 
-func ginPvPRegionalSeasonIndex(c *gin.Context) {
+func ginPvPSeasonPvPRegionalSeasonIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPRegionalSeasonIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -124,7 +124,7 @@ func ginPvPRegionalSeasonIndex(c *gin.Context) {
 
 
 
-func ginPvPRegionalSeason(c *gin.Context) {
+func ginPvPSeasonPvPRegionalSeason(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPRegionalSeasonFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -147,7 +147,7 @@ func ginPvPRegionalSeason(c *gin.Context) {
 
 
 
-func ginPvPLeaderboardsIndex(c *gin.Context) {
+func ginPvPSeasonPvPLeaderboardsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPLeaderboardsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -170,7 +170,7 @@ func ginPvPLeaderboardsIndex(c *gin.Context) {
 
 
 
-func ginPvPLeaderboard(c *gin.Context) {
+func ginPvPSeasonPvPLeaderboard(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPLeaderboardFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -193,7 +193,7 @@ func ginPvPLeaderboard(c *gin.Context) {
 
 
 
-func ginPvPRewardsIndex(c *gin.Context) {
+func ginPvPSeasonPvPRewardsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PvPSeason.PvPRewardsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {

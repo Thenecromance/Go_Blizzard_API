@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/sc2/player/:accountId", ginPlayer) //Player Returns metadata for an individual's account.
+	app.Instance().RegisterRoute("GET", "/sc2/player/:accountId", ginAccountPlayer) /* Player Returns metadata for an individual's account. */
 
 }
 
 
 
 
-func ginPlayer(c *gin.Context) {
+func ginAccountPlayer(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_Account.PlayerFields
 	if err := c.ShouldBindUri(&req); err != nil {

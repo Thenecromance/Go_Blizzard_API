@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-class/index", ginPlayableClassesIndex) //PlayableClassesIndex Returns an index of playable classes.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-class/index", ginPlayableClassPlayableClassesIndex) /* PlayableClassesIndex Returns an index of playable classes. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/playable-class/:classId", ginPlayableClass) //PlayableClass Returns a playable class by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/playable-class/:classId", ginPlayableClassPlayableClass) /* PlayableClass Returns a playable class by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/playable-class/:playableClassId", ginPlayableClassMedia) //PlayableClassMedia Returns media for a playable class by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/playable-class/:playableClassId", ginPlayableClassPlayableClassMedia) /* PlayableClassMedia Returns media for a playable class by ID. */
 
 }
 
 
 
 
-func ginPlayableClassesIndex(c *gin.Context) {
+func ginPlayableClassPlayableClassesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PlayableClass.PlayableClassesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginPlayableClassesIndex(c *gin.Context) {
 
 
 
-func ginPlayableClass(c *gin.Context) {
+func ginPlayableClassPlayableClass(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PlayableClass.PlayableClassFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginPlayableClass(c *gin.Context) {
 
 
 
-func ginPlayableClassMedia(c *gin.Context) {
+func ginPlayableClassPlayableClassMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_PlayableClass.PlayableClassMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

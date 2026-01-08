@@ -11,24 +11,24 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pet/index", ginPetsIndex) //PetsIndex Returns an index of battle pets.
+	app.Instance().RegisterRoute("GET", "/data/wow/pet/index", ginPetPetsIndex) /* PetsIndex Returns an index of battle pets. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pet/:petId", ginPet) //Pet Returns a battle pets by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pet/:petId", ginPetPet) /* Pet Returns a battle pets by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/pet/:petId", ginPetMedia) //PetMedia Returns media for a battle pet by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/pet/:petId", ginPetPetMedia) /* PetMedia Returns media for a battle pet by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pet-ability/index", ginPetAbilitiesIndex) //PetAbilitiesIndex Returns an index of pet abilities.
+	app.Instance().RegisterRoute("GET", "/data/wow/pet-ability/index", ginPetPetAbilitiesIndex) /* PetAbilitiesIndex Returns an index of pet abilities. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/pet-ability/:petAbilityId", ginPetAbility) //PetAbility Returns a pet ability by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/pet-ability/:petAbilityId", ginPetPetAbility) /* PetAbility Returns a pet ability by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/pet-ability/:petAbilityId", ginPetAbilityMedia) //PetAbilityMedia Returns media for a pet ability by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/pet-ability/:petAbilityId", ginPetPetAbilityMedia) /* PetAbilityMedia Returns media for a pet ability by ID. */
 
 }
 
 
 
 
-func ginPetsIndex(c *gin.Context) {
+func ginPetPetsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -51,7 +51,7 @@ func ginPetsIndex(c *gin.Context) {
 
 
 
-func ginPet(c *gin.Context) {
+func ginPetPet(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -74,7 +74,7 @@ func ginPet(c *gin.Context) {
 
 
 
-func ginPetMedia(c *gin.Context) {
+func ginPetPetMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -97,7 +97,7 @@ func ginPetMedia(c *gin.Context) {
 
 
 
-func ginPetAbilitiesIndex(c *gin.Context) {
+func ginPetPetAbilitiesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetAbilitiesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -120,7 +120,7 @@ func ginPetAbilitiesIndex(c *gin.Context) {
 
 
 
-func ginPetAbility(c *gin.Context) {
+func ginPetPetAbility(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetAbilityFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -143,7 +143,7 @@ func ginPetAbility(c *gin.Context) {
 
 
 
-func ginPetAbilityMedia(c *gin.Context) {
+func ginPetPetAbilityMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Pet.PetAbilityMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

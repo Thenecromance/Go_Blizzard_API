@@ -64,9 +64,11 @@ func StringPlayableSpecializationsIndex(ctx context.Context, fields *PlayableSpe
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgePlayableSpecializationsIndex(ctx context.Context, fields *PlayableSpe
 		return nil, err
 	}
 
-	resp := &BNetPlayableSpecializationsIndex{}
+	resp := &PlayableSpecializationsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgePlayableSpecializationsIndex(ctx context.Context, fields *PlayableSpe
 	return resp, nil
 }
 
-// PlayableSpecializationsIndex PlayableSpecializationsIndex Returns an index of playable specializations.
+// PlayableSpecializationsIndex
+/* PlayableSpecializationsIndex Returns an index of playable specializations. */
 // Path: /data/wow/playable-specialization/index
 var PlayableSpecializationsIndex = bridgePlayableSpecializationsIndex
 
@@ -192,9 +195,11 @@ func StringPlayableSpecialization(ctx context.Context, fields *PlayableSpecializ
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgePlayableSpecialization(ctx context.Context, fields *PlayableSpecializ
 		return nil, err
 	}
 
-	resp := &BNetPlayableSpecialization{}
+	resp := &PlayableSpecializationModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgePlayableSpecialization(ctx context.Context, fields *PlayableSpecializ
 	return resp, nil
 }
 
-// PlayableSpecialization PlayableSpecialization Returns a playable specialization by ID.
+// PlayableSpecialization
+/* PlayableSpecialization Returns a playable specialization by ID. */
 // Path: /data/wow/playable-specialization/{specId}
 var PlayableSpecialization = bridgePlayableSpecialization
 
@@ -334,9 +340,11 @@ func StringPlayableSpecializationMedia(ctx context.Context, fields *PlayableSpec
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -416,7 +424,7 @@ func bridgePlayableSpecializationMedia(ctx context.Context, fields *PlayableSpec
 		return nil, err
 	}
 
-	resp := &BNetPlayableSpecializationMedia{}
+	resp := &PlayableSpecializationMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -424,7 +432,8 @@ func bridgePlayableSpecializationMedia(ctx context.Context, fields *PlayableSpec
 	return resp, nil
 }
 
-// PlayableSpecializationMedia PlayableSpecializationMedia Returns media for a playable specialization by ID.
+// PlayableSpecializationMedia
+/* PlayableSpecializationMedia Returns media for a playable specialization by ID. */
 // Path: /data/wow/media/playable-specialization/{specId}
 var PlayableSpecializationMedia = bridgePlayableSpecializationMedia
 

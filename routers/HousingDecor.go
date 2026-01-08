@@ -11,36 +11,36 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/decor/index", ginDecorIndex) //DecorIndex Returns an index of decor.
+	app.Instance().RegisterRoute("GET", "/data/wow/decor/index", ginHousingDecorDecorIndex) /* DecorIndex Returns an index of decor. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/decor/:decorId", ginDecor) //Decor Returns a decor by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/decor/:decorId", ginHousingDecorDecor) /* Decor Returns a decor by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/decor", ginDecorSearch) //DecorSearch Performs a search of decor. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/decor", ginHousingDecorDecorSearch) /* DecorSearch Performs a search of decor. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/fixture/index", ginFixtureIndex) //FixtureIndex Returns an index of fixtures.
+	app.Instance().RegisterRoute("GET", "/data/wow/fixture/index", ginHousingDecorFixtureIndex) /* FixtureIndex Returns an index of fixtures. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/fixture/:fixtureId", ginFixture) //Fixture Returns a fixture by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/fixture/:fixtureId", ginHousingDecorFixture) /* Fixture Returns a fixture by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/fixture", ginFixtureSearch) //FixtureSearch Performs a search of fixtures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/fixture", ginHousingDecorFixtureSearch) /* FixtureSearch Performs a search of fixtures. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/fixture-hook/index", ginFixtureHookIndex) //FixtureHookIndex Returns an index of fixture hooks.
+	app.Instance().RegisterRoute("GET", "/data/wow/fixture-hook/index", ginHousingDecorFixtureHookIndex) /* FixtureHookIndex Returns an index of fixture hooks. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/fixture-hook/:fixtureHookId", ginFixtureHook) //FixtureHook Returns a fixture hook by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/fixture-hook/:fixtureHookId", ginHousingDecorFixtureHook) /* FixtureHook Returns a fixture hook by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/fixture-hook", ginFixtureHookSearch) //FixtureHookSearch Performs a search of fixture hooks. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/fixture-hook", ginHousingDecorFixtureHookSearch) /* FixtureHookSearch Performs a search of fixture hooks. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/room/index", ginRoomIndex) //RoomIndex Returns an index of rooms.
+	app.Instance().RegisterRoute("GET", "/data/wow/room/index", ginHousingDecorRoomIndex) /* RoomIndex Returns an index of rooms. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/room/:roomId", ginRoom) //Room Returns a room by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/room/:roomId", ginHousingDecorRoom) /* Room Returns a room by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/room", ginRoomSearch) //RoomSearch Performs a search of rooms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/room", ginHousingDecorRoomSearch) /* RoomSearch Performs a search of rooms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginDecorIndex(c *gin.Context) {
+func ginHousingDecorDecorIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.DecorIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -63,7 +63,7 @@ func ginDecorIndex(c *gin.Context) {
 
 
 
-func ginDecor(c *gin.Context) {
+func ginHousingDecorDecor(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.DecorFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -86,7 +86,7 @@ func ginDecor(c *gin.Context) {
 
 
 
-func ginDecorSearch(c *gin.Context) {
+func ginHousingDecorDecorSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.DecorSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -109,7 +109,7 @@ func ginDecorSearch(c *gin.Context) {
 
 
 
-func ginFixtureIndex(c *gin.Context) {
+func ginHousingDecorFixtureIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -132,7 +132,7 @@ func ginFixtureIndex(c *gin.Context) {
 
 
 
-func ginFixture(c *gin.Context) {
+func ginHousingDecorFixture(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -155,7 +155,7 @@ func ginFixture(c *gin.Context) {
 
 
 
-func ginFixtureSearch(c *gin.Context) {
+func ginHousingDecorFixtureSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -178,7 +178,7 @@ func ginFixtureSearch(c *gin.Context) {
 
 
 
-func ginFixtureHookIndex(c *gin.Context) {
+func ginHousingDecorFixtureHookIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureHookIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -201,7 +201,7 @@ func ginFixtureHookIndex(c *gin.Context) {
 
 
 
-func ginFixtureHook(c *gin.Context) {
+func ginHousingDecorFixtureHook(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureHookFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -224,7 +224,7 @@ func ginFixtureHook(c *gin.Context) {
 
 
 
-func ginFixtureHookSearch(c *gin.Context) {
+func ginHousingDecorFixtureHookSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.FixtureHookSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -247,7 +247,7 @@ func ginFixtureHookSearch(c *gin.Context) {
 
 
 
-func ginRoomIndex(c *gin.Context) {
+func ginHousingDecorRoomIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.RoomIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -270,7 +270,7 @@ func ginRoomIndex(c *gin.Context) {
 
 
 
-func ginRoom(c *gin.Context) {
+func ginHousingDecorRoom(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.RoomFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -293,7 +293,7 @@ func ginRoom(c *gin.Context) {
 
 
 
-func ginRoomSearch(c *gin.Context) {
+func ginHousingDecorRoomSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_HousingDecor.RoomSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

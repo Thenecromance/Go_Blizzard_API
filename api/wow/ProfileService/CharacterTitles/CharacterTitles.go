@@ -66,17 +66,21 @@ func StringCharacterTitlesSummary(ctx context.Context, fields *CharacterTitlesSu
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -157,7 +161,7 @@ func bridgeCharacterTitlesSummary(ctx context.Context, fields *CharacterTitlesSu
 		return nil, err
 	}
 
-	resp := &BNetCharacterTitlesSummary{}
+	resp := &CharacterTitlesSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -165,7 +169,8 @@ func bridgeCharacterTitlesSummary(ctx context.Context, fields *CharacterTitlesSu
 	return resp, nil
 }
 
-// CharacterTitlesSummary CharacterTitlesSummary Returns a summary of titles a character has obtained.
+// CharacterTitlesSummary
+/* CharacterTitlesSummary Returns a summary of titles a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/titles
 var CharacterTitlesSummary = bridgeCharacterTitlesSummary
 

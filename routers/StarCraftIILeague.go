@@ -3,25 +3,28 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/api/StarCraftII/DataService/StarCraftIILeague"
 	"Unofficial_API/app"
+	"Unofficial_API/api/StarCraftII/DataService/StarCraftIILeague"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/sc2/league/:seasonId/:queueId/:teamType/:leagueId", ginGetLeagueData) //GetLeagueData Returns data for the specified season, queue, team, and league.
+	app.Instance().RegisterRoute("GET", "/data/sc2/league/:seasonId/:queueId/:teamType/:leagueId", ginStarCraftIILeagueGetLeagueData) /* GetLeagueData Returns data for the specified season, queue, team, and league.
 
-	/***queueId**: the standard available queueIds are: `1`=WoL 1v1, `2`=WoL 2v2, `3`=WoL 3v3, `4`=WoL 4v4, `101`=HotS 1v1, `102`=HotS 2v2, `103`=HotS 3v3, `104`=HotS 4v4, `201`=LotV 1v1, `202`=LotV 2v2, `203`=LotV 3v3, `204`=LotV 4v4, `206`=LotV Archon. Note that other available queues may not be listed here.
+**queueId**: the standard available queueIds are: `1`=WoL 1v1, `2`=WoL 2v2, `3`=WoL 3v3, `4`=WoL 4v4, `101`=HotS 1v1, `102`=HotS 2v2, `103`=HotS 3v3, `104`=HotS 4v4, `201`=LotV 1v1, `202`=LotV 2v2, `203`=LotV 3v3, `204`=LotV 4v4, `206`=LotV Archon. Note that other available queues may not be listed here.
 
-	 **teamType**: there are two available teamTypes: `0`=arranged, `1`=random.
+**teamType**: there are two available teamTypes: `0`=arranged, `1`=random.
 
-	 **leagueId**: available leagueIds are: `0`=Bronze, `1`=Silver, `2`=Gold, `3`=Platinum, `4`=Diamond, `5`=Master, `6`=Grandmaster.*/
+**leagueId**: available leagueIds are: `0`=Bronze, `1`=Silver, `2`=Gold, `3`=Platinum, `4`=Diamond, `5`=Master, `6`=Grandmaster. */
 
 }
 
-func ginGetLeagueData(c *gin.Context) {
+
+
+
+func ginStarCraftIILeagueGetLeagueData(c *gin.Context) {
 	// binding uri parameters
 	var req StarCraftII_StarCraftIILeague.GetLeagueDataFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -64,9 +64,11 @@ func StringQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (string, 
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (any, err
 		return nil, err
 	}
 
-	resp := &BNetQuestsIndex{}
+	resp := &QuestsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (any, err
 	return resp, nil
 }
 
-// QuestsIndex QuestsIndex Returns the parent index for quests.
+// QuestsIndex
+/* QuestsIndex Returns the parent index for quests. */
 // Path: /data/wow/quest/index
 var QuestsIndex = bridgeQuestsIndex
 
@@ -192,9 +195,11 @@ func StringQuest(ctx context.Context, fields *QuestFields) (string, error) {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeQuest(ctx context.Context, fields *QuestFields) (any, error) {
 		return nil, err
 	}
 
-	resp := &BNetQuest{}
+	resp := &QuestModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeQuest(ctx context.Context, fields *QuestFields) (any, error) {
 	return resp, nil
 }
 
-// Quest Quest Returns a quest by ID.
+// Quest
+/* Quest Returns a quest by ID. */
 // Path: /data/wow/quest/{questId}
 var Quest = bridgeQuest
 
@@ -329,9 +335,11 @@ func StringQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -397,7 +405,7 @@ func bridgeQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 		return nil, err
 	}
 
-	resp := &BNetQuestCategoriesIndex{}
+	resp := &QuestCategoriesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -405,7 +413,8 @@ func bridgeQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 	return resp, nil
 }
 
-// QuestCategoriesIndex QuestCategoriesIndex Returns an index of quest categories (such as quests for a specific class, profession, or storyline).
+// QuestCategoriesIndex
+/* QuestCategoriesIndex Returns an index of quest categories (such as quests for a specific class, profession, or storyline). */
 // Path: /data/wow/quest/category/index
 var QuestCategoriesIndex = bridgeQuestCategoriesIndex
 
@@ -453,13 +462,16 @@ func StringQuestCategory(ctx context.Context, fields *QuestCategoryFields) (stri
 		fields.QuestCategoryId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +551,7 @@ func bridgeQuestCategory(ctx context.Context, fields *QuestCategoryFields) (any,
 		return nil, err
 	}
 
-	resp := &BNetQuestCategory{}
+	resp := &QuestCategoryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +559,8 @@ func bridgeQuestCategory(ctx context.Context, fields *QuestCategoryFields) (any,
 	return resp, nil
 }
 
-// QuestCategory QuestCategory Returns a quest category by ID.
+// QuestCategory
+/* QuestCategory Returns a quest category by ID. */
 // Path: /data/wow/quest/category/{questCategoryId}
 var QuestCategory = bridgeQuestCategory
 
@@ -594,9 +607,11 @@ func StringQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -662,7 +677,7 @@ func bridgeQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetQuestAreasIndex{}
+	resp := &QuestAreasIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -670,7 +685,8 @@ func bridgeQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 	return resp, nil
 }
 
-// QuestAreasIndex QuestAreasIndex Returns an index of quest areas.
+// QuestAreasIndex
+/* QuestAreasIndex Returns an index of quest areas. */
 // Path: /data/wow/quest/area/index
 var QuestAreasIndex = bridgeQuestAreasIndex
 
@@ -718,13 +734,16 @@ func StringQuestArea(ctx context.Context, fields *QuestAreaFields) (string, erro
 		fields.QuestAreaId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -804,7 +823,7 @@ func bridgeQuestArea(ctx context.Context, fields *QuestAreaFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetQuestArea{}
+	resp := &QuestAreaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -812,7 +831,8 @@ func bridgeQuestArea(ctx context.Context, fields *QuestAreaFields) (any, error) 
 	return resp, nil
 }
 
-// QuestArea QuestArea Returns a quest area by ID.
+// QuestArea
+/* QuestArea Returns a quest area by ID. */
 // Path: /data/wow/quest/area/{questAreaId}
 var QuestArea = bridgeQuestArea
 
@@ -859,9 +879,11 @@ func StringQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -927,7 +949,7 @@ func bridgeQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetQuestTypesIndex{}
+	resp := &QuestTypesIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -935,7 +957,8 @@ func bridgeQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 	return resp, nil
 }
 
-// QuestTypesIndex QuestTypesIndex Returns an index of quest types (such as PvP quests, raid quests, or account quests).
+// QuestTypesIndex
+/* QuestTypesIndex Returns an index of quest types (such as PvP quests, raid quests, or account quests). */
 // Path: /data/wow/quest/type/index
 var QuestTypesIndex = bridgeQuestTypesIndex
 
@@ -983,13 +1006,16 @@ func StringQuestType(ctx context.Context, fields *QuestTypeFields) (string, erro
 		fields.QuestTypeId = "1"
 	}
 	
+	
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -1069,7 +1095,7 @@ func bridgeQuestType(ctx context.Context, fields *QuestTypeFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetQuestType{}
+	resp := &QuestTypeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -1077,7 +1103,8 @@ func bridgeQuestType(ctx context.Context, fields *QuestTypeFields) (any, error) 
 	return resp, nil
 }
 
-// QuestType QuestType Returns a quest type by ID.
+// QuestType
+/* QuestType Returns a quest type by ID. */
 // Path: /data/wow/quest/type/{questTypeId}
 var QuestType = bridgeQuestType
 

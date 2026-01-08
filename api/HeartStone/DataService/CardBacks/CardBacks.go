@@ -70,6 +70,7 @@ func StringCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (st
 		fields.Sort = "dateAdded:desc"
 	}
 	
+	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -142,7 +143,7 @@ func bridgeCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (an
 		return nil, err
 	}
 
-	resp := &BNetCardBackSearch{}
+	resp := &CardBackSearchModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -150,7 +151,8 @@ func bridgeCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (an
 	return resp, nil
 }
 
-// CardBackSearch CardBackSearch Returns an up-to-date list of all card backs matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-backs'>Card Backs Guide</a>.
+// CardBackSearch
+/* CardBackSearch Returns an up-to-date list of all card backs matching the search criteria. For more information about the search parameters, see the <a href='/documentation/hearthstone/guides/card-backs'>Card Backs Guide</a>. */
 // Path: /hearthstone/cardbacks
 var CardBackSearch = bridgeCardBackSearch
 
@@ -196,6 +198,7 @@ func StringFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 	if fields.Idorslug == "" {
 		fields.Idorslug = "155-pizza-stone"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -273,7 +276,7 @@ func bridgeFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 		return nil, err
 	}
 
-	resp := &BNetFetchonecardback{}
+	resp := &FetchonecardbackModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -281,7 +284,8 @@ func bridgeFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 	return resp, nil
 }
 
-// Fetchonecardback Fetchonecardback Returns a specific card back by using card back ID or slug.
+// Fetchonecardback
+/* Fetchonecardback Returns a specific card back by using card back ID or slug. */
 // Path: /hearthstone/cardbacks/:idorslug
 var Fetchonecardback = bridgeFetchonecardback
 

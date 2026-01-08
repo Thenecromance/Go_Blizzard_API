@@ -11,14 +11,14 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/soulbinds", ginCharacterSoulbinds) //CharacterSoulbinds Returns a character's soulbinds.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/soulbinds", ginCharacterSoulbindsCharacterSoulbinds) /* CharacterSoulbinds Returns a character's soulbinds. */
 
 }
 
 
 
 
-func ginCharacterSoulbinds(c *gin.Context) {
+func ginCharacterSoulbindsCharacterSoulbinds(c *gin.Context) {
 	// binding uri parameters
 	var req wow_CharacterSoulbinds.CharacterSoulbindsFields
 	if err := c.ShouldBindUri(&req); err != nil {

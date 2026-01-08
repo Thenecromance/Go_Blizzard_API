@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/realm/index", ginRealmsIndex) //RealmsIndex Returns an index of realms.
+	app.Instance().RegisterRoute("GET", "/data/wow/realm/index", ginRealmRealmsIndex) /* RealmsIndex Returns an index of realms. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/realm/:realmSlug", ginRealm) //Realm Returns a single realm by slug or ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/realm/:realmSlug", ginRealmRealm) /* Realm Returns a single realm by slug or ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/realm", ginRealmSearch) //RealmSearch Performs a search of realms. The fields below are examples only. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/realm", ginRealmRealmSearch) /* RealmSearch Performs a search of realms. The fields below are examples only. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginRealmsIndex(c *gin.Context) {
+func ginRealmRealmsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Realm.RealmsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginRealmsIndex(c *gin.Context) {
 
 
 
-func ginRealm(c *gin.Context) {
+func ginRealmRealm(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Realm.RealmFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginRealm(c *gin.Context) {
 
 
 
-func ginRealmSearch(c *gin.Context) {
+func ginRealmRealmSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_Realm.RealmSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

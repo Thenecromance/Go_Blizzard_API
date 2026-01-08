@@ -64,9 +64,11 @@ func StringGetArtisan(ctx context.Context, fields *GetArtisanFields) (string, er
 		fields.ArtisanSlug = "blacksmith"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -144,7 +146,7 @@ func bridgeGetArtisan(ctx context.Context, fields *GetArtisanFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetGetArtisan{}
+	resp := &GetArtisanModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -152,7 +154,8 @@ func bridgeGetArtisan(ctx context.Context, fields *GetArtisanFields) (any, error
 	return resp, nil
 }
 
-// GetArtisan GetArtisan Returns a single artisan by slug.
+// GetArtisan
+/* GetArtisan Returns a single artisan by slug. */
 // Path: /d3/data/artisan/{artisanSlug}
 var GetArtisan = bridgeGetArtisan
 
@@ -200,13 +203,16 @@ func StringGetRecipe(ctx context.Context, fields *GetRecipeFields) (string, erro
 		fields.ArtisanSlug = "blacksmith"
 	}
 	
+	
 	if fields.RecipeSlug == "" {
 		fields.RecipeSlug = "apprentice-flamberge"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -285,7 +291,7 @@ func bridgeGetRecipe(ctx context.Context, fields *GetRecipeFields) (any, error) 
 		return nil, err
 	}
 
-	resp := &BNetGetRecipe{}
+	resp := &GetRecipeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -293,7 +299,8 @@ func bridgeGetRecipe(ctx context.Context, fields *GetRecipeFields) (any, error) 
 	return resp, nil
 }
 
-// GetRecipe GetRecipe Returns a single recipe by slug for the specified artisan.
+// GetRecipe
+/* GetRecipe Returns a single recipe by slug for the specified artisan. */
 // Path: /d3/data/artisan/{artisanSlug}/recipe/{recipeSlug}
 var GetRecipe = bridgeGetRecipe
 

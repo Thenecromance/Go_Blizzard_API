@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/achievements", ginCharacterAchievementsSummary) //CharacterAchievementsSummary Returns a summary of the achievements a character has completed.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/achievements", ginCharacterAchievementsCharacterAchievementsSummary) /* CharacterAchievementsSummary Returns a summary of the achievements a character has completed. */
 
-	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/achievements/statistics", ginCharacterAchievementStatistics) //CharacterAchievementStatistics Returns a character's statistics as they pertain to achievements.
+	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/achievements/statistics", ginCharacterAchievementsCharacterAchievementStatistics) /* CharacterAchievementStatistics Returns a character's statistics as they pertain to achievements. */
 
 }
 
 
 
 
-func ginCharacterAchievementsSummary(c *gin.Context) {
+func ginCharacterAchievementsCharacterAchievementsSummary(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterAchievements.CharacterAchievementsSummaryFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginCharacterAchievementsSummary(c *gin.Context) {
 
 
 
-func ginCharacterAchievementStatistics(c *gin.Context) {
+func ginCharacterAchievementsCharacterAchievementStatistics(c *gin.Context) {
 	// binding uri parameters
 	var req wowClassic_CharacterAchievements.CharacterAchievementStatisticsFields
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -64,9 +64,11 @@ func StringTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 		return nil, err
 	}
 
-	resp := &BNetTechTalentTreeIndex{}
+	resp := &TechTalentTreeIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 	return resp, nil
 }
 
-// TechTalentTreeIndex TechTalentTreeIndex Returns an index of tech talent trees.
+// TechTalentTreeIndex
+/* TechTalentTreeIndex Returns an index of tech talent trees. */
 // Path: /data/wow/tech-talent-tree/index
 var TechTalentTreeIndex = bridgeTechTalentTreeIndex
 
@@ -192,9 +195,11 @@ func StringTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (st
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -274,7 +279,7 @@ func bridgeTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (an
 		return nil, err
 	}
 
-	resp := &BNetTechTalentTree{}
+	resp := &TechTalentTreeModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -282,7 +287,8 @@ func bridgeTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (an
 	return resp, nil
 }
 
-// TechTalentTree TechTalentTree Returns a tech talent tree by ID.
+// TechTalentTree
+/* TechTalentTree Returns a tech talent tree by ID. */
 // Path: /data/wow/tech-talent-tree/{techTalentTreeId}
 var TechTalentTree = bridgeTechTalentTree
 
@@ -329,9 +335,11 @@ func StringTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -397,7 +405,7 @@ func bridgeTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 		return nil, err
 	}
 
-	resp := &BNetTechTalentIndex{}
+	resp := &TechTalentIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -405,7 +413,8 @@ func bridgeTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 	return resp, nil
 }
 
-// TechTalentIndex TechTalentIndex Returns an index of tech talents.
+// TechTalentIndex
+/* TechTalentIndex Returns an index of tech talents. */
 // Path: /data/wow/tech-talent/index
 var TechTalentIndex = bridgeTechTalentIndex
 
@@ -457,9 +466,11 @@ func StringTechTalent(ctx context.Context, fields *TechTalentFields) (string, er
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -539,7 +550,7 @@ func bridgeTechTalent(ctx context.Context, fields *TechTalentFields) (any, error
 		return nil, err
 	}
 
-	resp := &BNetTechTalent{}
+	resp := &TechTalentModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -547,7 +558,8 @@ func bridgeTechTalent(ctx context.Context, fields *TechTalentFields) (any, error
 	return resp, nil
 }
 
-// TechTalent TechTalent Returns a tech talent by ID.
+// TechTalent
+/* TechTalent Returns a tech talent by ID. */
 // Path: /data/wow/tech-talent/{techTalentId}
 var TechTalent = bridgeTechTalent
 
@@ -599,9 +611,11 @@ func StringTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -681,7 +695,7 @@ func bridgeTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 		return nil, err
 	}
 
-	resp := &BNetTechTalentMedia{}
+	resp := &TechTalentMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -689,7 +703,8 @@ func bridgeTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 	return resp, nil
 }
 
-// TechTalentMedia TechTalentMedia Returns media for a tech talent by ID.
+// TechTalentMedia
+/* TechTalentMedia Returns media for a tech talent by ID. */
 // Path: /data/wow/media/tech-talent/{techTalentId}
 var TechTalentMedia = bridgeTechTalentMedia
 

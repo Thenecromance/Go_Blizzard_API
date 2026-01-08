@@ -11,18 +11,18 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mount/index", ginMountsIndex) //MountsIndex Returns an index of mounts.
+	app.Instance().RegisterRoute("GET", "/data/wow/mount/index", ginMountMountsIndex) /* MountsIndex Returns an index of mounts. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/mount/:mountId", ginMount) //Mount Returns a mount by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/mount/:mountId", ginMountMount) /* Mount Returns a mount by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/search/mount", ginMountSearch) //MountSearch Performs a search of mounts. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>.
+	app.Instance().RegisterRoute("GET", "/data/wow/search/mount", ginMountMountSearch) /* MountSearch Performs a search of mounts. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
 }
 
 
 
 
-func ginMountsIndex(c *gin.Context) {
+func ginMountMountsIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Mount.MountsIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -45,7 +45,7 @@ func ginMountsIndex(c *gin.Context) {
 
 
 
-func ginMount(c *gin.Context) {
+func ginMountMount(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Mount.MountFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -68,7 +68,7 @@ func ginMount(c *gin.Context) {
 
 
 
-func ginMountSearch(c *gin.Context) {
+func ginMountMountSearch(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Mount.MountSearchFields
 	if err := c.ShouldBindUri(&req); err != nil {

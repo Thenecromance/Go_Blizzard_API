@@ -64,9 +64,11 @@ func StringGuildCrestComponentsIndex(ctx context.Context, fields *GuildCrestComp
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -132,7 +134,7 @@ func bridgeGuildCrestComponentsIndex(ctx context.Context, fields *GuildCrestComp
 		return nil, err
 	}
 
-	resp := &BNetGuildCrestComponentsIndex{}
+	resp := &GuildCrestComponentsIndexModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -140,7 +142,8 @@ func bridgeGuildCrestComponentsIndex(ctx context.Context, fields *GuildCrestComp
 	return resp, nil
 }
 
-// GuildCrestComponentsIndex GuildCrestComponentsIndex Returns an index of guild crest media.
+// GuildCrestComponentsIndex
+/* GuildCrestComponentsIndex Returns an index of guild crest media. */
 // Path: /data/wow/guild-crest/index
 var GuildCrestComponentsIndex = bridgeGuildCrestComponentsIndex
 
@@ -188,9 +191,11 @@ func StringGuildCrestBorderMedia(ctx context.Context, fields *GuildCrestBorderMe
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -270,7 +275,7 @@ func bridgeGuildCrestBorderMedia(ctx context.Context, fields *GuildCrestBorderMe
 		return nil, err
 	}
 
-	resp := &BNetGuildCrestBorderMedia{}
+	resp := &GuildCrestBorderMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -278,7 +283,8 @@ func bridgeGuildCrestBorderMedia(ctx context.Context, fields *GuildCrestBorderMe
 	return resp, nil
 }
 
-// GuildCrestBorderMedia GuildCrestBorderMedia Returns media for a guild crest border by ID.
+// GuildCrestBorderMedia
+/* GuildCrestBorderMedia Returns media for a guild crest border by ID. */
 // Path: /data/wow/media/guild-crest/border/{borderId}
 var GuildCrestBorderMedia = bridgeGuildCrestBorderMedia
 
@@ -326,9 +332,11 @@ func StringGuildCrestEmblemMedia(ctx context.Context, fields *GuildCrestEmblemMe
 		fields.Namespace = "static-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -408,7 +416,7 @@ func bridgeGuildCrestEmblemMedia(ctx context.Context, fields *GuildCrestEmblemMe
 		return nil, err
 	}
 
-	resp := &BNetGuildCrestEmblemMedia{}
+	resp := &GuildCrestEmblemMediaModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -416,7 +424,8 @@ func bridgeGuildCrestEmblemMedia(ctx context.Context, fields *GuildCrestEmblemMe
 	return resp, nil
 }
 
-// GuildCrestEmblemMedia GuildCrestEmblemMedia Returns media for a guild crest emblem by ID.
+// GuildCrestEmblemMedia
+/* GuildCrestEmblemMedia Returns media for a guild crest emblem by ID. */
 // Path: /data/wow/media/guild-crest/emblem/{emblemId}
 var GuildCrestEmblemMedia = bridgeGuildCrestEmblemMedia
 

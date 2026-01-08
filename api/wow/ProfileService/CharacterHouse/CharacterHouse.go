@@ -67,9 +67,11 @@ func StringCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 		fields.RealmSlug = "tichondrius"
 	}
 	
+	
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
+	
 	
 	if fields.HouseNumber == 0 {
 		fields.HouseNumber = 1
@@ -79,9 +81,11 @@ func StringCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 		fields.Namespace = "profile-us"
 	}
 	
+	
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
+	
 	
 
 	// 3. Create HTTP Request
@@ -163,7 +167,7 @@ func bridgeCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 		return nil, err
 	}
 
-	resp := &BNetCharacterHouseSummary{}
+	resp := &CharacterHouseSummaryModel{}
 	if err = json.Unmarshal([]byte(objString), &resp); err != nil {
 		return nil, err
 	}
@@ -171,7 +175,8 @@ func bridgeCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 	return resp, nil
 }
 
-// CharacterHouseSummary CharacterHouseSummary Returns a summary of a house a character has built.
+// CharacterHouseSummary
+/* CharacterHouseSummary Returns a summary of a house a character has built. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/house/house-{houseNumber}
 var CharacterHouseSummary = bridgeCharacterHouseSummary
 

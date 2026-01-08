@@ -3,23 +3,26 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/api/wow/DataService/MythicKeystoneAffix"
 	"Unofficial_API/app"
+	"Unofficial_API/api/wow/DataService/MythicKeystoneAffix"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/data/wow/keystone-affix/index", ginMythicKeystoneAffixesIndex) //MythicKeystoneAffixesIndex Returns an index of mythic keystone affixes.
+	app.Instance().RegisterRoute("GET", "/data/wow/keystone-affix/index", ginMythicKeystoneAffixMythicKeystoneAffixesIndex) /* MythicKeystoneAffixesIndex Returns an index of mythic keystone affixes. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/keystone-affix/:keystoneAffixId", ginMythicKeystoneAffix) //MythicKeystoneAffix Returns a mythic keystone affix by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/keystone-affix/:keystoneAffixId", ginMythicKeystoneAffixMythicKeystoneAffix) /* MythicKeystoneAffix Returns a mythic keystone affix by ID. */
 
-	app.Instance().RegisterRoute("GET", "/data/wow/media/keystone-affix/:keystoneAffixId", ginMythicKeystoneAffixMedia) //MythicKeystoneAffixMedia Returns media for a mythic keystone affix by ID.
+	app.Instance().RegisterRoute("GET", "/data/wow/media/keystone-affix/:keystoneAffixId", ginMythicKeystoneAffixMythicKeystoneAffixMedia) /* MythicKeystoneAffixMedia Returns media for a mythic keystone affix by ID. */
 
 }
 
-func ginMythicKeystoneAffixesIndex(c *gin.Context) {
+
+
+
+func ginMythicKeystoneAffixMythicKeystoneAffixesIndex(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneAffix.MythicKeystoneAffixesIndexFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -37,10 +40,12 @@ func ginMythicKeystoneAffixesIndex(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, resp.(*wow_MythicKeystoneAffix.BNetMythicKeystoneAffixesIndex))
+	c.JSON(http.StatusOK, resp)
 }
 
-func ginMythicKeystoneAffix(c *gin.Context) {
+
+
+func ginMythicKeystoneAffixMythicKeystoneAffix(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneAffix.MythicKeystoneAffixFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -61,7 +66,9 @@ func ginMythicKeystoneAffix(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ginMythicKeystoneAffixMedia(c *gin.Context) {
+
+
+func ginMythicKeystoneAffixMythicKeystoneAffixMedia(c *gin.Context) {
 	// binding uri parameters
 	var req wow_MythicKeystoneAffix.MythicKeystoneAffixMediaFields
 	if err := c.ShouldBindUri(&req); err != nil {

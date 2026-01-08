@@ -11,16 +11,16 @@ import (
 
 func init() {
 
-	app.Instance().RegisterRoute("GET", "/d3/data/artisan/:artisanSlug", ginGetArtisan) //GetArtisan Returns a single artisan by slug.
+	app.Instance().RegisterRoute("GET", "/d3/data/artisan/:artisanSlug", ginD3ArtisanandRecipeGetArtisan) /* GetArtisan Returns a single artisan by slug. */
 
-	app.Instance().RegisterRoute("GET", "/d3/data/artisan/:artisanSlug/recipe/:recipeSlug", ginGetRecipe) //GetRecipe Returns a single recipe by slug for the specified artisan.
+	app.Instance().RegisterRoute("GET", "/d3/data/artisan/:artisanSlug/recipe/:recipeSlug", ginD3ArtisanandRecipeGetRecipe) /* GetRecipe Returns a single recipe by slug for the specified artisan. */
 
 }
 
 
 
 
-func ginGetArtisan(c *gin.Context) {
+func ginD3ArtisanandRecipeGetArtisan(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3ArtisanandRecipe.GetArtisanFields
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -43,7 +43,7 @@ func ginGetArtisan(c *gin.Context) {
 
 
 
-func ginGetRecipe(c *gin.Context) {
+func ginD3ArtisanandRecipeGetRecipe(c *gin.Context) {
 	// binding uri parameters
 	var req D3_D3ArtisanandRecipe.GetRecipeFields
 	if err := c.ShouldBindUri(&req); err != nil {
