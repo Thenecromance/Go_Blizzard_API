@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -80,9 +80,6 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -125,8 +122,7 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -231,9 +227,6 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -277,8 +270,7 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -383,9 +375,6 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -429,8 +418,7 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -535,9 +523,6 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -581,8 +566,7 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -85,9 +85,6 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -121,8 +118,7 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -241,9 +237,6 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -292,8 +285,7 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -407,9 +399,6 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -457,8 +446,7 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -567,9 +555,6 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -603,8 +588,7 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -718,9 +702,6 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -768,8 +749,7 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -878,9 +858,6 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -914,8 +891,7 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1029,9 +1005,6 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1079,8 +1052,7 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

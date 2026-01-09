@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/app"
-	"Unofficial_API/api/StarCraftII/Community/Ladder"
+	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/BlizzardAPI/api/StarCraftII/Community/Ladder"
 
 	"github.com/gin-gonic/gin"
 )

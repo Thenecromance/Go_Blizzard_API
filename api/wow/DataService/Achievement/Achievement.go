@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -85,9 +85,6 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -121,8 +118,7 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -236,9 +232,6 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -286,8 +279,7 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -401,9 +393,6 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -451,8 +440,7 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -561,9 +549,6 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -597,8 +582,7 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -712,9 +696,6 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -762,8 +743,7 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

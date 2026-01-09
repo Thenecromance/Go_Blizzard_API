@@ -16,10 +16,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -87,9 +87,6 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -123,8 +120,7 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -238,9 +234,6 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -288,8 +281,7 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -398,9 +390,6 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -434,8 +423,7 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -549,9 +537,6 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -599,8 +584,7 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -720,9 +704,6 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -766,8 +747,7 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -876,9 +856,6 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -912,8 +889,7 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1027,9 +1003,6 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1077,8 +1050,7 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1192,9 +1164,6 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1242,8 +1211,7 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

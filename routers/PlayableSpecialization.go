@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/app"
-	"Unofficial_API/api/wow/DataService/PlayableSpecialization"
+	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/BlizzardAPI/api/wow/DataService/PlayableSpecialization"
 
 	"github.com/gin-gonic/gin"
 )

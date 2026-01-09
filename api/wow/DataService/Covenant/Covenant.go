@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -85,9 +85,6 @@ func StringCovenantIndex(ctx context.Context, fields *CovenantIndexFields) (stri
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -121,8 +118,7 @@ func StringCovenantIndex(ctx context.Context, fields *CovenantIndexFields) (stri
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -236,9 +232,6 @@ func StringCovenant(ctx context.Context, fields *CovenantFields) (string, error)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -286,8 +279,7 @@ func StringCovenant(ctx context.Context, fields *CovenantFields) (string, error)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -401,9 +393,6 @@ func StringCovenantMedia(ctx context.Context, fields *CovenantMediaFields) (stri
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -451,8 +440,7 @@ func StringCovenantMedia(ctx context.Context, fields *CovenantMediaFields) (stri
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -561,9 +549,6 @@ func StringSoulbindIndex(ctx context.Context, fields *SoulbindIndexFields) (stri
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -597,8 +582,7 @@ func StringSoulbindIndex(ctx context.Context, fields *SoulbindIndexFields) (stri
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -712,9 +696,6 @@ func StringSoulbind(ctx context.Context, fields *SoulbindFields) (string, error)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -762,8 +743,7 @@ func StringSoulbind(ctx context.Context, fields *SoulbindFields) (string, error)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -872,9 +852,6 @@ func StringConduitIndex(ctx context.Context, fields *ConduitIndexFields) (string
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -908,8 +885,7 @@ func StringConduitIndex(ctx context.Context, fields *ConduitIndexFields) (string
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1023,9 +999,6 @@ func StringConduit(ctx context.Context, fields *ConduitFields) (string, error) {
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1073,8 +1046,7 @@ func StringConduit(ctx context.Context, fields *ConduitFields) (string, error) {
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

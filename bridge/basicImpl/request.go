@@ -1,8 +1,8 @@
 package basicImpl
 
 import (
-	"Unofficial_API/Interface"
 	"fmt"
+	"github.com/Thenecromance/BlizzardAPI/Interface"
 	"io"
 	"net/http"
 	"strings"

@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -85,9 +85,6 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -121,8 +118,7 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -231,9 +227,6 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -267,8 +260,7 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -382,9 +374,6 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -432,8 +421,7 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -542,9 +530,6 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -578,8 +563,7 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -693,9 +677,6 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -743,8 +724,7 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -853,9 +833,6 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -889,8 +866,7 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1004,9 +980,6 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1054,8 +1027,7 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

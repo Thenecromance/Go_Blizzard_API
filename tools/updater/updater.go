@@ -1,8 +1,8 @@
 package updater
 
 import (
-	automodel "Unofficial_API/tools/updater/autoModel"
 	"fmt"
+	automodel "github.com/Thenecromance/BlizzardAPI/tools/updater/autoModel"
 	"io"
 	"net/http"
 	"os"

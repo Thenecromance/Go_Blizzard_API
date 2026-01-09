@@ -16,10 +16,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -92,9 +92,6 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -142,8 +139,7 @@ func StringCreature(ctx context.Context, fields *CreatureFields) (string, error)
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -263,9 +259,6 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -309,8 +302,7 @@ func StringCreatureSearch(ctx context.Context, fields *CreatureSearchFields) (st
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -424,9 +416,6 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -474,8 +463,7 @@ func StringCreatureDisplayMedia(ctx context.Context, fields *CreatureDisplayMedi
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -584,9 +572,6 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -620,8 +605,7 @@ func StringCreatureFamiliesIndex(ctx context.Context, fields *CreatureFamiliesIn
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -735,9 +719,6 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -785,8 +766,7 @@ func StringCreatureFamily(ctx context.Context, fields *CreatureFamilyFields) (st
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -900,9 +880,6 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -950,8 +927,7 @@ func StringCreatureFamilyMedia(ctx context.Context, fields *CreatureFamilyMediaF
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1060,9 +1036,6 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1096,8 +1069,7 @@ func StringCreatureTypesIndex(ctx context.Context, fields *CreatureTypesIndexFie
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1211,9 +1183,6 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1261,8 +1230,7 @@ func StringCreatureType(ctx context.Context, fields *CreatureTypeFields) (string
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

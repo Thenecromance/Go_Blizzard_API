@@ -1,8 +1,8 @@
 package client
 
 import (
-	"Unofficial_API/Interface"
-	"Unofficial_API/bridge/basicImpl"
+	"github.com/Thenecromance/BlizzardAPI/Interface"
+	"github.com/Thenecromance/BlizzardAPI/bridge/basicImpl"
 	"io"
 )
 

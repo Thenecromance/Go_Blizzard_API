@@ -1,10 +1,11 @@
 package main
 
 import (
-	"Unofficial_API/app"
-	_ "Unofficial_API/routers"
+	"github.com/Thenecromance/BlizzardAPI/app"
+	_ "github.com/Thenecromance/BlizzardAPI/routers"
 )
 
 func main() {
 	app.Instance().Run()
+
 }

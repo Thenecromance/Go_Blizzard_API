@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/app"
-	"Unofficial_API/api/wow/ProfileService/CharacterTitles"
+	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/BlizzardAPI/api/wow/ProfileService/CharacterTitles"
 
 	"github.com/gin-gonic/gin"
 )

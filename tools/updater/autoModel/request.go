@@ -1,18 +1,23 @@
 package automodel
 
 import (
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
+	"context"
 	"encoding/json"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/spf13/viper"
+	"golang.org/x/oauth2/clientcredentials"
 
 	"github.com/jtacoma/uritemplates"
 	log "github.com/sirupsen/logrus"
 )
 
 var Params map[string]any
+
+var client *http.Client
 
 func init() {
 	buf, err := os.ReadFile("./params.json")
@@ -21,6 +26,14 @@ func init() {
 	}
 
 	json.Unmarshal(buf, &Params)
+
+	// Setup oauth2 config
+	conf := &clientcredentials.Config{
+		ClientID:     viper.GetString("client_id"),
+		ClientSecret: viper.GetString("client_secret"),
+		TokenURL:     "https://us.battle.net/oauth/token",
+	}
+	client = conf.Client(context.Background())
 }
 
 type Fields struct {
@@ -34,9 +47,8 @@ type Fields struct {
 
 func Request(field *Fields) (string, error) {
 	log.Debug("Requesting:", field.Path)
-	client := http.DefaultClient
+
 	req, err := http.NewRequest(field.Method, global.PortalURL, nil)
-	req.Header.Set("Authorization", "Bearer "+Authentication.GetToken())
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +79,9 @@ func Request(field *Fields) (string, error) {
 		req.URL.RawQuery = q.Encode()
 	}
 	log.Debug(req.URL.String())
+
 	resp, err := client.Do(req)
+
 	if err != nil {
 		return "", err
 	}

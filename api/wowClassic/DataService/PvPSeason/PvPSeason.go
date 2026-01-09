@@ -14,10 +14,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -85,9 +85,6 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -121,8 +118,7 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -236,9 +232,6 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -286,8 +279,7 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -396,9 +388,6 @@ func StringPvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (st
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -432,8 +421,7 @@ func StringPvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (st
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -547,9 +535,6 @@ func StringPvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -597,8 +582,7 @@ func StringPvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -717,9 +701,6 @@ func StringPvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -768,8 +749,7 @@ func StringPvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -888,9 +868,6 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -939,8 +916,7 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1065,9 +1041,6 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1117,8 +1090,7 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -1237,9 +1209,6 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1288,8 +1257,7 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"Unofficial_API/app"
-	"Unofficial_API/api/wowClassic/ProfileService/CharacterAchievements"
+	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/BlizzardAPI/api/wowClassic/ProfileService/CharacterAchievements"
 
 	"github.com/gin-gonic/gin"
 )

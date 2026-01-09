@@ -1,6 +1,6 @@
 package internal
 
-import "Unofficial_API/utils"
+import "github.com/Thenecromance/BlizzardAPI/utils"
 
 var cache *utils.Cache
 

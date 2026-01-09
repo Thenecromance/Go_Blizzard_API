@@ -1,10 +1,10 @@
 package server
 
 import (
-	"Unofficial_API/bridge/client"
-	"Unofficial_API/bridge/log"
 	"encoding/json"
 	"fmt"
+	"github.com/Thenecromance/BlizzardAPI/bridge/client"
+	"github.com/Thenecromance/BlizzardAPI/bridge/log"
 	"io"
 	"strings"
 	"sync"

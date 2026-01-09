@@ -16,10 +16,10 @@ import (
 	"io"
 	"net/http"
 
-	"Unofficial_API/ApiError"
-	"Unofficial_API/api/Authentication"
-	"Unofficial_API/global"
-	"Unofficial_API/utils"
+	"github.com/Thenecromance/BlizzardAPI/ApiError"
+	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
+	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/BlizzardAPI/utils"
 
 
 	"github.com/jtacoma/uritemplates"
@@ -96,9 +96,6 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 	if err != nil {
 		return "", err
 	}
-
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
@@ -196,8 +193,7 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -392,9 +388,6 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -486,8 +479,7 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -611,9 +603,6 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -683,8 +672,7 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -803,9 +791,6 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -877,8 +862,7 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -988,9 +972,6 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 		return "", err
 	}
 
-	// Add Auth Header
-	req.Header.Add("Authorization", "Bearer "+Authentication.GetToken())
-
 	// 4. Resolve Path (Handle URI Bindings)
 	{
 	
@@ -1038,8 +1019,7 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 }
 
 	// 6. Execute Request
-	cli := http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := Authentication.Client().Do(req)
 	if err != nil {
 		return "", err
 	}

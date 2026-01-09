@@ -1,10 +1,11 @@
 package main
 
 import (
-	"Unofficial_API/tools/updater"
 	"encoding/json"
 	"os"
 	"sync"
+
+	"github.com/Thenecromance/BlizzardAPI/tools/updater"
 )
 
 type Fields struct {
