@@ -10,7 +10,7 @@ type ApiGroup struct {
 	Game         string `json:"package"` // just like "Achievement"
 	Category     string `json:"category"`
 	ApiGroupName string `json:"name"`    // just like "Achievement API"
-	Apis         []*Api `json:"methods"` // just like "Achievement API"
+	Methods      []*Api `json:"methods"` // just like "Achievement API"
 }
 
 func (ap *ApiGroup) PackageName() string {
@@ -23,13 +23,13 @@ func (ap *ApiGroup) Fixed() {
 	}
 	ap.ApiGroupName = strings.ReplaceAll(ap.ApiGroupName, " ", "")
 
-	for _, api := range ap.Apis {
+	for _, api := range ap.Methods {
 		api.fixed()
 	}
 }
 
 func (ap *ApiGroup) NeedStrconv() bool {
-	for _, p := range ap.Apis {
+	for _, p := range ap.Methods {
 		if p.NeedStrconv() {
 			return true
 		}
@@ -38,7 +38,7 @@ func (ap *ApiGroup) NeedStrconv() bool {
 }
 
 func (ap *ApiGroup) HasURIBinding() bool {
-	for _, p := range ap.Apis {
+	for _, p := range ap.Methods {
 		if p.HasURIBinding() {
 			return true
 		}
@@ -47,7 +47,7 @@ func (ap *ApiGroup) HasURIBinding() bool {
 }
 
 func (ap *ApiGroup) ProcessChineseData() bool {
-	for _, p := range ap.Apis {
+	for _, p := range ap.Methods {
 		if p.ProcessChineseData() {
 			return true
 		}

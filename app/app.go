@@ -17,6 +17,7 @@ func (a *App) Run() {
 	log.Println("Starting server on port 80")
 	fmt.Println("Starting server on port 80")
 	a.engine.Run(":80")
+
 }
 
 func (a *App) RegisterRoute(method, route string, handler gin.HandlerFunc) {

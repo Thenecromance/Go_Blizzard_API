@@ -7,11 +7,8 @@ package wow_CharacterProfile
 import (
 	"context"
 	"encoding/json"
-	
 
-	
-	    "strings"
-    
+	"strings"
 
 	"io"
 	"net/http"
@@ -21,21 +18,18 @@ import (
 	"github.com/Thenecromance/BlizzardAPI/global"
 	"github.com/Thenecromance/BlizzardAPI/utils"
 
-
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: CharacterProfileSummary
 // ==============================================================================================
 
 type CharacterProfileSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -66,27 +60,22 @@ func StringCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -101,50 +90,43 @@ func StringCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -163,22 +145,21 @@ func StringCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 
 // bridgeCharacterProfileSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterProfileSummary(ctx context.Context, fields *CharacterProfileSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterProfileSummary != nil {
 			return CNHookCharacterProfileSummary(ctx, fields)
@@ -206,16 +187,15 @@ func bridgeCharacterProfileSummary(ctx context.Context, fields *CharacterProfile
 // Path: /profile/wow/character/{realmSlug}/{characterName}
 var CharacterProfileSummary = bridgeCharacterProfileSummary
 
-
 // ==============================================================================================
 // API: CharacterProfileStatus
 // ==============================================================================================
 
 type CharacterProfileStatusFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -246,27 +226,22 @@ func StringCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -281,50 +256,43 @@ func StringCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -343,22 +311,21 @@ func StringCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 
 // bridgeCharacterProfileStatus routes the request to either CN or Global logic based on input.
 func bridgeCharacterProfileStatus(ctx context.Context, fields *CharacterProfileStatusFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterProfileStatus != nil {
 			return CNHookCharacterProfileStatus(ctx, fields)
@@ -385,4 +352,3 @@ func bridgeCharacterProfileStatus(ctx context.Context, fields *CharacterProfileS
 /* CharacterProfileStatus Returns the status and a unique ID for a character. A client should delete information about a character from their application if any of the following conditions occur:<ul><li>an HTTP 404 Not Found error is returned</li><li>the is_valid value is false</li><li>the returned character ID doesn't match the previously recorded value for the character</li></ul>The following example illustrates how to use this endpoint:<ol><li>A client requests and stores information about a character, including its unique character ID and the timestamp of the request.</li><li>After 30 days, the client makes a request to the status endpoint to verify if the character information is still valid.</li><li>If character cannot be found, is not valid, or the characters IDs do not match, the client removes the information from their application.</li><li>If the character is valid and the character IDs match, the client retains the data for another 30 days.</li></ol> */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/status
 var CharacterProfileStatus = bridgeCharacterProfileStatus
-

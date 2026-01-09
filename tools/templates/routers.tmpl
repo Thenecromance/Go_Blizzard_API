@@ -10,15 +10,15 @@ import (
 )
 
 func init() {
-{{range .Apis}}
-	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{$.ApiGroupName}}{{.Name}}) /* {{.Description}} */
+{{range .Methods}}
+	app.Instance().RegisterRoute("{{.Method}}", "{{.GinPath}}", gin{{$.Game}}{{.Name}}) /* {{.Description}} */
 {{end}}
 }
 
-{{range .Apis}}
+{{range .Methods}}
 
 
-func gin{{$.ApiGroupName}}{{.Name}}(c *gin.Context) {
+func gin{{$.Game}}{{.Name}}(c *gin.Context) {
 	// binding uri parameters
 	var req {{$.Game}}_{{$.ApiGroupName}}.{{.Name}}Fields
 	if err := c.ShouldBindUri(&req); err != nil {

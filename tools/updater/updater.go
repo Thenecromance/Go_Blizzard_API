@@ -2,13 +2,14 @@ package updater
 
 import (
 	"fmt"
-	automodel "github.com/Thenecromance/BlizzardAPI/tools/updater/autoModel"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"text/template"
+
+	automodel "github.com/Thenecromance/BlizzardAPI/tools/updater/autoModel"
 
 	"github.com/bytedance/sonic"
 	log "github.com/sirupsen/logrus"
@@ -132,7 +133,7 @@ func GenerateApi(pkgName string, folder string, apiList []*ApiGroup) {
 		data := map[string]any{
 			"PkgName":            pkgName,
 			"ApiGroupName":       apiGroup.ApiGroupName,
-			"Apis":               apiGroup.Apis,
+			"Methods":               apiGroup.Methods,
 			"NeedStrconv":        apiGroup.NeedStrconv(), // Change: Call the method explicitly
 			"HasURIBinding":      apiGroup.HasURIBinding(),
 			"ProcessChineseData": apiGroup.ProcessChineseData(),
@@ -154,14 +155,14 @@ func GenerateModels(pkgName string, folder string, apiList []*ApiGroup) {
 	}
 
 	for _, apiGroup := range apiList {
-		for _, api := range apiGroup.Apis {
+		for _, api := range apiGroup.Methods {
 			// e.g. folder/GroupName/ApiName.model.go
 			modelFilePath := filepath.Join(folder, apiGroup.ApiGroupName, api.Name+".model.go")
 
 			data := map[string]any{
 				"PkgName":      pkgName,
 				"ApiGroupName": apiGroup.ApiGroupName,
-				"Apis":         apiGroup.Apis,
+				"Methods":         apiGroup.Methods,
 				"Name":         api.Name,
 			}
 
@@ -207,13 +208,13 @@ func GenerateRouters(pkgName string, folder string, apiList []*ApiGroup) {
 
 	for _, apiGroup := range apiList {
 		// e.g. folder/GroupName.go
-		filePath := filepath.Join(folder, apiGroup.ApiGroupName+".go")
+		filePath := filepath.Join(folder, apiGroup.Game+"_"+apiGroup.ApiGroupName+".go")
 
 		data := map[string]any{
 			"Game":         apiGroup.Game,
 			"Category":     apiGroup.Category,
 			"ApiGroupName": apiGroup.ApiGroupName,
-			"Apis":         apiGroup.Apis,
+			"Methods":         apiGroup.Methods,
 			"NeedStrconv":  apiGroup.NeedStrconv(), // Change: Call the method explicitly
 		}
 

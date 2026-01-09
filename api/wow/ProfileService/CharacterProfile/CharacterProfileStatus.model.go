@@ -23,6 +23,8 @@ type CharacterProfileStatusModel struct {
 // CharacterProfileStatus represents the raw CN API response for CharacterProfileStatus.
 type CNCharacterProfileStatusModel CharacterProfileStatusModel
 
+
+
 // ToBNet converts the CN  to the unified BNetCharacterProfileStatus.
 // Implementation intentionally returns nil and should be filled by hand when needed.
 func (r *CNCharacterProfileStatusModel) ToBNet() any {

@@ -16,7 +16,7 @@ import (
 
 
 
-{{range .Apis}} 
+{{range .Methods}} 
 /*{{.Description}}*/
 //@see: {{.Path}}
 
@@ -80,7 +80,7 @@ import (
 	"strconv"
 )
 
-{{range .Apis}} 
+{{range .Methods}} 
 //==============================================================================================
 
 type {{.Name}}Fields struct{
