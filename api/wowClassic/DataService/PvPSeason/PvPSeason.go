@@ -7,23 +7,17 @@ package wowClassic_PvPSeason
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: PvPSeasonsIndex
@@ -31,7 +25,7 @@ import (
 
 type PvPSeasonsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringPvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 
 // bridgePvPSeasonsIndex routes the request to either CN or Global logic based on input.
 func bridgePvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPSeasonsIndex != nil {
 			return CNHookPvPSeasonsIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgePvPSeasonsIndex(ctx context.Context, fields *PvPSeasonsIndexFields) (
 // Path: /data/wow/pvp-season/index
 var PvPSeasonsIndex = bridgePvPSeasonsIndex
 
-
 // ==============================================================================================
 // API: PvPSeason
 // ==============================================================================================
 
 type PvPSeasonFields struct {
-	PvpSeasonId int `uri:"pvpSeasonId" binding:"required"` // The ID of the PvP season.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpSeasonId int    `uri:"pvpSeasonId" binding:"required"`        // The ID of the PvP season.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpSeasonId == 0 {
 		fields.PvpSeasonId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpSeasonId": fields.PvpSeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpSeasonId": fields.PvpSeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringPvPSeason(ctx context.Context, fields *PvPSeasonFields) (string, erro
 
 // bridgePvPSeason routes the request to either CN or Global logic based on input.
 func bridgePvPSeason(ctx context.Context, fields *PvPSeasonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPSeason != nil {
 			return CNHookPvPSeason(ctx, fields)
@@ -327,14 +299,13 @@ func bridgePvPSeason(ctx context.Context, fields *PvPSeasonFields) (any, error) 
 // Path: /data/wow/pvp-season/{pvpSeasonId}
 var PvPSeason = bridgePvPSeason
 
-
 // ==============================================================================================
 // API: PvPRegionIndex
 // ==============================================================================================
 
 type PvPRegionIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -365,17 +336,14 @@ func StringPvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -390,35 +358,29 @@ func StringPvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringPvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (st
 
 // bridgePvPRegionIndex routes the request to either CN or Global logic based on input.
 func bridgePvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPRegionIndex != nil {
 			return CNHookPvPRegionIndex(ctx, fields)
@@ -469,15 +430,14 @@ func bridgePvPRegionIndex(ctx context.Context, fields *PvPRegionIndexFields) (an
 // Path: /data/wow/pvp-region/index
 var PvPRegionIndex = bridgePvPRegionIndex
 
-
 // ==============================================================================================
 // API: PvPRegionalSeasonIndex
 // ==============================================================================================
 
 type PvPRegionalSeasonIndexFields struct {
-	PvpRegionId int `uri:"pvpRegionId" binding:"required"` // The ID of the PvP region.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpRegionId int    `uri:"pvpRegionId" binding:"required"`        // The ID of the PvP region.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -508,21 +468,18 @@ func StringPvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpRegionId == 0 {
 		fields.PvpRegionId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -537,49 +494,42 @@ func StringPvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpRegionId": fields.PvpRegionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpRegionId": fields.PvpRegionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -598,11 +548,10 @@ func StringPvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 
 // bridgePvPRegionalSeasonIndex routes the request to either CN or Global logic based on input.
 func bridgePvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeasonIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPRegionalSeasonIndex != nil {
 			return CNHookPvPRegionalSeasonIndex(ctx, fields)
@@ -630,16 +579,15 @@ func bridgePvPRegionalSeasonIndex(ctx context.Context, fields *PvPRegionalSeason
 // Path: /data/wow/pvp-region/{pvpRegionId}/pvp-season/index
 var PvPRegionalSeasonIndex = bridgePvPRegionalSeasonIndex
 
-
 // ==============================================================================================
 // API: PvPRegionalSeason
 // ==============================================================================================
 
 type PvPRegionalSeasonFields struct {
-	PvpRegionId int `uri:"pvpRegionId" binding:"required"` // The ID of the PvP region.
-		PvpSeasonId int `uri:"pvpSeasonId" binding:"required"` // The ID of the PvP season.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpRegionId int    `uri:"pvpRegionId" binding:"required"`        // The ID of the PvP region.
+	PvpSeasonId int    `uri:"pvpSeasonId" binding:"required"`        // The ID of the PvP season.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -670,25 +618,22 @@ func StringPvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpRegionId == 0 {
 		fields.PvpRegionId = 1
 	}
-	
+
 	if fields.PvpSeasonId == 0 {
 		fields.PvpSeasonId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -703,50 +648,43 @@ func StringPvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpRegionId": fields.PvpRegionId,
-    		"pvpSeasonId": fields.PvpSeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpRegionId": fields.PvpRegionId,
+			"pvpSeasonId": fields.PvpSeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -765,11 +703,10 @@ func StringPvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 
 // bridgePvPRegionalSeason routes the request to either CN or Global logic based on input.
 func bridgePvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPRegionalSeason != nil {
 			return CNHookPvPRegionalSeason(ctx, fields)
@@ -797,16 +734,15 @@ func bridgePvPRegionalSeason(ctx context.Context, fields *PvPRegionalSeasonField
 // Path: /data/wow/pvp-region/{pvpRegionId}/pvp-season/{pvpSeasonId}
 var PvPRegionalSeason = bridgePvPRegionalSeason
 
-
 // ==============================================================================================
 // API: PvPLeaderboardsIndex
 // ==============================================================================================
 
 type PvPLeaderboardsIndexFields struct {
-	PvpRegionId int `uri:"pvpRegionId" binding:"required"` // The ID of the PvP region.
-		PvpSeasonId int `uri:"pvpSeasonId" binding:"required"` // The ID of the PvP season.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpRegionId int    `uri:"pvpRegionId" binding:"required"`        // The ID of the PvP region.
+	PvpSeasonId int    `uri:"pvpSeasonId" binding:"required"`        // The ID of the PvP season.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -837,25 +773,22 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpRegionId == 0 {
 		fields.PvpRegionId = 1
 	}
-	
+
 	if fields.PvpSeasonId == 0 {
 		fields.PvpSeasonId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -870,50 +803,43 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpRegionId": fields.PvpRegionId,
-    		"pvpSeasonId": fields.PvpSeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpRegionId": fields.PvpRegionId,
+			"pvpSeasonId": fields.PvpSeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -932,11 +858,10 @@ func StringPvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 
 // bridgePvPLeaderboardsIndex routes the request to either CN or Global logic based on input.
 func bridgePvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPLeaderboardsIndex != nil {
 			return CNHookPvPLeaderboardsIndex(ctx, fields)
@@ -964,17 +889,16 @@ func bridgePvPLeaderboardsIndex(ctx context.Context, fields *PvPLeaderboardsInde
 // Path: /data/wow/pvp-region/{pvpRegionId}/pvp-season/{pvpSeasonId}/pvp-leaderboard/index
 var PvPLeaderboardsIndex = bridgePvPLeaderboardsIndex
 
-
 // ==============================================================================================
 // API: PvPLeaderboard
 // ==============================================================================================
 
 type PvPLeaderboardFields struct {
-	PvpRegionId int `uri:"pvpRegionId" binding:"required"` // The ID of the PvP region.
-		PvpSeasonId int `uri:"pvpSeasonId" binding:"required"` // The ID of the PvP season.
-		PvpBracket string `uri:"pvpBracket" binding:"required"` // The PvP bracket type.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpRegionId int    `uri:"pvpRegionId" binding:"required"`        // The ID of the PvP region.
+	PvpSeasonId int    `uri:"pvpSeasonId" binding:"required"`        // The ID of the PvP season.
+	PvpBracket  string `uri:"pvpBracket" binding:"required"`         // The PvP bracket type.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1005,30 +929,26 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpRegionId == 0 {
 		fields.PvpRegionId = 1
 	}
-	
+
 	if fields.PvpSeasonId == 0 {
 		fields.PvpSeasonId = 1
 	}
-	
+
 	if fields.PvpBracket == "" {
 		fields.PvpBracket = "3v3"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1043,51 +963,44 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpRegionId": fields.PvpRegionId,
-    		"pvpSeasonId": fields.PvpSeasonId,
-    		"pvpBracket": fields.PvpBracket,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpRegionId": fields.PvpRegionId,
+			"pvpSeasonId": fields.PvpSeasonId,
+			"pvpBracket":  fields.PvpBracket,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1106,11 +1019,10 @@ func StringPvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (st
 
 // bridgePvPLeaderboard routes the request to either CN or Global logic based on input.
 func bridgePvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPLeaderboard != nil {
 			return CNHookPvPLeaderboard(ctx, fields)
@@ -1138,16 +1050,15 @@ func bridgePvPLeaderboard(ctx context.Context, fields *PvPLeaderboardFields) (an
 // Path: /data/wow/pvp-region/{pvpRegionId}/pvp-season/{pvpSeasonId}/pvp-leaderboard/{pvpBracket}
 var PvPLeaderboard = bridgePvPLeaderboard
 
-
 // ==============================================================================================
 // API: PvPRewardsIndex
 // ==============================================================================================
 
 type PvPRewardsIndexFields struct {
-	PvpRegionId int `uri:"pvpRegionId" binding:"required"` // The ID of the PvP region.
-		PvpSeasonId int `uri:"pvpSeasonId" binding:"required"` // The ID of the PvP season.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpRegionId int    `uri:"pvpRegionId" binding:"required"`        // The ID of the PvP region.
+	PvpSeasonId int    `uri:"pvpSeasonId" binding:"required"`        // The ID of the PvP season.
+	Namespace   string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1178,25 +1089,22 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpRegionId == 0 {
 		fields.PvpRegionId = 1
 	}
-	
+
 	if fields.PvpSeasonId == 0 {
 		fields.PvpSeasonId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1211,50 +1119,43 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpRegionId": fields.PvpRegionId,
-    		"pvpSeasonId": fields.PvpSeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpRegionId": fields.PvpRegionId,
+			"pvpSeasonId": fields.PvpSeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1273,11 +1174,10 @@ func StringPvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 
 // bridgePvPRewardsIndex routes the request to either CN or Global logic based on input.
 func bridgePvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPRewardsIndex != nil {
 			return CNHookPvPRewardsIndex(ctx, fields)
@@ -1304,4 +1204,3 @@ func bridgePvPRewardsIndex(ctx context.Context, fields *PvPRewardsIndexFields) (
 /* PvPRewardsIndex Returns an index of PvP rewards for a PvP season in a given PvP region. */
 // Path: /data/wow/pvp-region/{pvpRegionId}/pvp-season/{pvpSeasonId}/pvp-reward/index
 var PvPRewardsIndex = bridgePvPRewardsIndex
-

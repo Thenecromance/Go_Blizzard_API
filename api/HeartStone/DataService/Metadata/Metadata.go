@@ -7,23 +7,17 @@ package HeartStone_Metadata
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Allmetadata
@@ -61,12 +55,10 @@ func StringAllmetadata(ctx context.Context, fields *AllmetadataFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -81,30 +73,25 @@ func StringAllmetadata(ctx context.Context, fields *AllmetadataFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -123,11 +110,10 @@ func StringAllmetadata(ctx context.Context, fields *AllmetadataFields) (string, 
 
 // bridgeAllmetadata routes the request to either CN or Global logic based on input.
 func bridgeAllmetadata(ctx context.Context, fields *AllmetadataFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAllmetadata != nil {
 			return CNHookAllmetadata(ctx, fields)
@@ -155,15 +141,14 @@ func bridgeAllmetadata(ctx context.Context, fields *AllmetadataFields) (any, err
 // Path: /hearthstone/metadata
 var Allmetadata = bridgeAllmetadata
 
-
 // ==============================================================================================
 // API: Specificmetadata
 // ==============================================================================================
 
 type SpecificmetadataFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
-	Type string `uri:"type" binding:"required"` // The type of the metadata to retrieve. Valid values include sets, setGroups, types, rarities, classes, minionTypes, and keywords.
-	
+	Locale string `form:"locale,default=en_US"`   // The locale to reflect in localized data.
+	Type   string `uri:"type" binding:"required"` // The type of the metadata to retrieve. Valid values include sets, setGroups, types, rarities, classes, minionTypes, and keywords.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -193,17 +178,14 @@ func StringSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.Type == "" {
 		fields.Type = "sets"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -218,44 +200,38 @@ func StringSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"type": fields.Type,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"type": fields.Type,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -274,11 +250,10 @@ func StringSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 
 // bridgeSpecificmetadata routes the request to either CN or Global logic based on input.
 func bridgeSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSpecificmetadata != nil {
 			return CNHookSpecificmetadata(ctx, fields)
@@ -305,4 +280,3 @@ func bridgeSpecificmetadata(ctx context.Context, fields *SpecificmetadataFields)
 /* Specificmetadata Returns information about just one type of metadata. For more information, see the <a href='/documentation/hearthstone/guides/metadata'>Metadata Guide</a>. */
 // Path: /hearthstone/metadata/:type
 var Specificmetadata = bridgeSpecificmetadata
-

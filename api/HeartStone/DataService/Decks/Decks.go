@@ -7,31 +7,25 @@ package HeartStone_Decks
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 )
-
 
 // ==============================================================================================
 // API: Getdeckbycode
 // ==============================================================================================
 
 type GetdeckbycodeFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
-	Code string `form:"code,default=AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"` // A code that identifies a deck. You can copy one from the game or various Hearthstone websites. The value should be URL encoded.
-	Ids string `form:"ids"` // A list of card IDs representing cards in the deck. Ignored if a <strong>code</strong> parameter is also present.
-	Hero string `form:"hero"` // The card ID for the hero of the deck. Used along with <strong>ids</strong>. If not present, the API will attempt to add a default hero and class based on the cards in the deck.
+	Locale string `form:"locale,default=en_US"`                                                                      // The locale to reflect in localized data.
+	Code   string `form:"code,default=AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"` // A code that identifies a deck. You can copy one from the game or various Hearthstone websites. The value should be URL encoded.
+	Ids    string `form:"ids"`                                                                                       // A list of card IDs representing cards in the deck. Ignored if a <strong>code</strong> parameter is also present.
+	Hero   string `form:"hero"`                                                                                      // The card ID for the hero of the deck. Used along with <strong>ids</strong>. If not present, the API will attempt to add a default hero and class based on the cards in the deck.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.Code == "" {
 		fields.Code = "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,45 +78,37 @@ func StringGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("code") {
-		q.Add("code", "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA")
-	}
-    
-    
-	if !q.Has("ids") {
-		q.Add("ids", "<no value>")
-	}
-    
-    
-	if !q.Has("hero") {
-		q.Add("hero", "<no value>")
-	}
-    
+		if !q.Has("code") {
+			q.Add("code", "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA")
+		}
 
+		if !q.Has("ids") {
+			q.Add("ids", "<no value>")
+		}
 
-	req.URL.RawQuery = q.Encode()
-}
+		if !q.Has("hero") {
+			q.Add("hero", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -144,11 +127,10 @@ func StringGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (stri
 
 // bridgeGetdeckbycode routes the request to either CN or Global logic based on input.
 func bridgeGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetdeckbycode != nil {
 			return CNHookGetdeckbycode(ctx, fields)
@@ -176,16 +158,15 @@ func bridgeGetdeckbycode(ctx context.Context, fields *GetdeckbycodeFields) (any,
 // Path: /hearthstone/deck
 var Getdeckbycode = bridgeGetdeckbycode
 
-
 // ==============================================================================================
 // API: Getdeckbycardlist
 // ==============================================================================================
 
 type GetdeckbycardlistFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
-	Code string `form:"code"` // A code that identifies a deck. You can copy one from the game or various Hearthstone websites. The value should be URL encoded.
-	Ids string `form:"ids,default=906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416"` // A list of card IDs representing cards in the deck. Ignored if a <strong>code</strong> parameter is also present.
-	Hero string `form:"hero,default=813"` // The card ID for the hero of the deck. Used along with <strong>ids</strong>. If not present, the API will attempt to add a default hero and class based on the cards in the deck.
+	Locale string `form:"locale,default=en_US"`                                                                                                                                                                       // The locale to reflect in localized data.
+	Code   string `form:"code"`                                                                                                                                                                                       // A code that identifies a deck. You can copy one from the game or various Hearthstone websites. The value should be URL encoded.
+	Ids    string `form:"ids,default=906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416"` // A list of card IDs representing cards in the deck. Ignored if a <strong>code</strong> parameter is also present.
+	Hero   string `form:"hero,default=813"`                                                                                                                                                                           // The card ID for the hero of the deck. Used along with <strong>ids</strong>. If not present, the API will attempt to add a default hero and class based on the cards in the deck.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -216,22 +197,18 @@ func StringGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.Ids == "" {
 		fields.Ids = "906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416"
 	}
-	
-	
+
 	if fields.Hero == "" {
 		fields.Hero = "813"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -246,45 +223,37 @@ func StringGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("code") {
-		q.Add("code", "<no value>")
-	}
-    
-    
-	if !q.Has("ids") {
-		q.Add("ids", "906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416")
-	}
-    
-    
-	if !q.Has("hero") {
-		q.Add("hero", "813")
-	}
-    
+		if !q.Has("code") {
+			q.Add("code", "<no value>")
+		}
 
+		if !q.Has("ids") {
+			q.Add("ids", "906,1099,1363,1367,46706,48099,48759,49184,50071,50278,51714,52109,52632,52715,53409,53413,53756,53969,54148,54425,54431,54874,54898,54917,55166,55245,55438,55441,55907,57416")
+		}
 
-	req.URL.RawQuery = q.Encode()
-}
+		if !q.Has("hero") {
+			q.Add("hero", "813")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -303,11 +272,10 @@ func StringGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 
 // bridgeGetdeckbycardlist routes the request to either CN or Global logic based on input.
 func bridgeGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetdeckbycardlist != nil {
 			return CNHookGetdeckbycardlist(ctx, fields)
@@ -334,4 +302,3 @@ func bridgeGetdeckbycardlist(ctx context.Context, fields *GetdeckbycardlistField
 /* Getdeckbycardlist Finds a deck by list of cards, including the hero. For more information, see the <a href='/documentation/hearthstone/guides/decks'>Retrieving Decks Guide</a>. */
 // Path: /hearthstone/deck
 var Getdeckbycardlist = bridgeGetdeckbycardlist
-

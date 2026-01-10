@@ -7,25 +7,19 @@ package wow_Mount
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: MountsIndex
@@ -33,7 +27,7 @@ import (
 
 type MountsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,17 +58,14 @@ func StringMountsIndex(ctx context.Context, fields *MountsIndexFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -89,35 +80,29 @@ func StringMountsIndex(ctx context.Context, fields *MountsIndexFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -136,11 +121,10 @@ func StringMountsIndex(ctx context.Context, fields *MountsIndexFields) (string, 
 
 // bridgeMountsIndex routes the request to either CN or Global logic based on input.
 func bridgeMountsIndex(ctx context.Context, fields *MountsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMountsIndex != nil {
 			return CNHookMountsIndex(ctx, fields)
@@ -168,15 +152,14 @@ func bridgeMountsIndex(ctx context.Context, fields *MountsIndexFields) (any, err
 // Path: /data/wow/mount/index
 var MountsIndex = bridgeMountsIndex
 
-
 // ==============================================================================================
 // API: Mount
 // ==============================================================================================
 
 type MountFields struct {
-	MountId int `uri:"mountId" binding:"required"` // The ID of the mount.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	MountId   int    `uri:"mountId" binding:"required"`   // The ID of the mount.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -207,21 +190,18 @@ func StringMount(ctx context.Context, fields *MountFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.MountId == 0 {
 		fields.MountId = 6
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -236,49 +216,42 @@ func StringMount(ctx context.Context, fields *MountFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"mountId": fields.MountId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"mountId": fields.MountId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -297,11 +270,10 @@ func StringMount(ctx context.Context, fields *MountFields) (string, error) {
 
 // bridgeMount routes the request to either CN or Global logic based on input.
 func bridgeMount(ctx context.Context, fields *MountFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMount != nil {
 			return CNHookMount(ctx, fields)
@@ -329,16 +301,15 @@ func bridgeMount(ctx context.Context, fields *MountFields) (any, error) {
 // Path: /data/wow/mount/{mountId}
 var Mount = bridgeMount
 
-
 // ==============================================================================================
 // API: MountSearch
 // ==============================================================================================
 
 type MountSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Nameen_US string `form:"nameen_US,default=Turtle"` // The name of the mount. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Nameen_US string `form:"nameen_US,default=Turtle"`    // The name of the mount. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -369,26 +340,22 @@ func StringMountSearch(ctx context.Context, fields *MountSearchFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Turtle"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -403,45 +370,37 @@ func StringMountSearch(ctx context.Context, fields *MountSearchFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("nameen_US") {
+			q.Add("nameen_US", "Turtle")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("nameen_US") {
-		q.Add("nameen_US", "Turtle")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -460,11 +419,10 @@ func StringMountSearch(ctx context.Context, fields *MountSearchFields) (string, 
 
 // bridgeMountSearch routes the request to either CN or Global logic based on input.
 func bridgeMountSearch(ctx context.Context, fields *MountSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMountSearch != nil {
 			return CNHookMountSearch(ctx, fields)
@@ -491,4 +449,3 @@ func bridgeMountSearch(ctx context.Context, fields *MountSearchFields) (any, err
 /* MountSearch Performs a search of mounts. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/mount
 var MountSearch = bridgeMountSearch
-

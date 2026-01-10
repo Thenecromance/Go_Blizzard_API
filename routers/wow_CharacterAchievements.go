@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/app"
-	"github.com/Thenecromance/BlizzardAPI/api/wow/ProfileService/CharacterAchievements"
+	"github.com/Thenecromance/Go_Blizzard_API/api/wow/ProfileService/CharacterAchievements"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,9 +16,6 @@ func init() {
 	app.Instance().RegisterRoute("GET", "/profile/wow/character/:realmSlug/:characterName/achievements/statistics", ginwowCharacterAchievementStatistics) /* CharacterAchievementStatistics Returns a character's statistics as they pertain to achievements. */
 
 }
-
-
-
 
 func ginwowCharacterAchievementsSummary(c *gin.Context) {
 	// binding uri parameters
@@ -34,17 +31,17 @@ func ginwowCharacterAchievementsSummary(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_CharacterAchievements.CharacterAchievementsSummary(c, &req)
 	if err != nil {
@@ -53,8 +50,6 @@ func ginwowCharacterAchievementsSummary(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowCharacterAchievementStatistics(c *gin.Context) {
 	// binding uri parameters
@@ -70,17 +65,17 @@ func ginwowCharacterAchievementStatistics(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_CharacterAchievements.CharacterAchievementStatistics(c, &req)
 	if err != nil {

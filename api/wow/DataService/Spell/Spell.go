@@ -7,34 +7,28 @@ package wow_Spell
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Spell
 // ==============================================================================================
 
 type SpellFields struct {
-	SpellId int `uri:"spellId" binding:"required"` // The ID of the spell.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	SpellId   int    `uri:"spellId" binding:"required"`   // The ID of the spell.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -65,21 +59,18 @@ func StringSpell(ctx context.Context, fields *SpellFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SpellId == 0 {
 		fields.SpellId = 196607
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -94,49 +85,42 @@ func StringSpell(ctx context.Context, fields *SpellFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"spellId": fields.SpellId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"spellId": fields.SpellId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -155,11 +139,10 @@ func StringSpell(ctx context.Context, fields *SpellFields) (string, error) {
 
 // bridgeSpell routes the request to either CN or Global logic based on input.
 func bridgeSpell(ctx context.Context, fields *SpellFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSpell != nil {
 			return CNHookSpell(ctx, fields)
@@ -187,15 +170,14 @@ func bridgeSpell(ctx context.Context, fields *SpellFields) (any, error) {
 // Path: /data/wow/spell/{spellId}
 var Spell = bridgeSpell
 
-
 // ==============================================================================================
 // API: SpellMedia
 // ==============================================================================================
 
 type SpellMediaFields struct {
-	SpellId int `uri:"spellId" binding:"required"` // The ID of the spell.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	SpellId   int    `uri:"spellId" binding:"required"`   // The ID of the spell.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -226,21 +208,18 @@ func StringSpellMedia(ctx context.Context, fields *SpellMediaFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SpellId == 0 {
 		fields.SpellId = 196607
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -255,49 +234,42 @@ func StringSpellMedia(ctx context.Context, fields *SpellMediaFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"spellId": fields.SpellId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"spellId": fields.SpellId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -316,11 +288,10 @@ func StringSpellMedia(ctx context.Context, fields *SpellMediaFields) (string, er
 
 // bridgeSpellMedia routes the request to either CN or Global logic based on input.
 func bridgeSpellMedia(ctx context.Context, fields *SpellMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSpellMedia != nil {
 			return CNHookSpellMedia(ctx, fields)
@@ -348,16 +319,15 @@ func bridgeSpellMedia(ctx context.Context, fields *SpellMediaFields) (any, error
 // Path: /data/wow/media/spell/{spellId}
 var SpellMedia = bridgeSpellMedia
 
-
 // ==============================================================================================
 // API: SpellSearch
 // ==============================================================================================
 
 type SpellSearchFields struct {
-	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Namespace string `form:"namespace,default=static-us"`   // The namespace to use to locate this document.
 	Nameen_US string `form:"nameen_US,default=Holy Shield"` // The name of the spell. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Orderby   string `form:"orderby,default=id"`            // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`               // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -388,26 +358,22 @@ func StringSpellSearch(ctx context.Context, fields *SpellSearchFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Holy Shield"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -422,45 +388,37 @@ func StringSpellSearch(ctx context.Context, fields *SpellSearchFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("nameen_US") {
+			q.Add("nameen_US", "Holy Shield")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("nameen_US") {
-		q.Add("nameen_US", "Holy Shield")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -479,11 +437,10 @@ func StringSpellSearch(ctx context.Context, fields *SpellSearchFields) (string, 
 
 // bridgeSpellSearch routes the request to either CN or Global logic based on input.
 func bridgeSpellSearch(ctx context.Context, fields *SpellSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSpellSearch != nil {
 			return CNHookSpellSearch(ctx, fields)
@@ -510,4 +467,3 @@ func bridgeSpellSearch(ctx context.Context, fields *SpellSearchFields) (any, err
 /* SpellSearch Performs a search of spells. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/spell
 var SpellSearch = bridgeSpellSearch
-

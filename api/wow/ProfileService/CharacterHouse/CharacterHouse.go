@@ -7,36 +7,30 @@ package wow_CharacterHouse
 import (
 	"context"
 	"encoding/json"
-	
 
-	
-	    "strings"
-    
+	"strings"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: CharacterHouseSummary
 // ==============================================================================================
 
 type CharacterHouseSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		HouseNumber int `uri:"houseNumber" binding:"required"` // The number of the character's house.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	HouseNumber   int    `uri:"houseNumber" binding:"required"`   // The number of the character's house.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -67,31 +61,26 @@ func StringCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.HouseNumber == 0 {
 		fields.HouseNumber = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -106,51 +95,44 @@ func StringCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		"houseNumber": fields.HouseNumber,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+			"houseNumber":   fields.HouseNumber,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -169,22 +151,21 @@ func StringCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 
 // bridgeCharacterHouseSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterHouseSummary != nil {
 			return CNHookCharacterHouseSummary(ctx, fields)
@@ -211,4 +192,3 @@ func bridgeCharacterHouseSummary(ctx context.Context, fields *CharacterHouseSumm
 /* CharacterHouseSummary Returns a summary of a house a character has built. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/house/house-{houseNumber}
 var CharacterHouseSummary = bridgeCharacterHouseSummary
-

@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/app"
-	"github.com/Thenecromance/BlizzardAPI/api/wow/DataService/Item"
+	"github.com/Thenecromance/Go_Blizzard_API/api/wow/DataService/Item"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,9 +29,6 @@ func init() {
 
 }
 
-
-
-
 func ginwowItem(c *gin.Context) {
 	// binding uri parameters
 	var req wow_Item.ItemFields
@@ -46,17 +43,17 @@ func ginwowItem(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.Item(c, &req)
 	if err != nil {
@@ -65,8 +62,6 @@ func ginwowItem(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemSearch(c *gin.Context) {
 	// binding uri parameters
@@ -82,17 +77,17 @@ func ginwowItemSearch(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemSearch(c, &req)
 	if err != nil {
@@ -101,8 +96,6 @@ func ginwowItemSearch(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemMedia(c *gin.Context) {
 	// binding uri parameters
@@ -118,17 +111,17 @@ func ginwowItemMedia(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemMedia(c, &req)
 	if err != nil {
@@ -137,8 +130,6 @@ func ginwowItemMedia(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemClassesIndex(c *gin.Context) {
 	// binding uri parameters
@@ -154,17 +145,17 @@ func ginwowItemClassesIndex(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemClassesIndex(c, &req)
 	if err != nil {
@@ -173,8 +164,6 @@ func ginwowItemClassesIndex(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemClass(c *gin.Context) {
 	// binding uri parameters
@@ -190,17 +179,17 @@ func ginwowItemClass(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemClass(c, &req)
 	if err != nil {
@@ -209,8 +198,6 @@ func ginwowItemClass(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemSetsIndex(c *gin.Context) {
 	// binding uri parameters
@@ -226,17 +213,17 @@ func ginwowItemSetsIndex(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemSetsIndex(c, &req)
 	if err != nil {
@@ -245,8 +232,6 @@ func ginwowItemSetsIndex(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemSet(c *gin.Context) {
 	// binding uri parameters
@@ -262,17 +247,17 @@ func ginwowItemSet(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemSet(c, &req)
 	if err != nil {
@@ -281,8 +266,6 @@ func ginwowItemSet(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowItemSubclass(c *gin.Context) {
 	// binding uri parameters
@@ -298,17 +281,17 @@ func ginwowItemSubclass(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Item.ItemSubclass(c, &req)
 	if err != nil {

@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/app"
-	"github.com/Thenecromance/BlizzardAPI/api/wow/DataService/Realm"
+	"github.com/Thenecromance/Go_Blizzard_API/api/wow/DataService/Realm"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,9 +18,6 @@ func init() {
 	app.Instance().RegisterRoute("GET", "/data/wow/search/realm", ginwowRealmSearch) /* RealmSearch Performs a search of realms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 
 }
-
-
-
 
 func ginwowRealmsIndex(c *gin.Context) {
 	// binding uri parameters
@@ -36,17 +33,17 @@ func ginwowRealmsIndex(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Realm.RealmsIndex(c, &req)
 	if err != nil {
@@ -55,8 +52,6 @@ func ginwowRealmsIndex(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowRealm(c *gin.Context) {
 	// binding uri parameters
@@ -72,17 +67,17 @@ func ginwowRealm(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Realm.Realm(c, &req)
 	if err != nil {
@@ -91,8 +86,6 @@ func ginwowRealm(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
-
-
 
 func ginwowRealmSearch(c *gin.Context) {
 	// binding uri parameters
@@ -108,17 +101,17 @@ func ginwowRealmSearch(c *gin.Context) {
 	}
 
 	// Capture all query parameters into a map if needed
-    // Note: Gin's binding doesn't remove items, so this contains all query params
-    queryParams := make(map[string]string)
-    for k, v := range c.Request.URL.Query() {
-    	if len(v) > 0 {
-    		queryParams[k] = v[0]
-    	}
-    }
-    // If the downstream function supports an extra map, pass it here.
-    // Assuming req might have a field for this or you manipulate req based on queryParams.
-    // For now, I'm just showing how to extract them.
-    // Example: req.ExtraParams = queryParams
+	// Note: Gin's binding doesn't remove items, so this contains all query params
+	queryParams := make(map[string]string)
+	for k, v := range c.Request.URL.Query() {
+		if len(v) > 0 {
+			queryParams[k] = v[0]
+		}
+	}
+	// If the downstream function supports an extra map, pass it here.
+	// Assuming req might have a field for this or you manipulate req based on queryParams.
+	// For now, I'm just showing how to extract them.
+	// Example: req.ExtraParams = queryParams
 
 	resp, err := wow_Realm.RealmSearch(c, &req)
 	if err != nil {

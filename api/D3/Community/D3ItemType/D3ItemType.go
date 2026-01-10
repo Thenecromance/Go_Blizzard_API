@@ -7,23 +7,17 @@ package D3_D3ItemType
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GetItemTypeIndex
@@ -61,12 +55,10 @@ func StringGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -81,30 +73,25 @@ func StringGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -123,11 +110,10 @@ func StringGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 
 // bridgeGetItemTypeIndex routes the request to either CN or Global logic based on input.
 func bridgeGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetItemTypeIndex != nil {
 			return CNHookGetItemTypeIndex(ctx, fields)
@@ -155,14 +141,13 @@ func bridgeGetItemTypeIndex(ctx context.Context, fields *GetItemTypeIndexFields)
 // Path: /d3/data/item-type
 var GetItemTypeIndex = bridgeGetItemTypeIndex
 
-
 // ==============================================================================================
 // API: GetItemType
 // ==============================================================================================
 
 type GetItemTypeFields struct {
 	ItemTypeSlug string `uri:"itemTypeSlug" binding:"required"` // The slug of the item type to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -193,17 +178,14 @@ func StringGetItemType(ctx context.Context, fields *GetItemTypeFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ItemTypeSlug == "" {
 		fields.ItemTypeSlug = "sword2h"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -218,44 +200,38 @@ func StringGetItemType(ctx context.Context, fields *GetItemTypeFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"itemTypeSlug": fields.ItemTypeSlug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"itemTypeSlug": fields.ItemTypeSlug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -274,11 +250,10 @@ func StringGetItemType(ctx context.Context, fields *GetItemTypeFields) (string, 
 
 // bridgeGetItemType routes the request to either CN or Global logic based on input.
 func bridgeGetItemType(ctx context.Context, fields *GetItemTypeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetItemType != nil {
 			return CNHookGetItemType(ctx, fields)
@@ -305,4 +280,3 @@ func bridgeGetItemType(ctx context.Context, fields *GetItemTypeFields) (any, err
 /* GetItemType Returns a single item type by slug. */
 // Path: /d3/data/item-type/{itemTypeSlug}
 var GetItemType = bridgeGetItemType
-

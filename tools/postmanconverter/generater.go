@@ -3,7 +3,7 @@ package postmanconverter
 import (
 	"strings"
 
-	"github.com/Thenecromance/BlizzardAPI/tools/updater"
+	"github.com/Thenecromance/Go_Blizzard_API/tools/updater"
 )
 
 func defaultInfo(info *Info) {

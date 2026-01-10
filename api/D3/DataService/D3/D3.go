@@ -7,23 +7,17 @@ package D3_D3
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: SeasonIndex
@@ -60,7 +54,6 @@ func StringSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -75,25 +68,21 @@ func StringSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -112,11 +101,10 @@ func StringSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (string, 
 
 // bridgeSeasonIndex routes the request to either CN or Global logic based on input.
 func bridgeSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSeasonIndex != nil {
 			return CNHookSeasonIndex(ctx, fields)
@@ -144,14 +132,13 @@ func bridgeSeasonIndex(ctx context.Context, fields *SeasonIndexFields) (any, err
 // Path: /data/d3/season/
 var SeasonIndex = bridgeSeasonIndex
 
-
 // ==============================================================================================
 // API: Season
 // ==============================================================================================
 
 type SeasonFields struct {
 	Id int `uri:"id" binding:"required"` // The season for the leaderboard list; get a list of seasons with `GET /data/d3/season/`.
-	
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -181,11 +168,10 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Id == 0 {
 		fields.Id = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -200,39 +186,34 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"id": fields.Id,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"id": fields.Id,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -251,11 +232,10 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 
 // bridgeSeason routes the request to either CN or Global logic based on input.
 func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSeason != nil {
 			return CNHookSeason(ctx, fields)
@@ -283,15 +263,14 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 // Path: /data/d3/season/:id
 var Season = bridgeSeason
 
-
 // ==============================================================================================
 // API: SeasonLeaderboard
 // ==============================================================================================
 
 type SeasonLeaderboardFields struct {
-	Id int `uri:"id" binding:"required"` // The season for the leaderboard; get a list of seasons with `GET /data/d3/season/`.
-		Leaderboard string `uri:"leaderboard" binding:"required"` // The leaderboard to retrieve; get a list of  leaderboards with `GET /data/d3/season/:id`.
-	
+	Id          int    `uri:"id" binding:"required"`          // The season for the leaderboard; get a list of seasons with `GET /data/d3/season/`.
+	Leaderboard string `uri:"leaderboard" binding:"required"` // The leaderboard to retrieve; get a list of  leaderboards with `GET /data/d3/season/:id`.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -321,16 +300,14 @@ func StringSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Id == 0 {
 		fields.Id = 1
 	}
-	
+
 	if fields.Leaderboard == "" {
 		fields.Leaderboard = "achievement-points"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -345,40 +322,35 @@ func StringSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"id": fields.Id,
-    		"leaderboard": fields.Leaderboard,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"id":          fields.Id,
+			"leaderboard": fields.Leaderboard,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -397,11 +369,10 @@ func StringSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 
 // bridgeSeasonLeaderboard routes the request to either CN or Global logic based on input.
 func bridgeSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSeasonLeaderboard != nil {
 			return CNHookSeasonLeaderboard(ctx, fields)
@@ -428,7 +399,6 @@ func bridgeSeasonLeaderboard(ctx context.Context, fields *SeasonLeaderboardField
 /* SeasonLeaderboard Returns a the specified leaderboard for the specified season. */
 // Path: /data/d3/season/:id/leaderboard/:leaderboard
 var SeasonLeaderboard = bridgeSeasonLeaderboard
-
 
 // ==============================================================================================
 // API: EraIndex
@@ -465,7 +435,6 @@ func StringEraIndex(ctx context.Context, fields *EraIndexFields) (string, error)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -480,25 +449,21 @@ func StringEraIndex(ctx context.Context, fields *EraIndexFields) (string, error)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -517,11 +482,10 @@ func StringEraIndex(ctx context.Context, fields *EraIndexFields) (string, error)
 
 // bridgeEraIndex routes the request to either CN or Global logic based on input.
 func bridgeEraIndex(ctx context.Context, fields *EraIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookEraIndex != nil {
 			return CNHookEraIndex(ctx, fields)
@@ -549,14 +513,13 @@ func bridgeEraIndex(ctx context.Context, fields *EraIndexFields) (any, error) {
 // Path: /data/d3/era/
 var EraIndex = bridgeEraIndex
 
-
 // ==============================================================================================
 // API: Era
 // ==============================================================================================
 
 type EraFields struct {
 	Id int `uri:"id" binding:"required"` // The era to retrieve; get a list of eras with `GET data/d3/era/`.
-	
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -586,11 +549,10 @@ func StringEra(ctx context.Context, fields *EraFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Id == 0 {
 		fields.Id = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -605,39 +567,34 @@ func StringEra(ctx context.Context, fields *EraFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"id": fields.Id,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"id": fields.Id,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -656,11 +613,10 @@ func StringEra(ctx context.Context, fields *EraFields) (string, error) {
 
 // bridgeEra routes the request to either CN or Global logic based on input.
 func bridgeEra(ctx context.Context, fields *EraFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookEra != nil {
 			return CNHookEra(ctx, fields)
@@ -688,15 +644,14 @@ func bridgeEra(ctx context.Context, fields *EraFields) (any, error) {
 // Path: /data/d3/era/:id
 var Era = bridgeEra
 
-
 // ==============================================================================================
 // API: EraLeaderboard
 // ==============================================================================================
 
 type EraLeaderboardFields struct {
-	Id int `uri:"id" binding:"required"` // The era for the leaderboard; get a list of eras with `GET /data/d3/era/`.
-		Leaderboard string `uri:"leaderboard" binding:"required"` // The leaderboard to retrieve; get a list of leaderboards with `GET /data/d3/era/:id`.
-	
+	Id          int    `uri:"id" binding:"required"`          // The era for the leaderboard; get a list of eras with `GET /data/d3/era/`.
+	Leaderboard string `uri:"leaderboard" binding:"required"` // The leaderboard to retrieve; get a list of leaderboards with `GET /data/d3/era/:id`.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -726,16 +681,14 @@ func StringEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Id == 0 {
 		fields.Id = 1
 	}
-	
+
 	if fields.Leaderboard == "" {
 		fields.Leaderboard = "rift-barbarian"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -750,40 +703,35 @@ func StringEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"id": fields.Id,
-    		"leaderboard": fields.Leaderboard,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"id":          fields.Id,
+			"leaderboard": fields.Leaderboard,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -802,11 +750,10 @@ func StringEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (st
 
 // bridgeEraLeaderboard routes the request to either CN or Global logic based on input.
 func bridgeEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookEraLeaderboard != nil {
 			return CNHookEraLeaderboard(ctx, fields)
@@ -833,4 +780,3 @@ func bridgeEraLeaderboard(ctx context.Context, fields *EraLeaderboardFields) (an
 /* EraLeaderboard Returns the specified leaderboard for the specified era. */
 // Path: /data/d3/era/:id/leaderboard/:leaderboard
 var EraLeaderboard = bridgeEraLeaderboard
-

@@ -7,23 +7,17 @@ package D3_D3Item
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GetItem
@@ -31,7 +25,7 @@ import (
 
 type GetItemFields struct {
 	ItemSlugAndId string `uri:"itemSlugAndId" binding:"required"` // The slug and ID of the item to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringGetItem(ctx context.Context, fields *GetItemFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ItemSlugAndId == "" {
 		fields.ItemSlugAndId = "corrupted-ashbringer-Unique_Sword_2H_104_x1"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,44 +78,38 @@ func StringGetItem(ctx context.Context, fields *GetItemFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"itemSlugAndId": fields.ItemSlugAndId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"itemSlugAndId": fields.ItemSlugAndId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -143,11 +128,10 @@ func StringGetItem(ctx context.Context, fields *GetItemFields) (string, error) {
 
 // bridgeGetItem routes the request to either CN or Global logic based on input.
 func bridgeGetItem(ctx context.Context, fields *GetItemFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetItem != nil {
 			return CNHookGetItem(ctx, fields)
@@ -174,4 +158,3 @@ func bridgeGetItem(ctx context.Context, fields *GetItemFields) (any, error) {
 /* GetItem Returns a single item by item slug and ID. */
 // Path: /d3/data/item/{itemSlugAndId}
 var GetItem = bridgeGetItem
-

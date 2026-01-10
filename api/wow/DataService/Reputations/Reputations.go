@@ -7,23 +7,17 @@ package wow_Reputations
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: ReputationFactionsIndex
@@ -31,7 +25,7 @@ import (
 
 type ReputationFactionsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 
 // bridgeReputationFactionsIndex routes the request to either CN or Global logic based on input.
 func bridgeReputationFactionsIndex(ctx context.Context, fields *ReputationFactionsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookReputationFactionsIndex != nil {
 			return CNHookReputationFactionsIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgeReputationFactionsIndex(ctx context.Context, fields *ReputationFactio
 // Path: /data/wow/reputation-faction/index
 var ReputationFactionsIndex = bridgeReputationFactionsIndex
 
-
 // ==============================================================================================
 // API: ReputationFaction
 // ==============================================================================================
 
 type ReputationFactionFields struct {
-	ReputationFactionId int `uri:"reputationFactionId" binding:"required"` // The ID of the reputation faction.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ReputationFactionId int    `uri:"reputationFactionId" binding:"required"` // The ID of the reputation faction.
+	Namespace           string `form:"namespace,default=static-us"`           // The namespace to use to locate this document.
+	Locale              string `form:"locale,default=en_US"`                  // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringReputationFaction(ctx context.Context, fields *ReputationFactionField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ReputationFactionId == 0 {
 		fields.ReputationFactionId = 21
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringReputationFaction(ctx context.Context, fields *ReputationFactionField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"reputationFactionId": fields.ReputationFactionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"reputationFactionId": fields.ReputationFactionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringReputationFaction(ctx context.Context, fields *ReputationFactionField
 
 // bridgeReputationFaction routes the request to either CN or Global logic based on input.
 func bridgeReputationFaction(ctx context.Context, fields *ReputationFactionFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookReputationFaction != nil {
 			return CNHookReputationFaction(ctx, fields)
@@ -327,14 +299,13 @@ func bridgeReputationFaction(ctx context.Context, fields *ReputationFactionField
 // Path: /data/wow/reputation-faction/{reputationFactionId}
 var ReputationFaction = bridgeReputationFaction
 
-
 // ==============================================================================================
 // API: ReputationTiersIndex
 // ==============================================================================================
 
 type ReputationTiersIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -365,17 +336,14 @@ func StringReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -390,35 +358,29 @@ func StringReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 
 // bridgeReputationTiersIndex routes the request to either CN or Global logic based on input.
 func bridgeReputationTiersIndex(ctx context.Context, fields *ReputationTiersIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookReputationTiersIndex != nil {
 			return CNHookReputationTiersIndex(ctx, fields)
@@ -469,15 +430,14 @@ func bridgeReputationTiersIndex(ctx context.Context, fields *ReputationTiersInde
 // Path: /data/wow/reputation-tiers/index
 var ReputationTiersIndex = bridgeReputationTiersIndex
 
-
 // ==============================================================================================
 // API: ReputationTiers
 // ==============================================================================================
 
 type ReputationTiersFields struct {
-	ReputationTiersId int `uri:"reputationTiersId" binding:"required"` // The ID of the set of reputation tiers.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ReputationTiersId int    `uri:"reputationTiersId" binding:"required"` // The ID of the set of reputation tiers.
+	Namespace         string `form:"namespace,default=static-us"`         // The namespace to use to locate this document.
+	Locale            string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -508,21 +468,18 @@ func StringReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ReputationTiersId == 0 {
 		fields.ReputationTiersId = 2
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -537,49 +494,42 @@ func StringReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"reputationTiersId": fields.ReputationTiersId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"reputationTiersId": fields.ReputationTiersId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -598,11 +548,10 @@ func StringReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 
 // bridgeReputationTiers routes the request to either CN or Global logic based on input.
 func bridgeReputationTiers(ctx context.Context, fields *ReputationTiersFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookReputationTiers != nil {
 			return CNHookReputationTiers(ctx, fields)
@@ -629,4 +578,3 @@ func bridgeReputationTiers(ctx context.Context, fields *ReputationTiersFields) (
 /* ReputationTiers Returns a single set of reputation tiers by ID. */
 // Path: /data/wow/reputation-tiers/{reputationTiersId}
 var ReputationTiers = bridgeReputationTiers
-

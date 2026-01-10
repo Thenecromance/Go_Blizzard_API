@@ -7,23 +7,17 @@ package wow_Achievement
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: AchievementsIndex
@@ -31,7 +25,7 @@ import (
 
 type AchievementsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 
 // bridgeAchievementsIndex routes the request to either CN or Global logic based on input.
 func bridgeAchievementsIndex(ctx context.Context, fields *AchievementsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievementsIndex != nil {
 			return CNHookAchievementsIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgeAchievementsIndex(ctx context.Context, fields *AchievementsIndexField
 // Path: /data/wow/achievement/index
 var AchievementsIndex = bridgeAchievementsIndex
 
-
 // ==============================================================================================
 // API: Achievement
 // ==============================================================================================
 
 type AchievementFields struct {
-	AchievementId int `uri:"achievementId" binding:"required"` // The ID of the achievement.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	AchievementId int    `uri:"achievementId" binding:"required"` // The ID of the achievement.
+	Namespace     string `form:"namespace,default=static-us"`     // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.AchievementId == 0 {
 		fields.AchievementId = 6
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"achievementId": fields.AchievementId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"achievementId": fields.AchievementId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringAchievement(ctx context.Context, fields *AchievementFields) (string, 
 
 // bridgeAchievement routes the request to either CN or Global logic based on input.
 func bridgeAchievement(ctx context.Context, fields *AchievementFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievement != nil {
 			return CNHookAchievement(ctx, fields)
@@ -327,15 +299,14 @@ func bridgeAchievement(ctx context.Context, fields *AchievementFields) (any, err
 // Path: /data/wow/achievement/{achievementId}
 var Achievement = bridgeAchievement
 
-
 // ==============================================================================================
 // API: AchievementMedia
 // ==============================================================================================
 
 type AchievementMediaFields struct {
-	AchievementId int `uri:"achievementId" binding:"required"` // The ID of the achievement.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	AchievementId int    `uri:"achievementId" binding:"required"` // The ID of the achievement.
+	Namespace     string `form:"namespace,default=static-us"`     // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -366,21 +337,18 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.AchievementId == 0 {
 		fields.AchievementId = 6
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -395,49 +363,42 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"achievementId": fields.AchievementId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"achievementId": fields.AchievementId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -456,11 +417,10 @@ func StringAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 
 // bridgeAchievementMedia routes the request to either CN or Global logic based on input.
 func bridgeAchievementMedia(ctx context.Context, fields *AchievementMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievementMedia != nil {
 			return CNHookAchievementMedia(ctx, fields)
@@ -488,14 +448,13 @@ func bridgeAchievementMedia(ctx context.Context, fields *AchievementMediaFields)
 // Path: /data/wow/media/achievement/{achievementId}
 var AchievementMedia = bridgeAchievementMedia
 
-
 // ==============================================================================================
 // API: AchievementCategoriesIndex
 // ==============================================================================================
 
 type AchievementCategoriesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -526,17 +485,14 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -551,35 +507,29 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -598,11 +548,10 @@ func StringAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 
 // bridgeAchievementCategoriesIndex routes the request to either CN or Global logic based on input.
 func bridgeAchievementCategoriesIndex(ctx context.Context, fields *AchievementCategoriesIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievementCategoriesIndex != nil {
 			return CNHookAchievementCategoriesIndex(ctx, fields)
@@ -630,15 +579,14 @@ func bridgeAchievementCategoriesIndex(ctx context.Context, fields *AchievementCa
 // Path: /data/wow/achievement-category/index
 var AchievementCategoriesIndex = bridgeAchievementCategoriesIndex
 
-
 // ==============================================================================================
 // API: AchievementCategory
 // ==============================================================================================
 
 type AchievementCategoryFields struct {
-	AchievementCategoryId int `uri:"achievementCategoryId" binding:"required"` // The ID of the achievement category.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	AchievementCategoryId int    `uri:"achievementCategoryId" binding:"required"` // The ID of the achievement category.
+	Namespace             string `form:"namespace,default=static-us"`             // The namespace to use to locate this document.
+	Locale                string `form:"locale,default=en_US"`                    // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -669,21 +617,18 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.AchievementCategoryId == 0 {
 		fields.AchievementCategoryId = 81
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -698,49 +643,42 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"achievementCategoryId": fields.AchievementCategoryId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"achievementCategoryId": fields.AchievementCategoryId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -759,11 +697,10 @@ func StringAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 
 // bridgeAchievementCategory routes the request to either CN or Global logic based on input.
 func bridgeAchievementCategory(ctx context.Context, fields *AchievementCategoryFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievementCategory != nil {
 			return CNHookAchievementCategory(ctx, fields)
@@ -790,4 +727,3 @@ func bridgeAchievementCategory(ctx context.Context, fields *AchievementCategoryF
 /* AchievementCategory Returns an achievement category by ID. */
 // Path: /data/wow/achievement-category/{achievementCategoryId}
 var AchievementCategory = bridgeAchievementCategory
-

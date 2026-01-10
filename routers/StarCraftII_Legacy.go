@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/api/StarCraftII/Community/Legacy"
-	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/Go_Blizzard_API/api/StarCraftII/Community/Legacy"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
 
 	"github.com/gin-gonic/gin"
 )

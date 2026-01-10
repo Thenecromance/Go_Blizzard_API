@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2/clientcredentials"
 

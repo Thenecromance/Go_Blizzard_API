@@ -7,23 +7,17 @@ package wow_Quest
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: QuestsIndex
@@ -31,7 +25,7 @@ import (
 
 type QuestsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (string, 
 
 // bridgeQuestsIndex routes the request to either CN or Global logic based on input.
 func bridgeQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestsIndex != nil {
 			return CNHookQuestsIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgeQuestsIndex(ctx context.Context, fields *QuestsIndexFields) (any, err
 // Path: /data/wow/quest/index
 var QuestsIndex = bridgeQuestsIndex
 
-
 // ==============================================================================================
 // API: Quest
 // ==============================================================================================
 
 type QuestFields struct {
-	QuestId int `uri:"questId" binding:"required"` // The ID of the quest.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	QuestId   int    `uri:"questId" binding:"required"`   // The ID of the quest.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringQuest(ctx context.Context, fields *QuestFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.QuestId == 0 {
 		fields.QuestId = 2
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringQuest(ctx context.Context, fields *QuestFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"questId": fields.QuestId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"questId": fields.QuestId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringQuest(ctx context.Context, fields *QuestFields) (string, error) {
 
 // bridgeQuest routes the request to either CN or Global logic based on input.
 func bridgeQuest(ctx context.Context, fields *QuestFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuest != nil {
 			return CNHookQuest(ctx, fields)
@@ -327,14 +299,13 @@ func bridgeQuest(ctx context.Context, fields *QuestFields) (any, error) {
 // Path: /data/wow/quest/{questId}
 var Quest = bridgeQuest
 
-
 // ==============================================================================================
 // API: QuestCategoriesIndex
 // ==============================================================================================
 
 type QuestCategoriesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -365,17 +336,14 @@ func StringQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -390,35 +358,29 @@ func StringQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 
 // bridgeQuestCategoriesIndex routes the request to either CN or Global logic based on input.
 func bridgeQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestCategoriesIndex != nil {
 			return CNHookQuestCategoriesIndex(ctx, fields)
@@ -469,15 +430,14 @@ func bridgeQuestCategoriesIndex(ctx context.Context, fields *QuestCategoriesInde
 // Path: /data/wow/quest/category/index
 var QuestCategoriesIndex = bridgeQuestCategoriesIndex
 
-
 // ==============================================================================================
 // API: QuestCategory
 // ==============================================================================================
 
 type QuestCategoryFields struct {
 	QuestCategoryId string `uri:"questCategoryId" binding:"required"` // The ID of the quest category.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Namespace       string `form:"namespace,default=static-us"`       // The namespace to use to locate this document.
+	Locale          string `form:"locale,default=en_US"`              // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -508,22 +468,18 @@ func StringQuestCategory(ctx context.Context, fields *QuestCategoryFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.QuestCategoryId == "" {
 		fields.QuestCategoryId = "1"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -538,49 +494,42 @@ func StringQuestCategory(ctx context.Context, fields *QuestCategoryFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"questCategoryId": fields.QuestCategoryId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"questCategoryId": fields.QuestCategoryId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -599,11 +548,10 @@ func StringQuestCategory(ctx context.Context, fields *QuestCategoryFields) (stri
 
 // bridgeQuestCategory routes the request to either CN or Global logic based on input.
 func bridgeQuestCategory(ctx context.Context, fields *QuestCategoryFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestCategory != nil {
 			return CNHookQuestCategory(ctx, fields)
@@ -631,14 +579,13 @@ func bridgeQuestCategory(ctx context.Context, fields *QuestCategoryFields) (any,
 // Path: /data/wow/quest/category/{questCategoryId}
 var QuestCategory = bridgeQuestCategory
 
-
 // ==============================================================================================
 // API: QuestAreasIndex
 // ==============================================================================================
 
 type QuestAreasIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -669,17 +616,14 @@ func StringQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -694,35 +638,29 @@ func StringQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -741,11 +679,10 @@ func StringQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 
 // bridgeQuestAreasIndex routes the request to either CN or Global logic based on input.
 func bridgeQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestAreasIndex != nil {
 			return CNHookQuestAreasIndex(ctx, fields)
@@ -773,15 +710,14 @@ func bridgeQuestAreasIndex(ctx context.Context, fields *QuestAreasIndexFields) (
 // Path: /data/wow/quest/area/index
 var QuestAreasIndex = bridgeQuestAreasIndex
 
-
 // ==============================================================================================
 // API: QuestArea
 // ==============================================================================================
 
 type QuestAreaFields struct {
 	QuestAreaId string `uri:"questAreaId" binding:"required"` // The ID of the quest area.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Namespace   string `form:"namespace,default=static-us"`   // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -812,22 +748,18 @@ func StringQuestArea(ctx context.Context, fields *QuestAreaFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.QuestAreaId == "" {
 		fields.QuestAreaId = "1"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -842,49 +774,42 @@ func StringQuestArea(ctx context.Context, fields *QuestAreaFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"questAreaId": fields.QuestAreaId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"questAreaId": fields.QuestAreaId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -903,11 +828,10 @@ func StringQuestArea(ctx context.Context, fields *QuestAreaFields) (string, erro
 
 // bridgeQuestArea routes the request to either CN or Global logic based on input.
 func bridgeQuestArea(ctx context.Context, fields *QuestAreaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestArea != nil {
 			return CNHookQuestArea(ctx, fields)
@@ -935,14 +859,13 @@ func bridgeQuestArea(ctx context.Context, fields *QuestAreaFields) (any, error) 
 // Path: /data/wow/quest/area/{questAreaId}
 var QuestArea = bridgeQuestArea
 
-
 // ==============================================================================================
 // API: QuestTypesIndex
 // ==============================================================================================
 
 type QuestTypesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -973,17 +896,14 @@ func StringQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -998,35 +918,29 @@ func StringQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1045,11 +959,10 @@ func StringQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 
 // bridgeQuestTypesIndex routes the request to either CN or Global logic based on input.
 func bridgeQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestTypesIndex != nil {
 			return CNHookQuestTypesIndex(ctx, fields)
@@ -1077,15 +990,14 @@ func bridgeQuestTypesIndex(ctx context.Context, fields *QuestTypesIndexFields) (
 // Path: /data/wow/quest/type/index
 var QuestTypesIndex = bridgeQuestTypesIndex
 
-
 // ==============================================================================================
 // API: QuestType
 // ==============================================================================================
 
 type QuestTypeFields struct {
 	QuestTypeId string `uri:"questTypeId" binding:"required"` // The ID of the quest type.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Namespace   string `form:"namespace,default=static-us"`   // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1116,22 +1028,18 @@ func StringQuestType(ctx context.Context, fields *QuestTypeFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.QuestTypeId == "" {
 		fields.QuestTypeId = "1"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1146,49 +1054,42 @@ func StringQuestType(ctx context.Context, fields *QuestTypeFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"questTypeId": fields.QuestTypeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"questTypeId": fields.QuestTypeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1207,11 +1108,10 @@ func StringQuestType(ctx context.Context, fields *QuestTypeFields) (string, erro
 
 // bridgeQuestType routes the request to either CN or Global logic based on input.
 func bridgeQuestType(ctx context.Context, fields *QuestTypeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookQuestType != nil {
 			return CNHookQuestType(ctx, fields)
@@ -1238,4 +1138,3 @@ func bridgeQuestType(ctx context.Context, fields *QuestTypeFields) (any, error) 
 /* QuestType Returns a quest type by ID. */
 // Path: /data/wow/quest/type/{questTypeId}
 var QuestType = bridgeQuestType
-

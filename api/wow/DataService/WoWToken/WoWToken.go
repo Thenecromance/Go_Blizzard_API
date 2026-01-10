@@ -7,21 +7,15 @@ package wow_WoWToken
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 )
-
 
 // ==============================================================================================
 // API: WoWTokenIndex
@@ -29,7 +23,7 @@ import (
 
 type WoWTokenIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -60,17 +54,14 @@ func StringWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -85,35 +76,29 @@ func StringWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -132,11 +117,10 @@ func StringWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (stri
 
 // bridgeWoWTokenIndex routes the request to either CN or Global logic based on input.
 func bridgeWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookWoWTokenIndex != nil {
 			return CNHookWoWTokenIndex(ctx, fields)
@@ -164,14 +148,13 @@ func bridgeWoWTokenIndex(ctx context.Context, fields *WoWTokenIndexFields) (any,
 // Path: /data/wow/token/index
 var WoWTokenIndex = bridgeWoWTokenIndex
 
-
 // ==============================================================================================
 // API: WoWTokenIndexCN
 // ==============================================================================================
 
 type WoWTokenIndexCNFields struct {
 	Namespace string `form:"namespace,default=dynamic-cn"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=zh_CN"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=zh_CN"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -202,17 +185,14 @@ func StringWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-cn"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "zh_CN"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -227,35 +207,29 @@ func StringWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-cn")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "zh_CN")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-cn")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "zh_CN")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -274,11 +248,10 @@ func StringWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 
 // bridgeWoWTokenIndexCN routes the request to either CN or Global logic based on input.
 func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookWoWTokenIndexCN != nil {
 			return CNHookWoWTokenIndexCN(ctx, fields)
@@ -305,4 +278,3 @@ func bridgeWoWTokenIndexCN(ctx context.Context, fields *WoWTokenIndexCNFields) (
 /* WoWTokenIndexCN Returns the WoW Token index. */
 // Path: /data/wow/token/index
 var WoWTokenIndexCN = bridgeWoWTokenIndexCN
-

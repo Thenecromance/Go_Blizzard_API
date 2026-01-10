@@ -7,23 +7,17 @@ package wowClassic_PlayableClass
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: PlayableClassesIndex
@@ -31,7 +25,7 @@ import (
 
 type PlayableClassesIndexFields struct {
 	Namespace string `form:"namespace,default=static-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringPlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringPlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringPlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 
 // bridgePlayableClassesIndex routes the request to either CN or Global logic based on input.
 func bridgePlayableClassesIndex(ctx context.Context, fields *PlayableClassesIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPlayableClassesIndex != nil {
 			return CNHookPlayableClassesIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgePlayableClassesIndex(ctx context.Context, fields *PlayableClassesInde
 // Path: /data/wow/playable-class/index
 var PlayableClassesIndex = bridgePlayableClassesIndex
 
-
 // ==============================================================================================
 // API: PlayableClass
 // ==============================================================================================
 
 type PlayableClassFields struct {
-	ClassId int `uri:"classId" binding:"required"` // The ID of the playable class.
-		Namespace string `form:"namespace,default=static-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ClassId   int    `uri:"classId" binding:"required"`           // The ID of the playable class.
+	Namespace string `form:"namespace,default=static-classic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringPlayableClass(ctx context.Context, fields *PlayableClassFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ClassId == 0 {
 		fields.ClassId = 7
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringPlayableClass(ctx context.Context, fields *PlayableClassFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"classId": fields.ClassId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"classId": fields.ClassId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringPlayableClass(ctx context.Context, fields *PlayableClassFields) (stri
 
 // bridgePlayableClass routes the request to either CN or Global logic based on input.
 func bridgePlayableClass(ctx context.Context, fields *PlayableClassFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPlayableClass != nil {
 			return CNHookPlayableClass(ctx, fields)
@@ -327,15 +299,14 @@ func bridgePlayableClass(ctx context.Context, fields *PlayableClassFields) (any,
 // Path: /data/wow/playable-class/{classId}
 var PlayableClass = bridgePlayableClass
 
-
 // ==============================================================================================
 // API: PlayableClassMedia
 // ==============================================================================================
 
 type PlayableClassMediaFields struct {
-	PlayableClassId int `uri:"playableClassId" binding:"required"` // The ID of the playable class.
-		Namespace string `form:"namespace,default=static-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PlayableClassId int    `uri:"playableClassId" binding:"required"`   // The ID of the playable class.
+	Namespace       string `form:"namespace,default=static-classic-us"` // The namespace to use to locate this document.
+	Locale          string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -366,21 +337,18 @@ func StringPlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PlayableClassId == 0 {
 		fields.PlayableClassId = 7
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -395,49 +363,42 @@ func StringPlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"playableClassId": fields.PlayableClassId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"playableClassId": fields.PlayableClassId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -456,11 +417,10 @@ func StringPlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 
 // bridgePlayableClassMedia routes the request to either CN or Global logic based on input.
 func bridgePlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPlayableClassMedia != nil {
 			return CNHookPlayableClassMedia(ctx, fields)
@@ -487,4 +447,3 @@ func bridgePlayableClassMedia(ctx context.Context, fields *PlayableClassMediaFie
 /* PlayableClassMedia Returns media for a playable class by ID. */
 // Path: /data/wow/media/playable-class/{playableClassId}
 var PlayableClassMedia = bridgePlayableClassMedia
-

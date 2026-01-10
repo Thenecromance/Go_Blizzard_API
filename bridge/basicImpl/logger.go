@@ -1,7 +1,7 @@
 package basicImpl
 
 import (
-	"github.com/Thenecromance/BlizzardAPI/Interface"
+	"github.com/Thenecromance/Go_Blizzard_API/Interface"
 	"io"
 	"os"
 

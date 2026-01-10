@@ -7,25 +7,19 @@ package wow_HousingDecor
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: DecorIndex
@@ -33,7 +27,7 @@ import (
 
 type DecorIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,17 +58,14 @@ func StringDecorIndex(ctx context.Context, fields *DecorIndexFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -89,35 +80,29 @@ func StringDecorIndex(ctx context.Context, fields *DecorIndexFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -136,11 +121,10 @@ func StringDecorIndex(ctx context.Context, fields *DecorIndexFields) (string, er
 
 // bridgeDecorIndex routes the request to either CN or Global logic based on input.
 func bridgeDecorIndex(ctx context.Context, fields *DecorIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookDecorIndex != nil {
 			return CNHookDecorIndex(ctx, fields)
@@ -168,15 +152,14 @@ func bridgeDecorIndex(ctx context.Context, fields *DecorIndexFields) (any, error
 // Path: /data/wow/decor/index
 var DecorIndex = bridgeDecorIndex
 
-
 // ==============================================================================================
 // API: Decor
 // ==============================================================================================
 
 type DecorFields struct {
-	DecorId string `uri:"decorId" binding:"required"` // The ID of the decor.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	DecorId   string `uri:"decorId" binding:"required"`   // The ID of the decor.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -207,22 +190,18 @@ func StringDecor(ctx context.Context, fields *DecorFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.DecorId == "" {
 		fields.DecorId = "80"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -237,49 +216,42 @@ func StringDecor(ctx context.Context, fields *DecorFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"decorId": fields.DecorId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"decorId": fields.DecorId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -298,11 +270,10 @@ func StringDecor(ctx context.Context, fields *DecorFields) (string, error) {
 
 // bridgeDecor routes the request to either CN or Global logic based on input.
 func bridgeDecor(ctx context.Context, fields *DecorFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookDecor != nil {
 			return CNHookDecor(ctx, fields)
@@ -330,7 +301,6 @@ func bridgeDecor(ctx context.Context, fields *DecorFields) (any, error) {
 // Path: /data/wow/decor/{decorId}
 var Decor = bridgeDecor
 
-
 // ==============================================================================================
 // API: DecorSearch
 // ==============================================================================================
@@ -338,8 +308,8 @@ var Decor = bridgeDecor
 type DecorSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
 	Nameen_US string `form:"nameen_US,default=Fireplace"` // The name of the decor. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -370,26 +340,22 @@ func StringDecorSearch(ctx context.Context, fields *DecorSearchFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Fireplace"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -404,45 +370,37 @@ func StringDecorSearch(ctx context.Context, fields *DecorSearchFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("nameen_US") {
+			q.Add("nameen_US", "Fireplace")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("nameen_US") {
-		q.Add("nameen_US", "Fireplace")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -461,11 +419,10 @@ func StringDecorSearch(ctx context.Context, fields *DecorSearchFields) (string, 
 
 // bridgeDecorSearch routes the request to either CN or Global logic based on input.
 func bridgeDecorSearch(ctx context.Context, fields *DecorSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookDecorSearch != nil {
 			return CNHookDecorSearch(ctx, fields)
@@ -493,14 +450,13 @@ func bridgeDecorSearch(ctx context.Context, fields *DecorSearchFields) (any, err
 // Path: /data/wow/search/decor
 var DecorSearch = bridgeDecorSearch
 
-
 // ==============================================================================================
 // API: FixtureIndex
 // ==============================================================================================
 
 type FixtureIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -531,17 +487,14 @@ func StringFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -556,35 +509,29 @@ func StringFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (string
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -603,11 +550,10 @@ func StringFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (string
 
 // bridgeFixtureIndex routes the request to either CN or Global logic based on input.
 func bridgeFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixtureIndex != nil {
 			return CNHookFixtureIndex(ctx, fields)
@@ -635,15 +581,14 @@ func bridgeFixtureIndex(ctx context.Context, fields *FixtureIndexFields) (any, e
 // Path: /data/wow/fixture/index
 var FixtureIndex = bridgeFixtureIndex
 
-
 // ==============================================================================================
 // API: Fixture
 // ==============================================================================================
 
 type FixtureFields struct {
-	DecorId string `uri:"decorId" binding:"required"` // The ID of the fixture.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	DecorId   string `uri:"decorId" binding:"required"`   // The ID of the fixture.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -674,22 +619,18 @@ func StringFixture(ctx context.Context, fields *FixtureFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.DecorId == "" {
 		fields.DecorId = "141"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -704,49 +645,42 @@ func StringFixture(ctx context.Context, fields *FixtureFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"decorId": fields.DecorId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"decorId": fields.DecorId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -765,11 +699,10 @@ func StringFixture(ctx context.Context, fields *FixtureFields) (string, error) {
 
 // bridgeFixture routes the request to either CN or Global logic based on input.
 func bridgeFixture(ctx context.Context, fields *FixtureFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixture != nil {
 			return CNHookFixture(ctx, fields)
@@ -797,16 +730,15 @@ func bridgeFixture(ctx context.Context, fields *FixtureFields) (any, error) {
 // Path: /data/wow/fixture/{fixtureId}
 var Fixture = bridgeFixture
 
-
 // ==============================================================================================
 // API: FixtureSearch
 // ==============================================================================================
 
 type FixtureSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Nameen_US string `form:"nameen_US,default=Roof"` // The name of the decor. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Nameen_US string `form:"nameen_US,default=Roof"`      // The name of the decor. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -837,26 +769,22 @@ func StringFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Roof"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -871,45 +799,37 @@ func StringFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("nameen_US") {
+			q.Add("nameen_US", "Roof")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("nameen_US") {
-		q.Add("nameen_US", "Roof")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -928,11 +848,10 @@ func StringFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (stri
 
 // bridgeFixtureSearch routes the request to either CN or Global logic based on input.
 func bridgeFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixtureSearch != nil {
 			return CNHookFixtureSearch(ctx, fields)
@@ -960,14 +879,13 @@ func bridgeFixtureSearch(ctx context.Context, fields *FixtureSearchFields) (any,
 // Path: /data/wow/search/fixture
 var FixtureSearch = bridgeFixtureSearch
 
-
 // ==============================================================================================
 // API: FixtureHookIndex
 // ==============================================================================================
 
 type FixtureHookIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -998,17 +916,14 @@ func StringFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1023,35 +938,29 @@ func StringFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1070,11 +979,10 @@ func StringFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 
 // bridgeFixtureHookIndex routes the request to either CN or Global logic based on input.
 func bridgeFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixtureHookIndex != nil {
 			return CNHookFixtureHookIndex(ctx, fields)
@@ -1102,15 +1010,14 @@ func bridgeFixtureHookIndex(ctx context.Context, fields *FixtureHookIndexFields)
 // Path: /data/wow/fixture-hook/index
 var FixtureHookIndex = bridgeFixtureHookIndex
 
-
 // ==============================================================================================
 // API: FixtureHook
 // ==============================================================================================
 
 type FixtureHookFields struct {
 	FixtureHookId string `uri:"fixtureHookId" binding:"required"` // The ID of the fixture hook.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Namespace     string `form:"namespace,default=static-us"`     // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1141,22 +1048,18 @@ func StringFixtureHook(ctx context.Context, fields *FixtureHookFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.FixtureHookId == "" {
 		fields.FixtureHookId = "2503"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1171,49 +1074,42 @@ func StringFixtureHook(ctx context.Context, fields *FixtureHookFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"fixtureHookId": fields.FixtureHookId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"fixtureHookId": fields.FixtureHookId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1232,11 +1128,10 @@ func StringFixtureHook(ctx context.Context, fields *FixtureHookFields) (string, 
 
 // bridgeFixtureHook routes the request to either CN or Global logic based on input.
 func bridgeFixtureHook(ctx context.Context, fields *FixtureHookFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixtureHook != nil {
 			return CNHookFixtureHook(ctx, fields)
@@ -1264,15 +1159,14 @@ func bridgeFixtureHook(ctx context.Context, fields *FixtureHookFields) (any, err
 // Path: /data/wow/fixture-hook/{fixtureHookId}
 var FixtureHook = bridgeFixtureHook
 
-
 // ==============================================================================================
 // API: FixtureHookSearch
 // ==============================================================================================
 
 type FixtureHookSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1303,21 +1197,18 @@ func StringFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1332,40 +1223,33 @@ func StringFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1384,11 +1268,10 @@ func StringFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 
 // bridgeFixtureHookSearch routes the request to either CN or Global logic based on input.
 func bridgeFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFixtureHookSearch != nil {
 			return CNHookFixtureHookSearch(ctx, fields)
@@ -1416,14 +1299,13 @@ func bridgeFixtureHookSearch(ctx context.Context, fields *FixtureHookSearchField
 // Path: /data/wow/search/fixture-hook
 var FixtureHookSearch = bridgeFixtureHookSearch
 
-
 // ==============================================================================================
 // API: RoomIndex
 // ==============================================================================================
 
 type RoomIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1454,17 +1336,14 @@ func StringRoomIndex(ctx context.Context, fields *RoomIndexFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1479,35 +1358,29 @@ func StringRoomIndex(ctx context.Context, fields *RoomIndexFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1526,11 +1399,10 @@ func StringRoomIndex(ctx context.Context, fields *RoomIndexFields) (string, erro
 
 // bridgeRoomIndex routes the request to either CN or Global logic based on input.
 func bridgeRoomIndex(ctx context.Context, fields *RoomIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRoomIndex != nil {
 			return CNHookRoomIndex(ctx, fields)
@@ -1558,15 +1430,14 @@ func bridgeRoomIndex(ctx context.Context, fields *RoomIndexFields) (any, error) 
 // Path: /data/wow/room/index
 var RoomIndex = bridgeRoomIndex
 
-
 // ==============================================================================================
 // API: Room
 // ==============================================================================================
 
 type RoomFields struct {
-	RoomId string `uri:"roomId" binding:"required"` // The ID of the room.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RoomId    string `uri:"roomId" binding:"required"`    // The ID of the room.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1597,22 +1468,18 @@ func StringRoom(ctx context.Context, fields *RoomFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RoomId == "" {
 		fields.RoomId = "1"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1627,49 +1494,42 @@ func StringRoom(ctx context.Context, fields *RoomFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"roomId": fields.RoomId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"roomId": fields.RoomId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1688,11 +1548,10 @@ func StringRoom(ctx context.Context, fields *RoomFields) (string, error) {
 
 // bridgeRoom routes the request to either CN or Global logic based on input.
 func bridgeRoom(ctx context.Context, fields *RoomFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRoom != nil {
 			return CNHookRoom(ctx, fields)
@@ -1720,16 +1579,15 @@ func bridgeRoom(ctx context.Context, fields *RoomFields) (any, error) {
 // Path: /data/wow/room/{roomId}
 var Room = bridgeRoom
 
-
 // ==============================================================================================
 // API: RoomSearch
 // ==============================================================================================
 
 type RoomSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Nameen_US string `form:"nameen_US,default=Square"` // The name of the room. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Nameen_US string `form:"nameen_US,default=Square"`    // The name of the room. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1760,26 +1618,22 @@ func StringRoomSearch(ctx context.Context, fields *RoomSearchFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Nameen_US == "" {
 		fields.Nameen_US = "Square"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1794,45 +1648,37 @@ func StringRoomSearch(ctx context.Context, fields *RoomSearchFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("nameen_US") {
+			q.Add("nameen_US", "Square")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("nameen_US") {
-		q.Add("nameen_US", "Square")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1851,11 +1697,10 @@ func StringRoomSearch(ctx context.Context, fields *RoomSearchFields) (string, er
 
 // bridgeRoomSearch routes the request to either CN or Global logic based on input.
 func bridgeRoomSearch(ctx context.Context, fields *RoomSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRoomSearch != nil {
 			return CNHookRoomSearch(ctx, fields)
@@ -1882,4 +1727,3 @@ func bridgeRoomSearch(ctx context.Context, fields *RoomSearchFields) (any, error
 /* RoomSearch Performs a search of rooms. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/room
 var RoomSearch = bridgeRoomSearch
-

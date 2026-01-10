@@ -7,23 +7,17 @@ package wow_ModifiedCrafting
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: ModifiedCraftingIndex
@@ -31,7 +25,7 @@ import (
 
 type ModifiedCraftingIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 
 // bridgeModifiedCraftingIndex routes the request to either CN or Global logic based on input.
 func bridgeModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookModifiedCraftingIndex != nil {
 			return CNHookModifiedCraftingIndex(ctx, fields)
@@ -166,14 +150,13 @@ func bridgeModifiedCraftingIndex(ctx context.Context, fields *ModifiedCraftingIn
 // Path: /data/wow/modified-crafting/index
 var ModifiedCraftingIndex = bridgeModifiedCraftingIndex
 
-
 // ==============================================================================================
 // API: ModifiedCraftingCategoryIndex
 // ==============================================================================================
 
 type ModifiedCraftingCategoryIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -204,17 +187,14 @@ func StringModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -229,35 +209,29 @@ func StringModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -276,11 +250,10 @@ func StringModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 
 // bridgeModifiedCraftingCategoryIndex routes the request to either CN or Global logic based on input.
 func bridgeModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCraftingCategoryIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookModifiedCraftingCategoryIndex != nil {
 			return CNHookModifiedCraftingCategoryIndex(ctx, fields)
@@ -308,15 +281,14 @@ func bridgeModifiedCraftingCategoryIndex(ctx context.Context, fields *ModifiedCr
 // Path: /data/wow/modified-crafting/category/index
 var ModifiedCraftingCategoryIndex = bridgeModifiedCraftingCategoryIndex
 
-
 // ==============================================================================================
 // API: ModifiedCraftingCategory
 // ==============================================================================================
 
 type ModifiedCraftingCategoryFields struct {
-	CategoryId int `uri:"categoryId" binding:"required"` // The ID of the Modified Crafting category.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	CategoryId int    `uri:"categoryId" binding:"required"` // The ID of the Modified Crafting category.
+	Namespace  string `form:"namespace,default=static-us"`  // The namespace to use to locate this document.
+	Locale     string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -347,21 +319,18 @@ func StringModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.CategoryId == 0 {
 		fields.CategoryId = 1
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -376,49 +345,42 @@ func StringModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"categoryId": fields.CategoryId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"categoryId": fields.CategoryId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 
 // bridgeModifiedCraftingCategory routes the request to either CN or Global logic based on input.
 func bridgeModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftingCategoryFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookModifiedCraftingCategory != nil {
 			return CNHookModifiedCraftingCategory(ctx, fields)
@@ -469,14 +430,13 @@ func bridgeModifiedCraftingCategory(ctx context.Context, fields *ModifiedCraftin
 // Path: /data/wow/modified-crafting/category/{categoryId}
 var ModifiedCraftingCategory = bridgeModifiedCraftingCategory
 
-
 // ==============================================================================================
 // API: ModifiedCraftingReagentSlotTypeIndex
 // ==============================================================================================
 
 type ModifiedCraftingReagentSlotTypeIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -507,17 +467,14 @@ func StringModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -532,35 +489,29 @@ func StringModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -579,11 +530,10 @@ func StringModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 
 // bridgeModifiedCraftingReagentSlotTypeIndex routes the request to either CN or Global logic based on input.
 func bridgeModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *ModifiedCraftingReagentSlotTypeIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookModifiedCraftingReagentSlotTypeIndex != nil {
 			return CNHookModifiedCraftingReagentSlotTypeIndex(ctx, fields)
@@ -611,15 +561,14 @@ func bridgeModifiedCraftingReagentSlotTypeIndex(ctx context.Context, fields *Mod
 // Path: /data/wow/modified-crafting/reagent-slot-type/index
 var ModifiedCraftingReagentSlotTypeIndex = bridgeModifiedCraftingReagentSlotTypeIndex
 
-
 // ==============================================================================================
 // API: ModifiedCraftingReagentSlotType
 // ==============================================================================================
 
 type ModifiedCraftingReagentSlotTypeFields struct {
-	SlotTypeId int `uri:"slotTypeId" binding:"required"` // The ID of the Modified Crafting reagent slot type.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	SlotTypeId int    `uri:"slotTypeId" binding:"required"` // The ID of the Modified Crafting reagent slot type.
+	Namespace  string `form:"namespace,default=static-us"`  // The namespace to use to locate this document.
+	Locale     string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -650,21 +599,18 @@ func StringModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SlotTypeId == 0 {
 		fields.SlotTypeId = 16
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -679,49 +625,42 @@ func StringModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"slotTypeId": fields.SlotTypeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"slotTypeId": fields.SlotTypeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -740,11 +679,10 @@ func StringModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 
 // bridgeModifiedCraftingReagentSlotType routes the request to either CN or Global logic based on input.
 func bridgeModifiedCraftingReagentSlotType(ctx context.Context, fields *ModifiedCraftingReagentSlotTypeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookModifiedCraftingReagentSlotType != nil {
 			return CNHookModifiedCraftingReagentSlotType(ctx, fields)
@@ -771,4 +709,3 @@ func bridgeModifiedCraftingReagentSlotType(ctx context.Context, fields *Modified
 /* ModifiedCraftingReagentSlotType Returns a Modified Crafting reagent slot type by ID. */
 // Path: /data/wow/modified-crafting/reagent-slot-type/{slotTypeId}
 var ModifiedCraftingReagentSlotType = bridgeModifiedCraftingReagentSlotType
-

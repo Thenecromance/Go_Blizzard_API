@@ -6,10 +6,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/bridge/log"
-	cn "github.com/Thenecromance/BlizzardAPI/cnSupport"
-	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/log"
+	cn "github.com/Thenecromance/Go_Blizzard_API/cnSupport"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
 )
 
 func init() {

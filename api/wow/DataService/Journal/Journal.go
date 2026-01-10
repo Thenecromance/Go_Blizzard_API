@@ -7,25 +7,19 @@ package wow_Journal
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: JournalExpansionsIndex
@@ -33,7 +27,7 @@ import (
 
 type JournalExpansionsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,17 +58,14 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -89,35 +80,29 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -136,11 +121,10 @@ func StringJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 
 // bridgeJournalExpansionsIndex routes the request to either CN or Global logic based on input.
 func bridgeJournalExpansionsIndex(ctx context.Context, fields *JournalExpansionsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalExpansionsIndex != nil {
 			return CNHookJournalExpansionsIndex(ctx, fields)
@@ -168,15 +152,14 @@ func bridgeJournalExpansionsIndex(ctx context.Context, fields *JournalExpansions
 // Path: /data/wow/journal-expansion/index
 var JournalExpansionsIndex = bridgeJournalExpansionsIndex
 
-
 // ==============================================================================================
 // API: JournalExpansion
 // ==============================================================================================
 
 type JournalExpansionFields struct {
-	JournalExpansionId int `uri:"journalExpansionId" binding:"required"` // The ID of the journal expansion.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	JournalExpansionId int    `uri:"journalExpansionId" binding:"required"` // The ID of the journal expansion.
+	Namespace          string `form:"namespace,default=static-us"`          // The namespace to use to locate this document.
+	Locale             string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -207,21 +190,18 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.JournalExpansionId == 0 {
 		fields.JournalExpansionId = 68
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -236,49 +216,42 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"journalExpansionId": fields.JournalExpansionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"journalExpansionId": fields.JournalExpansionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -297,11 +270,10 @@ func StringJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 
 // bridgeJournalExpansion routes the request to either CN or Global logic based on input.
 func bridgeJournalExpansion(ctx context.Context, fields *JournalExpansionFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalExpansion != nil {
 			return CNHookJournalExpansion(ctx, fields)
@@ -329,14 +301,13 @@ func bridgeJournalExpansion(ctx context.Context, fields *JournalExpansionFields)
 // Path: /data/wow/journal-expansion/{journalExpansionId}
 var JournalExpansion = bridgeJournalExpansion
 
-
 // ==============================================================================================
 // API: JournalEncountersIndex
 // ==============================================================================================
 
 type JournalEncountersIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -367,17 +338,14 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -392,35 +360,29 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -439,11 +401,10 @@ func StringJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 
 // bridgeJournalEncountersIndex routes the request to either CN or Global logic based on input.
 func bridgeJournalEncountersIndex(ctx context.Context, fields *JournalEncountersIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalEncountersIndex != nil {
 			return CNHookJournalEncountersIndex(ctx, fields)
@@ -471,15 +432,14 @@ func bridgeJournalEncountersIndex(ctx context.Context, fields *JournalEncounters
 // Path: /data/wow/journal-encounter/index
 var JournalEncountersIndex = bridgeJournalEncountersIndex
 
-
 // ==============================================================================================
 // API: JournalEncounter
 // ==============================================================================================
 
 type JournalEncounterFields struct {
-	JournalEncounterId int `uri:"journalEncounterId" binding:"required"` // The ID of the journal encounter.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	JournalEncounterId int    `uri:"journalEncounterId" binding:"required"` // The ID of the journal encounter.
+	Namespace          string `form:"namespace,default=static-us"`          // The namespace to use to locate this document.
+	Locale             string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -510,21 +470,18 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.JournalEncounterId == 0 {
 		fields.JournalEncounterId = 89
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -539,49 +496,42 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"journalEncounterId": fields.JournalEncounterId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"journalEncounterId": fields.JournalEncounterId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -600,11 +550,10 @@ func StringJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 
 // bridgeJournalEncounter routes the request to either CN or Global logic based on input.
 func bridgeJournalEncounter(ctx context.Context, fields *JournalEncounterFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalEncounter != nil {
 			return CNHookJournalEncounter(ctx, fields)
@@ -632,16 +581,15 @@ func bridgeJournalEncounter(ctx context.Context, fields *JournalEncounterFields)
 // Path: /data/wow/journal-encounter/{journalEncounterId}
 var JournalEncounter = bridgeJournalEncounter
 
-
 // ==============================================================================================
 // API: JournalEncounterSearch
 // ==============================================================================================
 
 type JournalEncounterSearchFields struct {
-	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Namespace         string `form:"namespace,default=static-us"`         // The namespace to use to locate this document.
 	Instancenameen_US string `form:"instancenameen_US,default=Deadmines"` // The instance name where an encounter appears. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Orderby           string `form:"orderby,default=id"`                  // The field to sort the result set by.
+	_page             int    `form:"_page,default=1"`                     // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -672,26 +620,22 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Instancenameen_US == "" {
 		fields.Instancenameen_US = "Deadmines"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -706,45 +650,37 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("instancenameen_US") {
+			q.Add("instancenameen_US", "Deadmines")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("instancenameen_US") {
-		q.Add("instancenameen_US", "Deadmines")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -763,11 +699,10 @@ func StringJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 
 // bridgeJournalEncounterSearch routes the request to either CN or Global logic based on input.
 func bridgeJournalEncounterSearch(ctx context.Context, fields *JournalEncounterSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalEncounterSearch != nil {
 			return CNHookJournalEncounterSearch(ctx, fields)
@@ -795,14 +730,13 @@ func bridgeJournalEncounterSearch(ctx context.Context, fields *JournalEncounterS
 // Path: /data/wow/search/journal-encounter
 var JournalEncounterSearch = bridgeJournalEncounterSearch
 
-
 // ==============================================================================================
 // API: JournalInstancesIndex
 // ==============================================================================================
 
 type JournalInstancesIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -833,17 +767,14 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -858,35 +789,29 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -905,11 +830,10 @@ func StringJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 
 // bridgeJournalInstancesIndex routes the request to either CN or Global logic based on input.
 func bridgeJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalInstancesIndex != nil {
 			return CNHookJournalInstancesIndex(ctx, fields)
@@ -937,15 +861,14 @@ func bridgeJournalInstancesIndex(ctx context.Context, fields *JournalInstancesIn
 // Path: /data/wow/journal-instance/index
 var JournalInstancesIndex = bridgeJournalInstancesIndex
 
-
 // ==============================================================================================
 // API: JournalInstance
 // ==============================================================================================
 
 type JournalInstanceFields struct {
-	JournalInstanceId int `uri:"journalInstanceId" binding:"required"` // The ID of the journal instance.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	JournalInstanceId int    `uri:"journalInstanceId" binding:"required"` // The ID of the journal instance.
+	Namespace         string `form:"namespace,default=static-us"`         // The namespace to use to locate this document.
+	Locale            string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -976,21 +899,18 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.JournalInstanceId == 0 {
 		fields.JournalInstanceId = 63
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1005,49 +925,42 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"journalInstanceId": fields.JournalInstanceId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"journalInstanceId": fields.JournalInstanceId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1066,11 +979,10 @@ func StringJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 
 // bridgeJournalInstance routes the request to either CN or Global logic based on input.
 func bridgeJournalInstance(ctx context.Context, fields *JournalInstanceFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalInstance != nil {
 			return CNHookJournalInstance(ctx, fields)
@@ -1098,15 +1010,14 @@ func bridgeJournalInstance(ctx context.Context, fields *JournalInstanceFields) (
 // Path: /data/wow/journal-instance/{journalInstanceId}
 var JournalInstance = bridgeJournalInstance
 
-
 // ==============================================================================================
 // API: JournalInstanceMedia
 // ==============================================================================================
 
 type JournalInstanceMediaFields struct {
-	JournalInstanceId int `uri:"journalInstanceId" binding:"required"` // The ID of the journal instance.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	JournalInstanceId int    `uri:"journalInstanceId" binding:"required"` // The ID of the journal instance.
+	Namespace         string `form:"namespace,default=static-us"`         // The namespace to use to locate this document.
+	Locale            string `form:"locale,default=en_US"`                // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1137,21 +1048,18 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.JournalInstanceId == 0 {
 		fields.JournalInstanceId = 63
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1166,49 +1074,42 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"journalInstanceId": fields.JournalInstanceId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"journalInstanceId": fields.JournalInstanceId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1227,11 +1128,10 @@ func StringJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 
 // bridgeJournalInstanceMedia routes the request to either CN or Global logic based on input.
 func bridgeJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookJournalInstanceMedia != nil {
 			return CNHookJournalInstanceMedia(ctx, fields)
@@ -1258,4 +1158,3 @@ func bridgeJournalInstanceMedia(ctx context.Context, fields *JournalInstanceMedi
 /* JournalInstanceMedia Returns media for a journal instance by ID. */
 // Path: /data/wow/media/journal-instance/{journalInstanceId}
 var JournalInstanceMedia = bridgeJournalInstanceMedia
-

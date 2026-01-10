@@ -7,23 +7,17 @@ package D3_D3Profile
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GetApiAccount
@@ -31,7 +25,7 @@ import (
 
 type GetApiAccountFields struct {
 	Account string `uri:"account" binding:"required"` // The BattleTag for the account to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale  string `form:"locale,default=en_US"`      // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,12 +56,10 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -82,44 +74,38 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"account": fields.Account,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"account": fields.Account,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -138,11 +124,10 @@ func StringGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (stri
 
 // bridgeGetApiAccount routes the request to either CN or Global logic based on input.
 func bridgeGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetApiAccount != nil {
 			return CNHookGetApiAccount(ctx, fields)
@@ -170,15 +155,14 @@ func bridgeGetApiAccount(ctx context.Context, fields *GetApiAccountFields) (any,
 // Path: /d3/profile/{account}/
 var GetApiAccount = bridgeGetApiAccount
 
-
 // ==============================================================================================
 // API: GetApiHero
 // ==============================================================================================
 
 type GetApiHeroFields struct {
 	Account string `uri:"account" binding:"required"` // The BattleTag for the account to retrieve.
-		HeroId string `uri:"heroId" binding:"required"` // The ID of the hero to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	HeroId  string `uri:"heroId" binding:"required"`  // The ID of the hero to retrieve.
+	Locale  string `form:"locale,default=en_US"`      // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -209,12 +193,10 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -229,45 +211,39 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"account": fields.Account,
-    		"heroId": fields.HeroId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"account": fields.Account,
+			"heroId":  fields.HeroId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -286,11 +262,10 @@ func StringGetApiHero(ctx context.Context, fields *GetApiHeroFields) (string, er
 
 // bridgeGetApiHero routes the request to either CN or Global logic based on input.
 func bridgeGetApiHero(ctx context.Context, fields *GetApiHeroFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetApiHero != nil {
 			return CNHookGetApiHero(ctx, fields)
@@ -318,15 +293,14 @@ func bridgeGetApiHero(ctx context.Context, fields *GetApiHeroFields) (any, error
 // Path: /d3/profile/{account}/hero/{heroId}
 var GetApiHero = bridgeGetApiHero
 
-
 // ==============================================================================================
 // API: GetApiDetailedHeroItems
 // ==============================================================================================
 
 type GetApiDetailedHeroItemsFields struct {
 	Account string `uri:"account" binding:"required"` // The BattleTag for the account to retrieve.
-		HeroId string `uri:"heroId" binding:"required"` // The ID of the hero to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	HeroId  string `uri:"heroId" binding:"required"`  // The ID of the hero to retrieve.
+	Locale  string `form:"locale,default=en_US"`      // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -357,12 +331,10 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -377,45 +349,39 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"account": fields.Account,
-    		"heroId": fields.HeroId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"account": fields.Account,
+			"heroId":  fields.HeroId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -434,11 +400,10 @@ func StringGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 
 // bridgeGetApiDetailedHeroItems routes the request to either CN or Global logic based on input.
 func bridgeGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHeroItemsFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetApiDetailedHeroItems != nil {
 			return CNHookGetApiDetailedHeroItems(ctx, fields)
@@ -466,15 +431,14 @@ func bridgeGetApiDetailedHeroItems(ctx context.Context, fields *GetApiDetailedHe
 // Path: /d3/profile/{account}/hero/{heroId}/items
 var GetApiDetailedHeroItems = bridgeGetApiDetailedHeroItems
 
-
 // ==============================================================================================
 // API: GetApiDetailedFollowerItems
 // ==============================================================================================
 
 type GetApiDetailedFollowerItemsFields struct {
 	Account string `uri:"account" binding:"required"` // The BattleTag for the account to retrieve.
-		HeroId string `uri:"heroId" binding:"required"` // The ID of the hero to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	HeroId  string `uri:"heroId" binding:"required"`  // The ID of the hero to retrieve.
+	Locale  string `form:"locale,default=en_US"`      // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -505,12 +469,10 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -525,45 +487,39 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"account": fields.Account,
-    		"heroId": fields.HeroId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"account": fields.Account,
+			"heroId":  fields.HeroId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -582,11 +538,10 @@ func StringGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 
 // bridgeGetApiDetailedFollowerItems routes the request to either CN or Global logic based on input.
 func bridgeGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetailedFollowerItemsFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetApiDetailedFollowerItems != nil {
 			return CNHookGetApiDetailedFollowerItems(ctx, fields)
@@ -613,4 +568,3 @@ func bridgeGetApiDetailedFollowerItems(ctx context.Context, fields *GetApiDetail
 /* GetApiDetailedFollowerItems Returns a list of items for the specified hero's followers. */
 // Path: /d3/profile/{account}/hero/{heroId}/follower-items
 var GetApiDetailedFollowerItems = bridgeGetApiDetailedFollowerItems
-

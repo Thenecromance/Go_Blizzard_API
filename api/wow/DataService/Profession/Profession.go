@@ -7,23 +7,17 @@ package wow_Profession
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: ProfessionsIndex
@@ -31,7 +25,7 @@ import (
 
 type ProfessionsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 
 // bridgeProfessionsIndex routes the request to either CN or Global logic based on input.
 func bridgeProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProfessionsIndex != nil {
 			return CNHookProfessionsIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgeProfessionsIndex(ctx context.Context, fields *ProfessionsIndexFields)
 // Path: /data/wow/profession/index
 var ProfessionsIndex = bridgeProfessionsIndex
 
-
 // ==============================================================================================
 // API: Profession
 // ==============================================================================================
 
 type ProfessionFields struct {
-	ProfessionId int `uri:"professionId" binding:"required"` // The ID of the profession.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ProfessionId int    `uri:"professionId" binding:"required"` // The ID of the profession.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringProfession(ctx context.Context, fields *ProfessionFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ProfessionId == 0 {
 		fields.ProfessionId = 164
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringProfession(ctx context.Context, fields *ProfessionFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"professionId": fields.ProfessionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"professionId": fields.ProfessionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringProfession(ctx context.Context, fields *ProfessionFields) (string, er
 
 // bridgeProfession routes the request to either CN or Global logic based on input.
 func bridgeProfession(ctx context.Context, fields *ProfessionFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProfession != nil {
 			return CNHookProfession(ctx, fields)
@@ -327,15 +299,14 @@ func bridgeProfession(ctx context.Context, fields *ProfessionFields) (any, error
 // Path: /data/wow/profession/{professionId}
 var Profession = bridgeProfession
 
-
 // ==============================================================================================
 // API: ProfessionMedia
 // ==============================================================================================
 
 type ProfessionMediaFields struct {
-	ProfessionId int `uri:"professionId" binding:"required"` // The ID of the profession.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ProfessionId int    `uri:"professionId" binding:"required"` // The ID of the profession.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -366,21 +337,18 @@ func StringProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ProfessionId == 0 {
 		fields.ProfessionId = 164
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -395,49 +363,42 @@ func StringProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"professionId": fields.ProfessionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"professionId": fields.ProfessionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -456,11 +417,10 @@ func StringProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 
 // bridgeProfessionMedia routes the request to either CN or Global logic based on input.
 func bridgeProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProfessionMedia != nil {
 			return CNHookProfessionMedia(ctx, fields)
@@ -488,16 +448,15 @@ func bridgeProfessionMedia(ctx context.Context, fields *ProfessionMediaFields) (
 // Path: /data/wow/media/profession/{professionId}
 var ProfessionMedia = bridgeProfessionMedia
 
-
 // ==============================================================================================
 // API: ProfessionSkillTier
 // ==============================================================================================
 
 type ProfessionSkillTierFields struct {
-	ProfessionId int `uri:"professionId" binding:"required"` // The ID of the profession.
-		SkillTierId int `uri:"skillTierId" binding:"required"` // The ID of the skill tier.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	ProfessionId int    `uri:"professionId" binding:"required"` // The ID of the profession.
+	SkillTierId  int    `uri:"skillTierId" binding:"required"`  // The ID of the skill tier.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -528,25 +487,22 @@ func StringProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ProfessionId == 0 {
 		fields.ProfessionId = 164
 	}
-	
+
 	if fields.SkillTierId == 0 {
 		fields.SkillTierId = 2477
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -561,50 +517,43 @@ func StringProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"professionId": fields.ProfessionId,
-    		"skillTierId": fields.SkillTierId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"professionId": fields.ProfessionId,
+			"skillTierId":  fields.SkillTierId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -623,11 +572,10 @@ func StringProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 
 // bridgeProfessionSkillTier routes the request to either CN or Global logic based on input.
 func bridgeProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProfessionSkillTier != nil {
 			return CNHookProfessionSkillTier(ctx, fields)
@@ -655,15 +603,14 @@ func bridgeProfessionSkillTier(ctx context.Context, fields *ProfessionSkillTierF
 // Path: /data/wow/profession/{professionId}/skill-tier/{skillTierId}
 var ProfessionSkillTier = bridgeProfessionSkillTier
 
-
 // ==============================================================================================
 // API: Recipe
 // ==============================================================================================
 
 type RecipeFields struct {
-	RecipeId int `uri:"recipeId" binding:"required"` // The ID of the recipe.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RecipeId  int    `uri:"recipeId" binding:"required"`  // The ID of the recipe.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -694,21 +641,18 @@ func StringRecipe(ctx context.Context, fields *RecipeFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RecipeId == 0 {
 		fields.RecipeId = 1631
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -723,49 +667,42 @@ func StringRecipe(ctx context.Context, fields *RecipeFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"recipeId": fields.RecipeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"recipeId": fields.RecipeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -784,11 +721,10 @@ func StringRecipe(ctx context.Context, fields *RecipeFields) (string, error) {
 
 // bridgeRecipe routes the request to either CN or Global logic based on input.
 func bridgeRecipe(ctx context.Context, fields *RecipeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRecipe != nil {
 			return CNHookRecipe(ctx, fields)
@@ -816,15 +752,14 @@ func bridgeRecipe(ctx context.Context, fields *RecipeFields) (any, error) {
 // Path: /data/wow/recipe/{recipeId}
 var Recipe = bridgeRecipe
 
-
 // ==============================================================================================
 // API: RecipeMedia
 // ==============================================================================================
 
 type RecipeMediaFields struct {
-	RecipeId int `uri:"recipeId" binding:"required"` // The ID of the recipe.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RecipeId  int    `uri:"recipeId" binding:"required"`  // The ID of the recipe.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -855,21 +790,18 @@ func StringRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RecipeId == 0 {
 		fields.RecipeId = 1631
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -884,49 +816,42 @@ func StringRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"recipeId": fields.RecipeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"recipeId": fields.RecipeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -945,11 +870,10 @@ func StringRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (string, 
 
 // bridgeRecipeMedia routes the request to either CN or Global logic based on input.
 func bridgeRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRecipeMedia != nil {
 			return CNHookRecipeMedia(ctx, fields)
@@ -976,4 +900,3 @@ func bridgeRecipeMedia(ctx context.Context, fields *RecipeMediaFields) (any, err
 /* RecipeMedia Returns media for a recipe by ID. */
 // Path: /data/wow/media/recipe/{recipeId}
 var RecipeMedia = bridgeRecipeMedia
-

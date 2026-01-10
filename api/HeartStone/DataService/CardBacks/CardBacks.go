@@ -7,37 +7,31 @@ package HeartStone_CardBacks
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: CardBackSearch
 // ==============================================================================================
 
 type CardBackSearchFields struct {
-	Locale string `form:"locale"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
-	CardBackCategory string `form:"cardBackCategory"` // A category of the card back. The category must match a valid category.
-	TextFilter string `form:"textFilter"` // A text string used to filter card backs. You must include a locale along with the textFilter parameter.
-	Sort string `form:"sort,default=dateAdded:desc"` // The field used to sort the results. Valid value include name:asc, name:desc, dateAdded:asc, and dateAdded:desc. Results are sorted by date (desc) by default.
-	Page int `form:"page"` // A page number.
-	PageSize int `form:"pageSize"` // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
+	Locale           string `form:"locale"`                      // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	CardBackCategory string `form:"cardBackCategory"`            // A category of the card back. The category must match a valid category.
+	TextFilter       string `form:"textFilter"`                  // A text string used to filter card backs. You must include a locale along with the textFilter parameter.
+	Sort             string `form:"sort,default=dateAdded:desc"` // The field used to sort the results. Valid value include name:asc, name:desc, dateAdded:asc, and dateAdded:desc. Results are sorted by date (desc) by default.
+	Page             int    `form:"page"`                        // A page number.
+	PageSize         int    `form:"pageSize"`                    // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -68,12 +62,10 @@ func StringCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Sort == "" {
 		fields.Sort = "dateAdded:desc"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -88,55 +80,45 @@ func StringCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "<no value>")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "<no value>")
-	}
-    
-    
-	if !q.Has("cardBackCategory") {
-		q.Add("cardBackCategory", "<no value>")
-	}
-    
-    
-	if !q.Has("textFilter") {
-		q.Add("textFilter", "<no value>")
-	}
-    
-    
-	if !q.Has("sort") {
-		q.Add("sort", "dateAdded:desc")
-	}
-    
-    
-    	if !q.Has("page") {
-    		q.Add("page", strconv.Itoa(fields.Page))
-    	}
-    
-    
-    	if !q.Has("pageSize") {
-    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
-    	}
-    
+		if !q.Has("cardBackCategory") {
+			q.Add("cardBackCategory", "<no value>")
+		}
 
+		if !q.Has("textFilter") {
+			q.Add("textFilter", "<no value>")
+		}
 
-	req.URL.RawQuery = q.Encode()
-}
+		if !q.Has("sort") {
+			q.Add("sort", "dateAdded:desc")
+		}
+
+		if !q.Has("page") {
+			q.Add("page", strconv.Itoa(fields.Page))
+		}
+
+		if !q.Has("pageSize") {
+			q.Add("pageSize", strconv.Itoa(fields.PageSize))
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -155,11 +137,10 @@ func StringCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (st
 
 // bridgeCardBackSearch routes the request to either CN or Global logic based on input.
 func bridgeCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCardBackSearch != nil {
 			return CNHookCardBackSearch(ctx, fields)
@@ -187,14 +168,13 @@ func bridgeCardBackSearch(ctx context.Context, fields *CardBackSearchFields) (an
 // Path: /hearthstone/cardbacks
 var CardBackSearch = bridgeCardBackSearch
 
-
 // ==============================================================================================
 // API: Fetchonecardback
 // ==============================================================================================
 
 type FetchonecardbackFields struct {
 	Idorslug string `uri:"idorslug" binding:"required"` // An ID or slug that uniquely identifies a card back. You can discover these values by using the GET /hearthstone/cardbacks endpoint
-		Locale string `form:"locale"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	Locale   string `form:"locale"`                     // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -225,12 +205,10 @@ func StringFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Idorslug == "" {
 		fields.Idorslug = "155-pizza-stone"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -245,44 +223,38 @@ func StringFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"idorslug": fields.Idorslug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"idorslug": fields.Idorslug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "<no value>")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -301,11 +273,10 @@ func StringFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 
 // bridgeFetchonecardback routes the request to either CN or Global logic based on input.
 func bridgeFetchonecardback(ctx context.Context, fields *FetchonecardbackFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFetchonecardback != nil {
 			return CNHookFetchonecardback(ctx, fields)
@@ -332,4 +303,3 @@ func bridgeFetchonecardback(ctx context.Context, fields *FetchonecardbackFields)
 /* Fetchonecardback Returns a specific card back by using card back ID or slug. */
 // Path: /hearthstone/cardbacks/:idorslug
 var Fetchonecardback = bridgeFetchonecardback
-

@@ -3,8 +3,8 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Thenecromance/BlizzardAPI/bridge/client"
-	"github.com/Thenecromance/BlizzardAPI/bridge/log"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/client"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/log"
 	"io"
 	"strings"
 	"sync"

@@ -64,7 +64,7 @@ import (
 	"context"
 	"fmt"
 	// Import the specific game/service package
-	"github.com/Thenecromance/BlizzardAPI/api/wow/DataService/Achievement"
+	"github.com/Thenecromance/Go_Blizzard_API/api/wow/DataService/Achievement"
 )
 
 func main() {
@@ -92,7 +92,7 @@ func main() {
 ## 🏗 Project Structure
 
 ```
-/github.com/Thenecromance/BlizzardAPI
+/github.com/Thenecromance/Go_Blizzard_API
 ├───api             // Auto-generated API client code (SDK)
 │   ├───wow
 │   ├───D3

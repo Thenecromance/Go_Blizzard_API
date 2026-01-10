@@ -7,25 +7,19 @@ package wow_ItemAppearance
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: ItemAppearance
@@ -33,8 +27,8 @@ import (
 
 type ItemAppearanceFields struct {
 	AppearanceId string `uri:"appearanceId" binding:"required"` // The ID of the item appearance.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -65,22 +59,18 @@ func StringItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.AppearanceId == "" {
 		fields.AppearanceId = "321"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -95,49 +85,42 @@ func StringItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"appearanceId": fields.AppearanceId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"appearanceId": fields.AppearanceId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -156,11 +139,10 @@ func StringItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (st
 
 // bridgeItemAppearance routes the request to either CN or Global logic based on input.
 func bridgeItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearance != nil {
 			return CNHookItemAppearance(ctx, fields)
@@ -188,16 +170,15 @@ func bridgeItemAppearance(ctx context.Context, fields *ItemAppearanceFields) (an
 // Path: /data/wow/item-appearance/{appearanceId}
 var ItemAppearance = bridgeItemAppearance
 
-
 // ==============================================================================================
 // API: ItemAppearanceSearch
 // ==============================================================================================
 
 type ItemAppearanceSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Slottype string `form:"slottype,default=HEAD"` // The slot type of the item appearance. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Slottype  string `form:"slottype,default=HEAD"`       // The slot type of the item appearance. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -228,26 +209,22 @@ func StringItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Slottype == "" {
 		fields.Slottype = "HEAD"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -262,45 +239,37 @@ func StringItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("slottype") {
+			q.Add("slottype", "HEAD")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("slottype") {
-		q.Add("slottype", "HEAD")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -319,11 +288,10 @@ func StringItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 
 // bridgeItemAppearanceSearch routes the request to either CN or Global logic based on input.
 func bridgeItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearanceSearch != nil {
 			return CNHookItemAppearanceSearch(ctx, fields)
@@ -351,14 +319,13 @@ func bridgeItemAppearanceSearch(ctx context.Context, fields *ItemAppearanceSearc
 // Path: /data/wow/search/item-appearance
 var ItemAppearanceSearch = bridgeItemAppearanceSearch
 
-
 // ==============================================================================================
 // API: ItemAppearanceSetsIndex
 // ==============================================================================================
 
 type ItemAppearanceSetsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -389,17 +356,14 @@ func StringItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -414,35 +378,29 @@ func StringItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -461,11 +419,10 @@ func StringItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 
 // bridgeItemAppearanceSetsIndex routes the request to either CN or Global logic based on input.
 func bridgeItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSetsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearanceSetsIndex != nil {
 			return CNHookItemAppearanceSetsIndex(ctx, fields)
@@ -493,15 +450,14 @@ func bridgeItemAppearanceSetsIndex(ctx context.Context, fields *ItemAppearanceSe
 // Path: /data/wow/item-appearance/set/index
 var ItemAppearanceSetsIndex = bridgeItemAppearanceSetsIndex
 
-
 // ==============================================================================================
 // API: ItemAppearanceSet
 // ==============================================================================================
 
 type ItemAppearanceSetFields struct {
-	AppearanceSetId int `uri:"appearanceSetId" binding:"required"` // The ID of the item appearance set.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	AppearanceSetId int    `uri:"appearanceSetId" binding:"required"` // The ID of the item appearance set.
+	Namespace       string `form:"namespace,default=static-us"`       // The namespace to use to locate this document.
+	Locale          string `form:"locale,default=en_US"`              // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -532,21 +488,18 @@ func StringItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.AppearanceSetId == 0 {
 		fields.AppearanceSetId = 13
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -561,49 +514,42 @@ func StringItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"appearanceSetId": fields.AppearanceSetId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"appearanceSetId": fields.AppearanceSetId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -622,11 +568,10 @@ func StringItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 
 // bridgeItemAppearanceSet routes the request to either CN or Global logic based on input.
 func bridgeItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearanceSet != nil {
 			return CNHookItemAppearanceSet(ctx, fields)
@@ -654,14 +599,13 @@ func bridgeItemAppearanceSet(ctx context.Context, fields *ItemAppearanceSetField
 // Path: /data/wow/item-appearance/set/{appearanceSetId}
 var ItemAppearanceSet = bridgeItemAppearanceSet
 
-
 // ==============================================================================================
 // API: ItemAppearanceSlotIndex
 // ==============================================================================================
 
 type ItemAppearanceSlotIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -692,17 +636,14 @@ func StringItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -717,35 +658,29 @@ func StringItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -764,11 +699,10 @@ func StringItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 
 // bridgeItemAppearanceSlotIndex routes the request to either CN or Global logic based on input.
 func bridgeItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSlotIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearanceSlotIndex != nil {
 			return CNHookItemAppearanceSlotIndex(ctx, fields)
@@ -796,15 +730,14 @@ func bridgeItemAppearanceSlotIndex(ctx context.Context, fields *ItemAppearanceSl
 // Path: /data/wow/item-appearance/slot/index
 var ItemAppearanceSlotIndex = bridgeItemAppearanceSlotIndex
 
-
 // ==============================================================================================
 // API: ItemAppearanceSlot
 // ==============================================================================================
 
 type ItemAppearanceSlotFields struct {
-	SlotType string `uri:"slotType" binding:"required"` // The slot type of the item appearance slot.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	SlotType  string `uri:"slotType" binding:"required"`  // The slot type of the item appearance slot.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -835,22 +768,18 @@ func StringItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SlotType == "" {
 		fields.SlotType = "HEAD"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -865,49 +794,42 @@ func StringItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"slotType": fields.SlotType,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"slotType": fields.SlotType,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -926,11 +848,10 @@ func StringItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 
 // bridgeItemAppearanceSlot routes the request to either CN or Global logic based on input.
 func bridgeItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookItemAppearanceSlot != nil {
 			return CNHookItemAppearanceSlot(ctx, fields)
@@ -957,4 +878,3 @@ func bridgeItemAppearanceSlot(ctx context.Context, fields *ItemAppearanceSlotFie
 /* ItemAppearanceSlot Returns an item appearance slot slot type. */
 // Path: /data/wow/item-appearance/slot/{slotType}
 var ItemAppearanceSlot = bridgeItemAppearanceSlot
-

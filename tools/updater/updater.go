@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"text/template"
 
-	automodel "github.com/Thenecromance/BlizzardAPI/tools/updater/autoModel"
+	automodel "github.com/Thenecromance/Go_Blizzard_API/tools/updater/autoModel"
 
 	"github.com/bytedance/sonic"
 	log "github.com/sirupsen/logrus"
@@ -133,7 +133,7 @@ func GenerateApi(pkgName string, folder string, apiList []*ApiGroup) {
 		data := map[string]any{
 			"PkgName":            pkgName,
 			"ApiGroupName":       apiGroup.ApiGroupName,
-			"Methods":               apiGroup.Methods,
+			"Methods":            apiGroup.Methods,
 			"NeedStrconv":        apiGroup.NeedStrconv(), // Change: Call the method explicitly
 			"HasURIBinding":      apiGroup.HasURIBinding(),
 			"ProcessChineseData": apiGroup.ProcessChineseData(),
@@ -162,7 +162,7 @@ func GenerateModels(pkgName string, folder string, apiList []*ApiGroup) {
 			data := map[string]any{
 				"PkgName":      pkgName,
 				"ApiGroupName": apiGroup.ApiGroupName,
-				"Methods":         apiGroup.Methods,
+				"Methods":      apiGroup.Methods,
 				"Name":         api.Name,
 			}
 
@@ -214,7 +214,7 @@ func GenerateRouters(pkgName string, folder string, apiList []*ApiGroup) {
 			"Game":         apiGroup.Game,
 			"Category":     apiGroup.Category,
 			"ApiGroupName": apiGroup.ApiGroupName,
-			"Methods":         apiGroup.Methods,
+			"Methods":      apiGroup.Methods,
 			"NeedStrconv":  apiGroup.NeedStrconv(), // Change: Call the method explicitly
 		}
 

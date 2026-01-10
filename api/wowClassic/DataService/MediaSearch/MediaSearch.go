@@ -7,23 +7,17 @@ package wowClassic_MediaSearch
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 )
-
 
 // ==============================================================================================
 // API: MediaSearch
@@ -31,9 +25,9 @@ import (
 
 type MediaSearchFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Tags string `form:"tags,default=item"` // The media document type as derived from the URL. For example, /wow/media/item/{id} will have tag 'item'. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Tags      string `form:"tags,default=item"`           // The media document type as derived from the URL. For example, /wow/media/item/{id} will have tag 'item'. (example search field)
+	Orderby   string `form:"orderby,default=id"`          // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`             // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,26 +58,22 @@ func StringMediaSearch(ctx context.Context, fields *MediaSearchFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Tags == "" {
 		fields.Tags = "item"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -98,45 +88,37 @@ func StringMediaSearch(ctx context.Context, fields *MediaSearchFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("tags") {
+			q.Add("tags", "item")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("tags") {
-		q.Add("tags", "item")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -155,11 +137,10 @@ func StringMediaSearch(ctx context.Context, fields *MediaSearchFields) (string, 
 
 // bridgeMediaSearch routes the request to either CN or Global logic based on input.
 func bridgeMediaSearch(ctx context.Context, fields *MediaSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMediaSearch != nil {
 			return CNHookMediaSearch(ctx, fields)
@@ -186,4 +167,3 @@ func bridgeMediaSearch(ctx context.Context, fields *MediaSearchFields) (any, err
 /* MediaSearch Performs a search of all types of media documents. The fields below are provided for example. For more detail see the <a href="/documentation/world-of-warcraft/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/media
 var MediaSearch = bridgeMediaSearch
-

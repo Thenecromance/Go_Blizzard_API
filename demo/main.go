@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Thenecromance/BlizzardAPI/app"
-	_ "github.com/Thenecromance/BlizzardAPI/routers"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
+	_ "github.com/Thenecromance/Go_Blizzard_API/routers"
 )
 
 func main() {

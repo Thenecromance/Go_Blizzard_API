@@ -7,10 +7,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/bridge/log"
-	cn "github.com/Thenecromance/BlizzardAPI/cnSupport"
-	"github.com/Thenecromance/BlizzardAPI/global"
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/log"
+	cn "github.com/Thenecromance/Go_Blizzard_API/cnSupport"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
 )
 
 func init() {
@@ -88,7 +88,7 @@ func postProcess(data *CNCharacterEquipmentSummaryModel, field *CharacterEquipme
 		os.WriteFile(fmt.Sprintf("./%s_%s_equipment_original.json", field.CharacterName, field.RealmSlug), buf, 0777)
 		buf, _ = json.MarshalIndent(result, "", "  ")
 		os.WriteFile(fmt.Sprintf("./%s_%s_equipment_bnet.json", field.CharacterName, field.RealmSlug), buf, 0777)*/
-	
+
 	result := data.ToBNet().(*CharacterEquipmentSummaryModel)
 	profileBasePath := fmt.Sprintf("%s/profile/wow/character/%s/%s", global.GetLocalHost(), field.RealmSlug, field.CharacterName)
 	dataBasePath := fmt.Sprintf("%s/data/wow/character/%s/%s", global.GetLocalHost(), field.RealmSlug, field.CharacterName)

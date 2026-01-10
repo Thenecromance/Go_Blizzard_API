@@ -3,7 +3,7 @@ package cn
 import (
 	"fmt"
 
-	"github.com/Thenecromance/BlizzardAPI/utils"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 )
 
 var (

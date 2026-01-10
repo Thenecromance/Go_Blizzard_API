@@ -7,23 +7,17 @@ package wow_TechTalent
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: TechTalentTreeIndex
@@ -31,7 +25,7 @@ import (
 
 type TechTalentTreeIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 
 // bridgeTechTalentTreeIndex routes the request to either CN or Global logic based on input.
 func bridgeTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTechTalentTreeIndex != nil {
 			return CNHookTechTalentTreeIndex(ctx, fields)
@@ -166,15 +150,14 @@ func bridgeTechTalentTreeIndex(ctx context.Context, fields *TechTalentTreeIndexF
 // Path: /data/wow/tech-talent-tree/index
 var TechTalentTreeIndex = bridgeTechTalentTreeIndex
 
-
 // ==============================================================================================
 // API: TechTalentTree
 // ==============================================================================================
 
 type TechTalentTreeFields struct {
-	TechTalentTreeId int `uri:"techTalentTreeId" binding:"required"` // The ID of the tech talent tree.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TechTalentTreeId int    `uri:"techTalentTreeId" binding:"required"` // The ID of the tech talent tree.
+	Namespace        string `form:"namespace,default=static-us"`        // The namespace to use to locate this document.
+	Locale           string `form:"locale,default=en_US"`               // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -205,21 +188,18 @@ func StringTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (st
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TechTalentTreeId == 0 {
 		fields.TechTalentTreeId = 275
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -234,49 +214,42 @@ func StringTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (st
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"techTalentTreeId": fields.TechTalentTreeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"techTalentTreeId": fields.TechTalentTreeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -295,11 +268,10 @@ func StringTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (st
 
 // bridgeTechTalentTree routes the request to either CN or Global logic based on input.
 func bridgeTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTechTalentTree != nil {
 			return CNHookTechTalentTree(ctx, fields)
@@ -327,14 +299,13 @@ func bridgeTechTalentTree(ctx context.Context, fields *TechTalentTreeFields) (an
 // Path: /data/wow/tech-talent-tree/{techTalentTreeId}
 var TechTalentTree = bridgeTechTalentTree
 
-
 // ==============================================================================================
 // API: TechTalentIndex
 // ==============================================================================================
 
 type TechTalentIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -365,17 +336,14 @@ func StringTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -390,35 +358,29 @@ func StringTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 
 // bridgeTechTalentIndex routes the request to either CN or Global logic based on input.
 func bridgeTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTechTalentIndex != nil {
 			return CNHookTechTalentIndex(ctx, fields)
@@ -469,15 +430,14 @@ func bridgeTechTalentIndex(ctx context.Context, fields *TechTalentIndexFields) (
 // Path: /data/wow/tech-talent/index
 var TechTalentIndex = bridgeTechTalentIndex
 
-
 // ==============================================================================================
 // API: TechTalent
 // ==============================================================================================
 
 type TechTalentFields struct {
-	TechTalentId int `uri:"techTalentId" binding:"required"` // The ID of the tech talent.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TechTalentId int    `uri:"techTalentId" binding:"required"` // The ID of the tech talent.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -508,21 +468,18 @@ func StringTechTalent(ctx context.Context, fields *TechTalentFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TechTalentId == 0 {
 		fields.TechTalentId = 863
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -537,49 +494,42 @@ func StringTechTalent(ctx context.Context, fields *TechTalentFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"techTalentId": fields.TechTalentId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"techTalentId": fields.TechTalentId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -598,11 +548,10 @@ func StringTechTalent(ctx context.Context, fields *TechTalentFields) (string, er
 
 // bridgeTechTalent routes the request to either CN or Global logic based on input.
 func bridgeTechTalent(ctx context.Context, fields *TechTalentFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTechTalent != nil {
 			return CNHookTechTalent(ctx, fields)
@@ -630,15 +579,14 @@ func bridgeTechTalent(ctx context.Context, fields *TechTalentFields) (any, error
 // Path: /data/wow/tech-talent/{techTalentId}
 var TechTalent = bridgeTechTalent
 
-
 // ==============================================================================================
 // API: TechTalentMedia
 // ==============================================================================================
 
 type TechTalentMediaFields struct {
-	TechTalentId int `uri:"techTalentId" binding:"required"` // The ID of the tech talent.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TechTalentId int    `uri:"techTalentId" binding:"required"` // The ID of the tech talent.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -669,21 +617,18 @@ func StringTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TechTalentId == 0 {
 		fields.TechTalentId = 863
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -698,49 +643,42 @@ func StringTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"techTalentId": fields.TechTalentId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"techTalentId": fields.TechTalentId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -759,11 +697,10 @@ func StringTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 
 // bridgeTechTalentMedia routes the request to either CN or Global logic based on input.
 func bridgeTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTechTalentMedia != nil {
 			return CNHookTechTalentMedia(ctx, fields)
@@ -790,4 +727,3 @@ func bridgeTechTalentMedia(ctx context.Context, fields *TechTalentMediaFields) (
 /* TechTalentMedia Returns media for a tech talent by ID. */
 // Path: /data/wow/media/tech-talent/{techTalentId}
 var TechTalentMedia = bridgeTechTalentMedia
-

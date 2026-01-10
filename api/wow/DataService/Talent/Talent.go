@@ -7,23 +7,17 @@ package wow_Talent
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: TalentTreeIndex
@@ -31,7 +25,7 @@ import (
 
 type TalentTreeIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 
 // bridgeTalentTreeIndex routes the request to either CN or Global logic based on input.
 func bridgeTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTalentTreeIndex != nil {
 			return CNHookTalentTreeIndex(ctx, fields)
@@ -166,16 +150,15 @@ func bridgeTalentTreeIndex(ctx context.Context, fields *TalentTreeIndexFields) (
 // Path: /data/wow/talent-tree/index
 var TalentTreeIndex = bridgeTalentTreeIndex
 
-
 // ==============================================================================================
 // API: TalentTree
 // ==============================================================================================
 
 type TalentTreeFields struct {
-	TalentTreeId int `uri:"talentTreeId" binding:"required"` // The ID of the talent-tree.
-		SpecId int `uri:"specId" binding:"required"` // The ID of the playable-specialization.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TalentTreeId int    `uri:"talentTreeId" binding:"required"` // The ID of the talent-tree.
+	SpecId       int    `uri:"specId" binding:"required"`       // The ID of the playable-specialization.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -206,25 +189,22 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TalentTreeId == 0 {
 		fields.TalentTreeId = 786
 	}
-	
+
 	if fields.SpecId == 0 {
 		fields.SpecId = 262
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -239,50 +219,43 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"talentTreeId": fields.TalentTreeId,
-    		"specId": fields.SpecId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"talentTreeId": fields.TalentTreeId,
+			"specId":       fields.SpecId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -301,11 +274,10 @@ func StringTalentTree(ctx context.Context, fields *TalentTreeFields) (string, er
 
 // bridgeTalentTree routes the request to either CN or Global logic based on input.
 func bridgeTalentTree(ctx context.Context, fields *TalentTreeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTalentTree != nil {
 			return CNHookTalentTree(ctx, fields)
@@ -333,15 +305,14 @@ func bridgeTalentTree(ctx context.Context, fields *TalentTreeFields) (any, error
 // Path: /data/wow/talent-tree/{talentTreeId}/playable-specialization/{specId}
 var TalentTree = bridgeTalentTree
 
-
 // ==============================================================================================
 // API: TalentTreeNodes
 // ==============================================================================================
 
 type TalentTreeNodesFields struct {
-	TalentTreeId int `uri:"talentTreeId" binding:"required"` // The ID of the talent-tree.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TalentTreeId int    `uri:"talentTreeId" binding:"required"` // The ID of the talent-tree.
+	Namespace    string `form:"namespace,default=static-us"`    // The namespace to use to locate this document.
+	Locale       string `form:"locale,default=en_US"`           // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -372,21 +343,18 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TalentTreeId == 0 {
 		fields.TalentTreeId = 786
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -401,49 +369,42 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"talentTreeId": fields.TalentTreeId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"talentTreeId": fields.TalentTreeId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -462,11 +423,10 @@ func StringTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 
 // bridgeTalentTreeNodes routes the request to either CN or Global logic based on input.
 func bridgeTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTalentTreeNodes != nil {
 			return CNHookTalentTreeNodes(ctx, fields)
@@ -494,14 +454,13 @@ func bridgeTalentTreeNodes(ctx context.Context, fields *TalentTreeNodesFields) (
 // Path: /data/wow/talent-tree/{talentTreeId}
 var TalentTreeNodes = bridgeTalentTreeNodes
 
-
 // ==============================================================================================
 // API: TalentsIndex
 // ==============================================================================================
 
 type TalentsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -532,17 +491,14 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -557,35 +513,29 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -604,11 +554,10 @@ func StringTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (string
 
 // bridgeTalentsIndex routes the request to either CN or Global logic based on input.
 func bridgeTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTalentsIndex != nil {
 			return CNHookTalentsIndex(ctx, fields)
@@ -636,15 +585,14 @@ func bridgeTalentsIndex(ctx context.Context, fields *TalentsIndexFields) (any, e
 // Path: /data/wow/talent/index
 var TalentsIndex = bridgeTalentsIndex
 
-
 // ==============================================================================================
 // API: Talent
 // ==============================================================================================
 
 type TalentFields struct {
-	TalentId int `uri:"talentId" binding:"required"` // The ID of the talent.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	TalentId  int    `uri:"talentId" binding:"required"`  // The ID of the talent.
+	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -675,21 +623,18 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.TalentId == 0 {
 		fields.TalentId = 117163
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -704,49 +649,42 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"talentId": fields.TalentId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"talentId": fields.TalentId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -765,11 +703,10 @@ func StringTalent(ctx context.Context, fields *TalentFields) (string, error) {
 
 // bridgeTalent routes the request to either CN or Global logic based on input.
 func bridgeTalent(ctx context.Context, fields *TalentFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookTalent != nil {
 			return CNHookTalent(ctx, fields)
@@ -797,14 +734,13 @@ func bridgeTalent(ctx context.Context, fields *TalentFields) (any, error) {
 // Path: /data/wow/talent/{talentId}
 var Talent = bridgeTalent
 
-
 // ==============================================================================================
 // API: PvPTalentsIndex
 // ==============================================================================================
 
 type PvPTalentsIndexFields struct {
 	Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`        // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -835,17 +771,14 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -860,35 +793,29 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -907,11 +834,10 @@ func StringPvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 
 // bridgePvPTalentsIndex routes the request to either CN or Global logic based on input.
 func bridgePvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPTalentsIndex != nil {
 			return CNHookPvPTalentsIndex(ctx, fields)
@@ -939,15 +865,14 @@ func bridgePvPTalentsIndex(ctx context.Context, fields *PvPTalentsIndexFields) (
 // Path: /data/wow/pvp-talent/index
 var PvPTalentsIndex = bridgePvPTalentsIndex
 
-
 // ==============================================================================================
 // API: PvPTalent
 // ==============================================================================================
 
 type PvPTalentFields struct {
-	PvpTalentId int `uri:"pvpTalentId" binding:"required"` // The ID of the PvP talent.
-		Namespace string `form:"namespace,default=static-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PvpTalentId int    `uri:"pvpTalentId" binding:"required"` // The ID of the PvP talent.
+	Namespace   string `form:"namespace,default=static-us"`   // The namespace to use to locate this document.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -978,21 +903,18 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PvpTalentId == 0 {
 		fields.PvpTalentId = 40
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "static-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1007,49 +929,42 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"pvpTalentId": fields.PvpTalentId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"pvpTalentId": fields.PvpTalentId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "static-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "static-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1068,11 +983,10 @@ func StringPvPTalent(ctx context.Context, fields *PvPTalentFields) (string, erro
 
 // bridgePvPTalent routes the request to either CN or Global logic based on input.
 func bridgePvPTalent(ctx context.Context, fields *PvPTalentFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPvPTalent != nil {
 			return CNHookPvPTalent(ctx, fields)
@@ -1099,4 +1013,3 @@ func bridgePvPTalent(ctx context.Context, fields *PvPTalentFields) (any, error) 
 /* PvPTalent Returns a PvP talent by ID. */
 // Path: /data/wow/pvp-talent/{pvpTalentId}
 var PvPTalent = bridgePvPTalent
-

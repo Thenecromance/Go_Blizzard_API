@@ -7,23 +7,17 @@ package wow_MythicKeystoneDungeon
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: MythicKeystoneIndex
@@ -31,7 +25,7 @@ import (
 
 type MythicKeystoneIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,35 +78,29 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -134,11 +119,10 @@ func StringMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 
 // bridgeMythicKeystoneIndex routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneIndex != nil {
 			return CNHookMythicKeystoneIndex(ctx, fields)
@@ -166,14 +150,13 @@ func bridgeMythicKeystoneIndex(ctx context.Context, fields *MythicKeystoneIndexF
 // Path: /data/wow/mythic-keystone/index
 var MythicKeystoneIndex = bridgeMythicKeystoneIndex
 
-
 // ==============================================================================================
 // API: MythicKeystoneDungeonsIndex
 // ==============================================================================================
 
 type MythicKeystoneDungeonsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -204,17 +187,14 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -229,35 +209,29 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -276,11 +250,10 @@ func StringMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 
 // bridgeMythicKeystoneDungeonsIndex routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeystoneDungeonsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneDungeonsIndex != nil {
 			return CNHookMythicKeystoneDungeonsIndex(ctx, fields)
@@ -308,15 +281,14 @@ func bridgeMythicKeystoneDungeonsIndex(ctx context.Context, fields *MythicKeysto
 // Path: /data/wow/mythic-keystone/dungeon/index
 var MythicKeystoneDungeonsIndex = bridgeMythicKeystoneDungeonsIndex
 
-
 // ==============================================================================================
 // API: MythicKeystoneDungeon
 // ==============================================================================================
 
 type MythicKeystoneDungeonFields struct {
-	DungeonId int `uri:"dungeonId" binding:"required"` // The ID of the dungeon.
-		Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	DungeonId int    `uri:"dungeonId" binding:"required"`  // The ID of the dungeon.
+	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -347,21 +319,18 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.DungeonId == 0 {
 		fields.DungeonId = 197
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -376,49 +345,42 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"dungeonId": fields.DungeonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"dungeonId": fields.DungeonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -437,11 +399,10 @@ func StringMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 
 // bridgeMythicKeystoneDungeon routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDungeonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneDungeon != nil {
 			return CNHookMythicKeystoneDungeon(ctx, fields)
@@ -469,14 +430,13 @@ func bridgeMythicKeystoneDungeon(ctx context.Context, fields *MythicKeystoneDung
 // Path: /data/wow/mythic-keystone/dungeon/{dungeonId}
 var MythicKeystoneDungeon = bridgeMythicKeystoneDungeon
 
-
 // ==============================================================================================
 // API: MythicKeystonePeriodsIndex
 // ==============================================================================================
 
 type MythicKeystonePeriodsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -507,17 +467,14 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -532,35 +489,29 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -579,11 +530,10 @@ func StringMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 
 // bridgeMythicKeystonePeriodsIndex routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeystonePeriodsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystonePeriodsIndex != nil {
 			return CNHookMythicKeystonePeriodsIndex(ctx, fields)
@@ -611,15 +561,14 @@ func bridgeMythicKeystonePeriodsIndex(ctx context.Context, fields *MythicKeyston
 // Path: /data/wow/mythic-keystone/period/index
 var MythicKeystonePeriodsIndex = bridgeMythicKeystonePeriodsIndex
 
-
 // ==============================================================================================
 // API: MythicKeystonePeriod
 // ==============================================================================================
 
 type MythicKeystonePeriodFields struct {
-	PeriodId int `uri:"periodId" binding:"required"` // The ID of the Mythic Keystone season period.
-		Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	PeriodId  int    `uri:"periodId" binding:"required"`   // The ID of the Mythic Keystone season period.
+	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -650,21 +599,18 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.PeriodId == 0 {
 		fields.PeriodId = 880
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -679,49 +625,42 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"periodId": fields.PeriodId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"periodId": fields.PeriodId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -740,11 +679,10 @@ func StringMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 
 // bridgeMythicKeystonePeriod routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePeriodFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystonePeriod != nil {
 			return CNHookMythicKeystonePeriod(ctx, fields)
@@ -772,14 +710,13 @@ func bridgeMythicKeystonePeriod(ctx context.Context, fields *MythicKeystonePerio
 // Path: /data/wow/mythic-keystone/period/{periodId}
 var MythicKeystonePeriod = bridgeMythicKeystonePeriod
 
-
 // ==============================================================================================
 // API: MythicKeystoneSeasonsIndex
 // ==============================================================================================
 
 type MythicKeystoneSeasonsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -810,17 +747,14 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -835,35 +769,29 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -882,11 +810,10 @@ func StringMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 
 // bridgeMythicKeystoneSeasonsIndex routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeystoneSeasonsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneSeasonsIndex != nil {
 			return CNHookMythicKeystoneSeasonsIndex(ctx, fields)
@@ -914,15 +841,14 @@ func bridgeMythicKeystoneSeasonsIndex(ctx context.Context, fields *MythicKeyston
 // Path: /data/wow/mythic-keystone/season/index
 var MythicKeystoneSeasonsIndex = bridgeMythicKeystoneSeasonsIndex
 
-
 // ==============================================================================================
 // API: MythicKeystoneSeason
 // ==============================================================================================
 
 type MythicKeystoneSeasonFields struct {
-	SeasonId int `uri:"seasonId" binding:"required"` // The ID of the Mythic Keystone season.
-		Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	SeasonId  int    `uri:"seasonId" binding:"required"`   // The ID of the Mythic Keystone season.
+	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -953,21 +879,18 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SeasonId == 0 {
 		fields.SeasonId = 8
 	}
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -982,49 +905,42 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"seasonId": fields.SeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"seasonId": fields.SeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1043,11 +959,10 @@ func StringMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 
 // bridgeMythicKeystoneSeason routes the request to either CN or Global logic based on input.
 func bridgeMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeasonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicKeystoneSeason != nil {
 			return CNHookMythicKeystoneSeason(ctx, fields)
@@ -1074,4 +989,3 @@ func bridgeMythicKeystoneSeason(ctx context.Context, fields *MythicKeystoneSeaso
 /* MythicKeystoneSeason Returns a Mythic Keystone season by ID. */
 // Path: /data/wow/mythic-keystone/season/{seasonId}
 var MythicKeystoneSeason = bridgeMythicKeystoneSeason
-

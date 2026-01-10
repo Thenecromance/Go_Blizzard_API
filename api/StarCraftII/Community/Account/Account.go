@@ -7,23 +7,17 @@ package StarCraftII_Account
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Player
@@ -31,7 +25,7 @@ import (
 
 type PlayerFields struct {
 	AccountId string `uri:"accountId" binding:"required"` // The ID of the account for which to retrieve data.
-	
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -61,7 +55,6 @@ func StringPlayer(ctx context.Context, fields *PlayerFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -76,39 +69,34 @@ func StringPlayer(ctx context.Context, fields *PlayerFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"accountId": fields.AccountId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"accountId": fields.AccountId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -127,11 +115,10 @@ func StringPlayer(ctx context.Context, fields *PlayerFields) (string, error) {
 
 // bridgePlayer routes the request to either CN or Global logic based on input.
 func bridgePlayer(ctx context.Context, fields *PlayerFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookPlayer != nil {
 			return CNHookPlayer(ctx, fields)
@@ -158,4 +145,3 @@ func bridgePlayer(ctx context.Context, fields *PlayerFields) (any, error) {
 /* Player Returns metadata for an individual's account. */
 // Path: /sc2/player/:accountId
 var Player = bridgePlayer
-

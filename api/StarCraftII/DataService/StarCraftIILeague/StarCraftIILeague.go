@@ -7,23 +7,17 @@ package StarCraftII_StarCraftIILeague
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GetLeagueData
@@ -31,10 +25,10 @@ import (
 
 type GetLeagueDataFields struct {
 	SeasonId string `uri:"seasonId" binding:"required"` // The season ID of the data to retrieve.
-		QueueId string `uri:"queueId" binding:"required"` // The queue ID of the data to retrieve.
-		TeamType string `uri:"teamType" binding:"required"` // The team type of the data to retrieve.
-		LeagueId string `uri:"leagueId" binding:"required"` // The league ID of the data to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	QueueId  string `uri:"queueId" binding:"required"`  // The queue ID of the data to retrieve.
+	TeamType string `uri:"teamType" binding:"required"` // The team type of the data to retrieve.
+	LeagueId string `uri:"leagueId" binding:"required"` // The league ID of the data to retrieve.
+	Locale   string `form:"locale,default=en_US"`       // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -65,32 +59,26 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.SeasonId == "" {
 		fields.SeasonId = "37"
 	}
-	
-	
+
 	if fields.QueueId == "" {
 		fields.QueueId = "201"
 	}
-	
-	
+
 	if fields.TeamType == "" {
 		fields.TeamType = "0"
 	}
-	
-	
+
 	if fields.LeagueId == "" {
 		fields.LeagueId = "6"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -105,47 +93,41 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"seasonId": fields.SeasonId,
-    		"queueId": fields.QueueId,
-    		"teamType": fields.TeamType,
-    		"leagueId": fields.LeagueId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"seasonId": fields.SeasonId,
+			"queueId":  fields.QueueId,
+			"teamType": fields.TeamType,
+			"leagueId": fields.LeagueId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -164,11 +146,10 @@ func StringGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (stri
 
 // bridgeGetLeagueData routes the request to either CN or Global logic based on input.
 func bridgeGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetLeagueData != nil {
 			return CNHookGetLeagueData(ctx, fields)
@@ -201,4 +182,3 @@ func bridgeGetLeagueData(ctx context.Context, fields *GetLeagueDataFields) (any,
 **leagueId**: available leagueIds are: `0`=Bronze, `1`=Silver, `2`=Gold, `3`=Platinum, `4`=Diamond, `5`=Master, `6`=Grandmaster. */
 // Path: /data/sc2/league/{seasonId}/{queueId}/{teamType}/{leagueId}
 var GetLeagueData = bridgeGetLeagueData
-

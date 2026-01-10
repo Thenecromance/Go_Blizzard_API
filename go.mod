@@ -1,4 +1,4 @@
-module github.com/Thenecromance/BlizzardAPI
+module github.com/Thenecromance/Go_Blizzard_API
 
 go 1.25.5
 

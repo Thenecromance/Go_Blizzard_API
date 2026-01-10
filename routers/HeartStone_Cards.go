@@ -3,8 +3,8 @@ package routers
 import (
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/api/HeartStone/DataService/Cards"
-	"github.com/Thenecromance/BlizzardAPI/app"
+	"github.com/Thenecromance/Go_Blizzard_API/api/HeartStone/DataService/Cards"
+	"github.com/Thenecromance/Go_Blizzard_API/app"
 
 	"github.com/gin-gonic/gin"
 )

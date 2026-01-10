@@ -10,8 +10,8 @@ func init() {
 	viper.SetConfigName("universal_config")
 	viper.SetConfigType("yaml")
 
-	//viper.AddConfigPath("/etc/github.com/Thenecromance/BlizzardAPI/")
-	//viper.AddConfigPath("$HOME/.github.com/Thenecromance/BlizzardAPI")
+	//viper.AddConfigPath("/etc/github.com/Thenecromance/Go_Blizzard_API/")
+	//viper.AddConfigPath("$HOME/.github.com/Thenecromance/Go_Blizzard_API")
 	viper.AddConfigPath(".")
 
 	if err := viper.ReadInConfig(); err != nil {

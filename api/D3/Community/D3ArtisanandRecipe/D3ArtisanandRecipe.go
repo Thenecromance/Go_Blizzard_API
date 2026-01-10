@@ -7,23 +7,17 @@ package D3_D3ArtisanandRecipe
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GetArtisan
@@ -31,7 +25,7 @@ import (
 
 type GetArtisanFields struct {
 	ArtisanSlug string `uri:"artisanSlug" binding:"required"` // The slug of the artisan to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -62,17 +56,14 @@ func StringGetArtisan(ctx context.Context, fields *GetArtisanFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ArtisanSlug == "" {
 		fields.ArtisanSlug = "blacksmith"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -87,44 +78,38 @@ func StringGetArtisan(ctx context.Context, fields *GetArtisanFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"artisanSlug": fields.ArtisanSlug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"artisanSlug": fields.ArtisanSlug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -143,11 +128,10 @@ func StringGetArtisan(ctx context.Context, fields *GetArtisanFields) (string, er
 
 // bridgeGetArtisan routes the request to either CN or Global logic based on input.
 func bridgeGetArtisan(ctx context.Context, fields *GetArtisanFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetArtisan != nil {
 			return CNHookGetArtisan(ctx, fields)
@@ -175,15 +159,14 @@ func bridgeGetArtisan(ctx context.Context, fields *GetArtisanFields) (any, error
 // Path: /d3/data/artisan/{artisanSlug}
 var GetArtisan = bridgeGetArtisan
 
-
 // ==============================================================================================
 // API: GetRecipe
 // ==============================================================================================
 
 type GetRecipeFields struct {
 	ArtisanSlug string `uri:"artisanSlug" binding:"required"` // The slug of the artisan to retrieve.
-		RecipeSlug string `uri:"recipeSlug" binding:"required"` // The slug of the recipe to retrieve.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RecipeSlug  string `uri:"recipeSlug" binding:"required"`  // The slug of the recipe to retrieve.
+	Locale      string `form:"locale,default=en_US"`          // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -214,22 +197,18 @@ func StringGetRecipe(ctx context.Context, fields *GetRecipeFields) (string, erro
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.ArtisanSlug == "" {
 		fields.ArtisanSlug = "blacksmith"
 	}
-	
-	
+
 	if fields.RecipeSlug == "" {
 		fields.RecipeSlug = "apprentice-flamberge"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -244,45 +223,39 @@ func StringGetRecipe(ctx context.Context, fields *GetRecipeFields) (string, erro
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"artisanSlug": fields.ArtisanSlug,
-    		"recipeSlug": fields.RecipeSlug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"artisanSlug": fields.ArtisanSlug,
+			"recipeSlug":  fields.RecipeSlug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -301,11 +274,10 @@ func StringGetRecipe(ctx context.Context, fields *GetRecipeFields) (string, erro
 
 // bridgeGetRecipe routes the request to either CN or Global logic based on input.
 func bridgeGetRecipe(ctx context.Context, fields *GetRecipeFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGetRecipe != nil {
 			return CNHookGetRecipe(ctx, fields)
@@ -332,4 +304,3 @@ func bridgeGetRecipe(ctx context.Context, fields *GetRecipeFields) (any, error) 
 /* GetRecipe Returns a single recipe by slug for the specified artisan. */
 // Path: /d3/data/artisan/{artisanSlug}/recipe/{recipeSlug}
 var GetRecipe = bridgeGetRecipe
-

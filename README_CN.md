@@ -51,7 +51,7 @@ import (
 	"context"
 	"fmt"
 	// 导入特定游戏/服务的包
-	"github.com/Thenecromance/BlizzardAPI/api/wow/DataService/Achievement"
+	"github.com/Thenecromance/Go_Blizzard_API/api/wow/DataService/Achievement"
 )
 
 func main() {
@@ -79,7 +79,7 @@ func main() {
 ## 🏗 项目结构
 
 ```
-/github.com/Thenecromance/BlizzardAPI
+/github.com/Thenecromance/Go_Blizzard_API
 ├───api             // 自动生成的 API 客户端代码 (SDK)
 │   ├───wow
 │   ├───D3

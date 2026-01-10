@@ -7,31 +7,25 @@ package StarCraftII_Ladder
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: GrandmasterLeaderboard
 // ==============================================================================================
 
 type GrandmasterLeaderboardFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-	
+	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -61,7 +55,6 @@ func StringGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -76,39 +69,34 @@ func StringGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId": fields.RegionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -127,11 +115,10 @@ func StringGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 
 // bridgeGrandmasterLeaderboard routes the request to either CN or Global logic based on input.
 func bridgeGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeaderboardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookGrandmasterLeaderboard != nil {
 			return CNHookGrandmasterLeaderboard(ctx, fields)
@@ -159,14 +146,13 @@ func bridgeGrandmasterLeaderboard(ctx context.Context, fields *GrandmasterLeader
 // Path: /sc2/ladder/grandmaster/:regionId
 var GrandmasterLeaderboard = bridgeGrandmasterLeaderboard
 
-
 // ==============================================================================================
 // API: Season
 // ==============================================================================================
 
 type SeasonFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-	
+	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -196,7 +182,6 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -211,39 +196,34 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId": fields.RegionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -262,11 +242,10 @@ func StringSeason(ctx context.Context, fields *SeasonFields) (string, error) {
 
 // bridgeSeason routes the request to either CN or Global logic based on input.
 func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookSeason != nil {
 			return CNHookSeason(ctx, fields)
@@ -293,4 +272,3 @@ func bridgeSeason(ctx context.Context, fields *SeasonFields) (any, error) {
 /* Season Returns data about the current season. */
 // Path: /sc2/ladder/season/:regionId
 var Season = bridgeSeason
-

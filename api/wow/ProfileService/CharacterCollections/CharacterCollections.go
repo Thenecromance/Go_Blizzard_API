@@ -7,35 +7,29 @@ package wow_CharacterCollections
 import (
 	"context"
 	"encoding/json"
-	
 
-	
-	    "strings"
-    
+	"strings"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: CharacterCollectionsIndex
 // ==============================================================================================
 
 type CharacterCollectionsIndexFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -66,27 +60,22 @@ func StringCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -101,50 +90,43 @@ func StringCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -163,22 +145,21 @@ func StringCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 
 // bridgeCharacterCollectionsIndex routes the request to either CN or Global logic based on input.
 func bridgeCharacterCollectionsIndex(ctx context.Context, fields *CharacterCollectionsIndexFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterCollectionsIndex != nil {
 			return CNHookCharacterCollectionsIndex(ctx, fields)
@@ -206,16 +187,15 @@ func bridgeCharacterCollectionsIndex(ctx context.Context, fields *CharacterColle
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections
 var CharacterCollectionsIndex = bridgeCharacterCollectionsIndex
 
-
 // ==============================================================================================
 // API: CharacterDecorCollectionSummary
 // ==============================================================================================
 
 type CharacterDecorCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -246,27 +226,22 @@ func StringCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -281,50 +256,43 @@ func StringCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -343,22 +311,21 @@ func StringCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 
 // bridgeCharacterDecorCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterDecorCollectionSummary(ctx context.Context, fields *CharacterDecorCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterDecorCollectionSummary != nil {
 			return CNHookCharacterDecorCollectionSummary(ctx, fields)
@@ -386,16 +353,15 @@ func bridgeCharacterDecorCollectionSummary(ctx context.Context, fields *Characte
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/decor
 var CharacterDecorCollectionSummary = bridgeCharacterDecorCollectionSummary
 
-
 // ==============================================================================================
 // API: CharacterHeirloomsCollectionSummary
 // ==============================================================================================
 
 type CharacterHeirloomsCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -426,27 +392,22 @@ func StringCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -461,50 +422,43 @@ func StringCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -523,22 +477,21 @@ func StringCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 
 // bridgeCharacterHeirloomsCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterHeirloomsCollectionSummary(ctx context.Context, fields *CharacterHeirloomsCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterHeirloomsCollectionSummary != nil {
 			return CNHookCharacterHeirloomsCollectionSummary(ctx, fields)
@@ -566,16 +519,15 @@ func bridgeCharacterHeirloomsCollectionSummary(ctx context.Context, fields *Char
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/heirlooms
 var CharacterHeirloomsCollectionSummary = bridgeCharacterHeirloomsCollectionSummary
 
-
 // ==============================================================================================
 // API: CharacterMountsCollectionSummary
 // ==============================================================================================
 
 type CharacterMountsCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -606,27 +558,22 @@ func StringCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -641,50 +588,43 @@ func StringCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -703,22 +643,21 @@ func StringCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 
 // bridgeCharacterMountsCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterMountsCollectionSummary(ctx context.Context, fields *CharacterMountsCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterMountsCollectionSummary != nil {
 			return CNHookCharacterMountsCollectionSummary(ctx, fields)
@@ -746,16 +685,15 @@ func bridgeCharacterMountsCollectionSummary(ctx context.Context, fields *Charact
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/mounts
 var CharacterMountsCollectionSummary = bridgeCharacterMountsCollectionSummary
 
-
 // ==============================================================================================
 // API: CharacterPetsCollectionSummary
 // ==============================================================================================
 
 type CharacterPetsCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -786,27 +724,22 @@ func StringCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -821,50 +754,43 @@ func StringCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -883,22 +809,21 @@ func StringCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 
 // bridgeCharacterPetsCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterPetsCollectionSummary(ctx context.Context, fields *CharacterPetsCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterPetsCollectionSummary != nil {
 			return CNHookCharacterPetsCollectionSummary(ctx, fields)
@@ -926,16 +851,15 @@ func bridgeCharacterPetsCollectionSummary(ctx context.Context, fields *Character
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/pets
 var CharacterPetsCollectionSummary = bridgeCharacterPetsCollectionSummary
 
-
 // ==============================================================================================
 // API: CharacterToysCollectionSummary
 // ==============================================================================================
 
 type CharacterToysCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -966,27 +890,22 @@ func StringCharacterToysCollectionSummary(ctx context.Context, fields *Character
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1001,50 +920,43 @@ func StringCharacterToysCollectionSummary(ctx context.Context, fields *Character
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1063,22 +975,21 @@ func StringCharacterToysCollectionSummary(ctx context.Context, fields *Character
 
 // bridgeCharacterToysCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterToysCollectionSummary(ctx context.Context, fields *CharacterToysCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterToysCollectionSummary != nil {
 			return CNHookCharacterToysCollectionSummary(ctx, fields)
@@ -1106,16 +1017,15 @@ func bridgeCharacterToysCollectionSummary(ctx context.Context, fields *Character
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/toys
 var CharacterToysCollectionSummary = bridgeCharacterToysCollectionSummary
 
-
 // ==============================================================================================
 // API: CharacterTransmogCollectionSummary
 // ==============================================================================================
 
 type CharacterTransmogCollectionSummaryFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -1146,27 +1056,22 @@ func StringCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -1181,50 +1086,43 @@ func StringCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1243,22 +1141,21 @@ func StringCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 
 // bridgeCharacterTransmogCollectionSummary routes the request to either CN or Global logic based on input.
 func bridgeCharacterTransmogCollectionSummary(ctx context.Context, fields *CharacterTransmogCollectionSummaryFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterTransmogCollectionSummary != nil {
 			return CNHookCharacterTransmogCollectionSummary(ctx, fields)
@@ -1285,4 +1182,3 @@ func bridgeCharacterTransmogCollectionSummary(ctx context.Context, fields *Chara
 /* CharacterTransmogCollectionSummary Returns a summary of the transmog unlocks a character has obtained. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/collections/transmogs
 var CharacterTransmogCollectionSummary = bridgeCharacterTransmogCollectionSummary
-

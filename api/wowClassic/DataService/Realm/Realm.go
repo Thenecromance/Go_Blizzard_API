@@ -7,25 +7,19 @@ package wowClassic_Realm
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: RealmsIndex
@@ -33,7 +27,7 @@ import (
 
 type RealmsIndexFields struct {
 	Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Locale    string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,17 +58,14 @@ func StringRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -89,35 +80,29 @@ func StringRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -136,11 +121,10 @@ func StringRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (string, 
 
 // bridgeRealmsIndex routes the request to either CN or Global logic based on input.
 func bridgeRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRealmsIndex != nil {
 			return CNHookRealmsIndex(ctx, fields)
@@ -168,15 +152,14 @@ func bridgeRealmsIndex(ctx context.Context, fields *RealmsIndexFields) (any, err
 // Path: /data/wow/realm/index
 var RealmsIndex = bridgeRealmsIndex
 
-
 // ==============================================================================================
 // API: Realm
 // ==============================================================================================
 
 type RealmFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug string `uri:"realmSlug" binding:"required"`          // The slug of the realm.
+	Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`                 // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -207,22 +190,18 @@ func StringRealm(ctx context.Context, fields *RealmFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "westfall"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -237,49 +216,42 @@ func StringRealm(ctx context.Context, fields *RealmFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug": fields.RealmSlug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -298,11 +270,10 @@ func StringRealm(ctx context.Context, fields *RealmFields) (string, error) {
 
 // bridgeRealm routes the request to either CN or Global logic based on input.
 func bridgeRealm(ctx context.Context, fields *RealmFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRealm != nil {
 			return CNHookRealm(ctx, fields)
@@ -330,16 +301,15 @@ func bridgeRealm(ctx context.Context, fields *RealmFields) (any, error) {
 // Path: /data/wow/realm/{realmSlug}
 var Realm = bridgeRealm
 
-
 // ==============================================================================================
 // API: RealmSearch
 // ==============================================================================================
 
 type RealmSearchFields struct {
 	Namespace string `form:"namespace,default=dynamic-classic-us"` // The namespace to use to locate this document.
-	Timezone string `form:"timezone,default=America/New_York"` // The timezone of the realm. (example search field)
-	Orderby string `form:"orderby,default=id"` // The field to sort the result set by.
-	_page int `form:"_page,default=1"` // The result page number.
+	Timezone  string `form:"timezone,default=America/New_York"`    // The timezone of the realm. (example search field)
+	Orderby   string `form:"orderby,default=id"`                   // The field to sort the result set by.
+	_page     int    `form:"_page,default=1"`                      // The result page number.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -370,26 +340,22 @@ func StringRealmSearch(ctx context.Context, fields *RealmSearchFields) (string, 
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-classic-us"
 	}
-	
-	
+
 	if fields.Timezone == "" {
 		fields.Timezone = "America/New_York"
 	}
-	
-	
+
 	if fields.Orderby == "" {
 		fields.Orderby = "id"
 	}
-	
-	
+
 	if fields._page == 0 {
 		fields._page = 1
 	}
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -404,45 +370,37 @@ func StringRealmSearch(ctx context.Context, fields *RealmSearchFields) (string, 
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-classic-us")
+		}
+
+		if !q.Has("timezone") {
+			q.Add("timezone", "America/New_York")
+		}
+
+		if !q.Has("orderby") {
+			q.Add("orderby", "id")
+		}
+
+		if !q.Has("_page") {
+			q.Add("_page", strconv.Itoa(fields._page))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-classic-us")
-	}
-    
-    
-	if !q.Has("timezone") {
-		q.Add("timezone", "America/New_York")
-	}
-    
-    
-	if !q.Has("orderby") {
-		q.Add("orderby", "id")
-	}
-    
-    
-    	if !q.Has("_page") {
-    		q.Add("_page", strconv.Itoa(fields._page))
-    	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -461,11 +419,10 @@ func StringRealmSearch(ctx context.Context, fields *RealmSearchFields) (string, 
 
 // bridgeRealmSearch routes the request to either CN or Global logic based on input.
 func bridgeRealmSearch(ctx context.Context, fields *RealmSearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRealmSearch != nil {
 			return CNHookRealmSearch(ctx, fields)
@@ -492,4 +449,3 @@ func bridgeRealmSearch(ctx context.Context, fields *RealmSearchFields) (any, err
 /* RealmSearch Performs a search of realms. The fields below are examples only. For more detail see the <a href="/documentation/world-of-warcraft-classic/guides/search">Search Guide</a>. */
 // Path: /data/wow/search/realm
 var RealmSearch = bridgeRealmSearch
-

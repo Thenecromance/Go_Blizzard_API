@@ -1,8 +1,8 @@
 package log
 
 import (
-	"github.com/Thenecromance/BlizzardAPI/Interface"
-	"github.com/Thenecromance/BlizzardAPI/bridge/basicImpl"
+	"github.com/Thenecromance/Go_Blizzard_API/Interface"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/basicImpl"
 )
 
 // 利用 Go 的函数变量特性，直接导出对应的日志方法。

@@ -5,9 +5,9 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Thenecromance/BlizzardAPI/bridge/log"
-	"github.com/Thenecromance/BlizzardAPI/tools/postmanconverter"
-	"github.com/Thenecromance/BlizzardAPI/tools/updater"
+	"github.com/Thenecromance/Go_Blizzard_API/bridge/log"
+	"github.com/Thenecromance/Go_Blizzard_API/tools/postmanconverter"
+	"github.com/Thenecromance/Go_Blizzard_API/tools/updater"
 )
 
 type Fields struct {

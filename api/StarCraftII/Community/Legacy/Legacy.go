@@ -7,33 +7,27 @@ package StarCraftII_Legacy
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Profile
 // ==============================================================================================
 
 type ProfileFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-		RealmId int `uri:"realmId" binding:"required"` // The region of the profile (`1` or `2`).
-		ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
-	
+	RegionId  int `uri:"regionId" binding:"required"`  // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+	RealmId   int `uri:"realmId" binding:"required"`   // The region of the profile (`1` or `2`).
+	ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -63,7 +57,6 @@ func StringProfile(ctx context.Context, fields *ProfileFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -78,41 +71,36 @@ func StringProfile(ctx context.Context, fields *ProfileFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		"realmId": fields.RealmId,
-    		"profileId": fields.ProfileId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId":  fields.RegionId,
+			"realmId":   fields.RealmId,
+			"profileId": fields.ProfileId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -131,11 +119,10 @@ func StringProfile(ctx context.Context, fields *ProfileFields) (string, error) {
 
 // bridgeProfile routes the request to either CN or Global logic based on input.
 func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookProfile != nil {
 			return CNHookProfile(ctx, fields)
@@ -163,16 +150,15 @@ func bridgeProfile(ctx context.Context, fields *ProfileFields) (any, error) {
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId
 var Profile = bridgeProfile
 
-
 // ==============================================================================================
 // API: Ladders
 // ==============================================================================================
 
 type LaddersFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-		RealmId int `uri:"realmId" binding:"required"` // The region of the profile (`1` or `2`).
-		ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
-	
+	RegionId  int `uri:"regionId" binding:"required"`  // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+	RealmId   int `uri:"realmId" binding:"required"`   // The region of the profile (`1` or `2`).
+	ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -202,7 +188,6 @@ func StringLadders(ctx context.Context, fields *LaddersFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -217,41 +202,36 @@ func StringLadders(ctx context.Context, fields *LaddersFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		"realmId": fields.RealmId,
-    		"profileId": fields.ProfileId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId":  fields.RegionId,
+			"realmId":   fields.RealmId,
+			"profileId": fields.ProfileId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -270,11 +250,10 @@ func StringLadders(ctx context.Context, fields *LaddersFields) (string, error) {
 
 // bridgeLadders routes the request to either CN or Global logic based on input.
 func bridgeLadders(ctx context.Context, fields *LaddersFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookLadders != nil {
 			return CNHookLadders(ctx, fields)
@@ -302,16 +281,15 @@ func bridgeLadders(ctx context.Context, fields *LaddersFields) (any, error) {
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId/ladders
 var Ladders = bridgeLadders
 
-
 // ==============================================================================================
 // API: MatchHistory
 // ==============================================================================================
 
 type MatchHistoryFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-		RealmId int `uri:"realmId" binding:"required"` // The region of the profile (`1` or `2`).
-		ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
-	
+	RegionId  int `uri:"regionId" binding:"required"`  // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+	RealmId   int `uri:"realmId" binding:"required"`   // The region of the profile (`1` or `2`).
+	ProfileId int `uri:"profileId" binding:"required"` // The profile ID.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -341,7 +319,6 @@ func StringMatchHistory(ctx context.Context, fields *MatchHistoryFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -356,41 +333,36 @@ func StringMatchHistory(ctx context.Context, fields *MatchHistoryFields) (string
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		"realmId": fields.RealmId,
-    		"profileId": fields.ProfileId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId":  fields.RegionId,
+			"realmId":   fields.RealmId,
+			"profileId": fields.ProfileId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -409,11 +381,10 @@ func StringMatchHistory(ctx context.Context, fields *MatchHistoryFields) (string
 
 // bridgeMatchHistory routes the request to either CN or Global logic based on input.
 func bridgeMatchHistory(ctx context.Context, fields *MatchHistoryFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMatchHistory != nil {
 			return CNHookMatchHistory(ctx, fields)
@@ -441,15 +412,14 @@ func bridgeMatchHistory(ctx context.Context, fields *MatchHistoryFields) (any, e
 // Path: /sc2/legacy/profile/:regionId/:realmId/:profileId/matches
 var MatchHistory = bridgeMatchHistory
 
-
 // ==============================================================================================
 // API: Ladder
 // ==============================================================================================
 
 type LadderFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-		LadderId int `uri:"ladderId" binding:"required"` // The ID of the ladder for which to retrieve data.
-	
+	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+	LadderId int `uri:"ladderId" binding:"required"` // The ID of the ladder for which to retrieve data.
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -479,7 +449,6 @@ func StringLadder(ctx context.Context, fields *LadderFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -494,40 +463,35 @@ func StringLadder(ctx context.Context, fields *LadderFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		"ladderId": fields.LadderId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId": fields.RegionId,
+			"ladderId": fields.LadderId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -546,11 +510,10 @@ func StringLadder(ctx context.Context, fields *LadderFields) (string, error) {
 
 // bridgeLadder routes the request to either CN or Global logic based on input.
 func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookLadder != nil {
 			return CNHookLadder(ctx, fields)
@@ -578,14 +541,13 @@ func bridgeLadder(ctx context.Context, fields *LadderFields) (any, error) {
 // Path: /sc2/legacy/ladder/:regionId/:ladderId
 var Ladder = bridgeLadder
 
-
 // ==============================================================================================
 // API: Achievements
 // ==============================================================================================
 
 type AchievementsFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-	
+	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -615,7 +577,6 @@ func StringAchievements(ctx context.Context, fields *AchievementsFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -630,39 +591,34 @@ func StringAchievements(ctx context.Context, fields *AchievementsFields) (string
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId": fields.RegionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -681,11 +637,10 @@ func StringAchievements(ctx context.Context, fields *AchievementsFields) (string
 
 // bridgeAchievements routes the request to either CN or Global logic based on input.
 func bridgeAchievements(ctx context.Context, fields *AchievementsFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookAchievements != nil {
 			return CNHookAchievements(ctx, fields)
@@ -713,14 +668,13 @@ func bridgeAchievements(ctx context.Context, fields *AchievementsFields) (any, e
 // Path: /sc2/legacy/data/achievements/:regionId
 var Achievements = bridgeAchievements
 
-
 // ==============================================================================================
 // API: Rewards
 // ==============================================================================================
 
 type RewardsFields struct {
-	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN). 
-	
+	RegionId int `uri:"regionId" binding:"required"` // The region for the profile (`1`=US, `2`=EU, `3`=KO and TW, `5`=CN).
+
 	// Extra fields for internal logic
 	ExtraFields map[any]any
 	CN          *utils.CNRequestMethod
@@ -750,7 +704,6 @@ func StringRewards(ctx context.Context, fields *RewardsFields) (string, error) {
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -765,39 +718,34 @@ func StringRewards(ctx context.Context, fields *RewardsFields) (string, error) {
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"regionId": fields.RegionId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"regionId": fields.RegionId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -816,11 +764,10 @@ func StringRewards(ctx context.Context, fields *RewardsFields) (string, error) {
 
 // bridgeRewards routes the request to either CN or Global logic based on input.
 func bridgeRewards(ctx context.Context, fields *RewardsFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookRewards != nil {
 			return CNHookRewards(ctx, fields)
@@ -847,4 +794,3 @@ func bridgeRewards(ctx context.Context, fields *RewardsFields) (any, error) {
 /* Rewards Returns data about the rewards available in SC2. */
 // Path: /sc2/legacy/data/rewards/:regionId
 var Rewards = bridgeRewards
-

@@ -7,48 +7,42 @@ package HeartStone_Cards
 import (
 	"context"
 	"encoding/json"
-	
-	    "strconv"
-	
 
-	
+	"strconv"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: Cardsearch
 // ==============================================================================================
 
 type CardsearchFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
-	Set string `form:"set"` // The slug of the set the card belongs to. If you do not supply a value, cards from all sets will be returned.
-	Class string `form:"class"` // The slug of the card's class.
-	ManaCost []int `form:"manaCost"` // The mana cost required to play the card. You can include multiple values in a comma-separated list of numeric values.
-	Attack []int `form:"attack"` // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
-	Health []int `form:"health"` // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
-	Collectible []int `form:"collectible"` // Whether a card is collectible. A value of 1 indicates that collectible cards should be returned; 0 indicates uncollectible cards. To return all cards, use a value of '0,1'.
-	Rarity string `form:"rarity"` // The rarity of a card. This value must match the rarity slugs found in metadata.
-	Type string `form:"type"` // The type of card (for example, minion, spell, and so on). This value must match the type slugs found in metadata.
-	MinionType string `form:"minionType"` // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
-	Keyword string `form:"keyword"` // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
-	TextFilter string `form:"textFilter"` // A text string used to filter cards. You must include a locale along with the textFilter parameter.
-	GameMode string `form:"gameMode"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
-	SpellSchool string `form:"spellSchool"` // The school of a spell card (for example, arcane, fire, frost, and so on). This value must match the spell school slugs found in metadata.
-	Page int `form:"page"` // A page number.
-	PageSize int `form:"pageSize"` // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
-	Sort string `form:"sort"` // The sort option and direction used to sort the results. Valid values include manaCost:asc, manaCost:desc, attack:asc, attack:desc, health:asc, health:desc, class:asc, class:desc, groupByClass:asc, groupByClass:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
+	Locale      string `form:"locale,default=en_US"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	Set         string `form:"set"`                  // The slug of the set the card belongs to. If you do not supply a value, cards from all sets will be returned.
+	Class       string `form:"class"`                // The slug of the card's class.
+	ManaCost    []int  `form:"manaCost"`             // The mana cost required to play the card. You can include multiple values in a comma-separated list of numeric values.
+	Attack      []int  `form:"attack"`               // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
+	Health      []int  `form:"health"`               // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
+	Collectible []int  `form:"collectible"`          // Whether a card is collectible. A value of 1 indicates that collectible cards should be returned; 0 indicates uncollectible cards. To return all cards, use a value of '0,1'.
+	Rarity      string `form:"rarity"`               // The rarity of a card. This value must match the rarity slugs found in metadata.
+	Type        string `form:"type"`                 // The type of card (for example, minion, spell, and so on). This value must match the type slugs found in metadata.
+	MinionType  string `form:"minionType"`           // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
+	Keyword     string `form:"keyword"`              // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
+	TextFilter  string `form:"textFilter"`           // A text string used to filter cards. You must include a locale along with the textFilter parameter.
+	GameMode    string `form:"gameMode"`             // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
+	SpellSchool string `form:"spellSchool"`          // The school of a spell card (for example, arcane, fire, frost, and so on). This value must match the spell school slugs found in metadata.
+	Page        int    `form:"page"`                 // A page number.
+	PageSize    int    `form:"pageSize"`             // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
+	Sort        string `form:"sort"`                 // The sort option and direction used to sort the results. Valid values include manaCost:asc, manaCost:desc, attack:asc, attack:desc, health:asc, health:desc, class:asc, class:desc, groupByClass:asc, groupByClass:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -79,12 +73,10 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -99,98 +91,81 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("set") {
-		q.Add("set", "<no value>")
-	}
-    
-    
-	if !q.Has("class") {
-		q.Add("class", "<no value>")
-	}
-    
-     // q.Add("manaCost", fields.ManaCost)
-    
-     // q.Add("attack", fields.Attack)
-    
-     // q.Add("health", fields.Health)
-    
-     // q.Add("collectible", fields.Collectible)
-    
-    
-	if !q.Has("rarity") {
-		q.Add("rarity", "<no value>")
-	}
-    
-    
-	if !q.Has("type") {
-		q.Add("type", "<no value>")
-	}
-    
-    
-	if !q.Has("minionType") {
-		q.Add("minionType", "<no value>")
-	}
-    
-    
-	if !q.Has("keyword") {
-		q.Add("keyword", "<no value>")
-	}
-    
-    
-	if !q.Has("textFilter") {
-		q.Add("textFilter", "<no value>")
-	}
-    
-    
-	if !q.Has("gameMode") {
-		q.Add("gameMode", "<no value>")
-	}
-    
-    
-	if !q.Has("spellSchool") {
-		q.Add("spellSchool", "<no value>")
-	}
-    
-    
-    	if !q.Has("page") {
-    		q.Add("page", strconv.Itoa(fields.Page))
-    	}
-    
-    
-    	if !q.Has("pageSize") {
-    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
-    	}
-    
-    
-	if !q.Has("sort") {
-		q.Add("sort", "<no value>")
-	}
-    
+		if !q.Has("set") {
+			q.Add("set", "<no value>")
+		}
 
+		if !q.Has("class") {
+			q.Add("class", "<no value>")
+		}
 
-	req.URL.RawQuery = q.Encode()
-}
+		// q.Add("manaCost", fields.ManaCost)
+
+		// q.Add("attack", fields.Attack)
+
+		// q.Add("health", fields.Health)
+
+		// q.Add("collectible", fields.Collectible)
+
+		if !q.Has("rarity") {
+			q.Add("rarity", "<no value>")
+		}
+
+		if !q.Has("type") {
+			q.Add("type", "<no value>")
+		}
+
+		if !q.Has("minionType") {
+			q.Add("minionType", "<no value>")
+		}
+
+		if !q.Has("keyword") {
+			q.Add("keyword", "<no value>")
+		}
+
+		if !q.Has("textFilter") {
+			q.Add("textFilter", "<no value>")
+		}
+
+		if !q.Has("gameMode") {
+			q.Add("gameMode", "<no value>")
+		}
+
+		if !q.Has("spellSchool") {
+			q.Add("spellSchool", "<no value>")
+		}
+
+		if !q.Has("page") {
+			q.Add("page", strconv.Itoa(fields.Page))
+		}
+
+		if !q.Has("pageSize") {
+			q.Add("pageSize", strconv.Itoa(fields.PageSize))
+		}
+
+		if !q.Has("sort") {
+			q.Add("sort", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -209,11 +184,10 @@ func StringCardsearch(ctx context.Context, fields *CardsearchFields) (string, er
 
 // bridgeCardsearch routes the request to either CN or Global logic based on input.
 func bridgeCardsearch(ctx context.Context, fields *CardsearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCardsearch != nil {
 			return CNHookCardsearch(ctx, fields)
@@ -241,28 +215,27 @@ func bridgeCardsearch(ctx context.Context, fields *CardsearchFields) (any, error
 // Path: /hearthstone/cards
 var Cardsearch = bridgeCardsearch
 
-
 // ==============================================================================================
 // API: Detailedcardsearchexample
 // ==============================================================================================
 
 type DetailedcardsearchexampleFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
-	Set string `form:"set,default=rise-of-shadows"` // The slug of the set the card belongs to. If you do not supply a value, cards from all sets will be returned.
-	Class string `form:"class,default=mage"` // The slug of the card's class.
-	ManaCost []int `form:"manaCost,default=10"` // The mana cost required to play the card. You can include multiple values in a comma-separated list of numeric values.
-	Attack []int `form:"attack,default=4"` // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
-	Health []int `form:"health,default=10"` // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
-	Collectible []int `form:"collectible,default=1"` // Whether a card is collectible. A value of 1 indicates that collectible cards should be returned; 0 indicates uncollectible cards. To return all cards, use a value of '0,1'.
-	Rarity string `form:"rarity,default=legendary"` // The rarity of a card. This value must match the rarity slugs found in metadata.
-	Type string `form:"type,default=minion"` // The type of card (for example, minion, spell, and so on). This value must match the type slugs found in metadata.
-	MinionType string `form:"minionType,default=dragon"` // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
-	Keyword string `form:"keyword,default=battlecry"` // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
-	TextFilter string `form:"textFilter,default=kalecgos"` // A text string used to filter cards. You must include a locale along with the textFilter parameter.
-	GameMode string `form:"gameMode,default=constructed"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
-	Page int `form:"page,default=1"` // A page number.
-	PageSize int `form:"pageSize,default=5"` // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
-	Sort string `form:"sort,default=name:asc"` // The sort option and direction used to sort the results. Valid values include manaCost:asc, manaCost:desc, attack:asc, attack:desc, health:asc, health:desc, class:asc, class:desc, groupByClass:asc, groupByClass:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
+	Locale      string `form:"locale,default=en_US"`         // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	Set         string `form:"set,default=rise-of-shadows"`  // The slug of the set the card belongs to. If you do not supply a value, cards from all sets will be returned.
+	Class       string `form:"class,default=mage"`           // The slug of the card's class.
+	ManaCost    []int  `form:"manaCost,default=10"`          // The mana cost required to play the card. You can include multiple values in a comma-separated list of numeric values.
+	Attack      []int  `form:"attack,default=4"`             // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
+	Health      []int  `form:"health,default=10"`            // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
+	Collectible []int  `form:"collectible,default=1"`        // Whether a card is collectible. A value of 1 indicates that collectible cards should be returned; 0 indicates uncollectible cards. To return all cards, use a value of '0,1'.
+	Rarity      string `form:"rarity,default=legendary"`     // The rarity of a card. This value must match the rarity slugs found in metadata.
+	Type        string `form:"type,default=minion"`          // The type of card (for example, minion, spell, and so on). This value must match the type slugs found in metadata.
+	MinionType  string `form:"minionType,default=dragon"`    // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
+	Keyword     string `form:"keyword,default=battlecry"`    // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
+	TextFilter  string `form:"textFilter,default=kalecgos"`  // A text string used to filter cards. You must include a locale along with the textFilter parameter.
+	GameMode    string `form:"gameMode,default=constructed"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
+	Page        int    `form:"page,default=1"`               // A page number.
+	PageSize    int    `form:"pageSize,default=5"`           // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
+	Sort        string `form:"sort,default=name:asc"`        // The sort option and direction used to sort the results. Valid values include manaCost:asc, manaCost:desc, attack:asc, attack:desc, health:asc, health:desc, class:asc, class:desc, groupByClass:asc, groupByClass:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -293,89 +266,70 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.Set == "" {
 		fields.Set = "rise-of-shadows"
 	}
-	
-	
+
 	if fields.Class == "" {
 		fields.Class = "mage"
 	}
-	
-	
-	
-    /* if fields.ManaCost == 0 {
-       		fields.ManaCost = 10
-       	} */
-	
-	
-	
-    /* if fields.Attack == 0 {
-       		fields.Attack = 4
-       	} */
-	
-	
-	
-    /* if fields.Health == 0 {
-       		fields.Health = 10
-       	} */
-	
-	
-	
-    /* if fields.Collectible == 0 {
-       		fields.Collectible = 1
-       	} */
-	
-	
+
+	/* if fields.ManaCost == 0 {
+		fields.ManaCost = 10
+	} */
+
+	/* if fields.Attack == 0 {
+		fields.Attack = 4
+	} */
+
+	/* if fields.Health == 0 {
+		fields.Health = 10
+	} */
+
+	/* if fields.Collectible == 0 {
+		fields.Collectible = 1
+	} */
+
 	if fields.Rarity == "" {
 		fields.Rarity = "legendary"
 	}
-	
-	
+
 	if fields.Type == "" {
 		fields.Type = "minion"
 	}
-	
-	
+
 	if fields.MinionType == "" {
 		fields.MinionType = "dragon"
 	}
-	
-	
+
 	if fields.Keyword == "" {
 		fields.Keyword = "battlecry"
 	}
-	
-	
+
 	if fields.TextFilter == "" {
 		fields.TextFilter = "kalecgos"
 	}
-	
-	
+
 	if fields.GameMode == "" {
 		fields.GameMode = "constructed"
 	}
-	
-	
+
 	if fields.Page == 0 {
 		fields.Page = 1
 	}
-	
+
 	if fields.PageSize == 0 {
 		fields.PageSize = 5
 	}
-	
+
 	if fields.Sort == "" {
 		fields.Sort = "name:asc"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -390,93 +344,77 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("set") {
-		q.Add("set", "rise-of-shadows")
-	}
-    
-    
-	if !q.Has("class") {
-		q.Add("class", "mage")
-	}
-    
-     // q.Add("manaCost", fields.ManaCost)
-    
-     // q.Add("attack", fields.Attack)
-    
-     // q.Add("health", fields.Health)
-    
-     // q.Add("collectible", fields.Collectible)
-    
-    
-	if !q.Has("rarity") {
-		q.Add("rarity", "legendary")
-	}
-    
-    
-	if !q.Has("type") {
-		q.Add("type", "minion")
-	}
-    
-    
-	if !q.Has("minionType") {
-		q.Add("minionType", "dragon")
-	}
-    
-    
-	if !q.Has("keyword") {
-		q.Add("keyword", "battlecry")
-	}
-    
-    
-	if !q.Has("textFilter") {
-		q.Add("textFilter", "kalecgos")
-	}
-    
-    
-	if !q.Has("gameMode") {
-		q.Add("gameMode", "constructed")
-	}
-    
-    
-    	if !q.Has("page") {
-    		q.Add("page", strconv.Itoa(fields.Page))
-    	}
-    
-    
-    	if !q.Has("pageSize") {
-    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
-    	}
-    
-    
-	if !q.Has("sort") {
-		q.Add("sort", "name:asc")
-	}
-    
+		if !q.Has("set") {
+			q.Add("set", "rise-of-shadows")
+		}
 
+		if !q.Has("class") {
+			q.Add("class", "mage")
+		}
 
-	req.URL.RawQuery = q.Encode()
-}
+		// q.Add("manaCost", fields.ManaCost)
+
+		// q.Add("attack", fields.Attack)
+
+		// q.Add("health", fields.Health)
+
+		// q.Add("collectible", fields.Collectible)
+
+		if !q.Has("rarity") {
+			q.Add("rarity", "legendary")
+		}
+
+		if !q.Has("type") {
+			q.Add("type", "minion")
+		}
+
+		if !q.Has("minionType") {
+			q.Add("minionType", "dragon")
+		}
+
+		if !q.Has("keyword") {
+			q.Add("keyword", "battlecry")
+		}
+
+		if !q.Has("textFilter") {
+			q.Add("textFilter", "kalecgos")
+		}
+
+		if !q.Has("gameMode") {
+			q.Add("gameMode", "constructed")
+		}
+
+		if !q.Has("page") {
+			q.Add("page", strconv.Itoa(fields.Page))
+		}
+
+		if !q.Has("pageSize") {
+			q.Add("pageSize", strconv.Itoa(fields.PageSize))
+		}
+
+		if !q.Has("sort") {
+			q.Add("sort", "name:asc")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -495,11 +433,10 @@ func StringDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 
 // bridgeDetailedcardsearchexample routes the request to either CN or Global logic based on input.
 func bridgeDetailedcardsearchexample(ctx context.Context, fields *DetailedcardsearchexampleFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookDetailedcardsearchexample != nil {
 			return CNHookDetailedcardsearchexample(ctx, fields)
@@ -527,23 +464,22 @@ func bridgeDetailedcardsearchexample(ctx context.Context, fields *Detailedcardse
 // Path: /hearthstone/cards
 var Detailedcardsearchexample = bridgeDetailedcardsearchexample
 
-
 // ==============================================================================================
 // API: Battlegroundscardsearch
 // ==============================================================================================
 
 type BattlegroundscardsearchFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
-	GameMode string `form:"gameMode,default=battlegrounds"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
-	Tier []int `form:"tier,default=hero,3"` // This special parameter is for tavern tier, which is only recognized when searching for Battlegrounds cards. Valid comma-separated values are numbers 1-6, or the string 'hero'.
-	Attack []int `form:"attack"` // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
-	Health []int `form:"health"` // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
-	MinionType string `form:"minionType"` // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
-	Keyword string `form:"keyword"` // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
-	TextFilter string `form:"textFilter"` // A text string used to filter cards. You must include a locale along with the textFilter parameter.
-	Page int `form:"page"` // A page number.
-	PageSize int `form:"pageSize"` // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
-	Sort string `form:"sort"` // The sort option and direction used to sort the results. Valid values include tier:asc, tier:desc, attack:asc, attack:desc, health:asc, health:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
+	Locale     string `form:"locale,default=en_US"`           // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	GameMode   string `form:"gameMode,default=battlegrounds"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
+	Tier       []int  `form:"tier,default=hero,3"`            // This special parameter is for tavern tier, which is only recognized when searching for Battlegrounds cards. Valid comma-separated values are numbers 1-6, or the string 'hero'.
+	Attack     []int  `form:"attack"`                         // The attack power of the minion or weapon. You can include multiple values in a comma-separated list of numeric values.
+	Health     []int  `form:"health"`                         // The health of a minion. You can include multiple values in a comma-separated list of numeric values.
+	MinionType string `form:"minionType"`                     // The type of minion card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
+	Keyword    string `form:"keyword"`                        // A required keyword on the card (for example, battlecry, deathrattle, and so on). This value must match the keyword slugs found in metadata.
+	TextFilter string `form:"textFilter"`                     // A text string used to filter cards. You must include a locale along with the textFilter parameter.
+	Page       int    `form:"page"`                           // A page number.
+	PageSize   int    `form:"pageSize"`                       // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
+	Sort       string `form:"sort"`                           // The sort option and direction used to sort the results. Valid values include tier:asc, tier:desc, attack:asc, attack:desc, health:asc, health:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -574,23 +510,18 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.GameMode == "" {
 		fields.GameMode = "battlegrounds"
 	}
-	
-	
-	
-    /* if fields.Tier == 0 {
-       		fields.Tier = hero,3
-       	} */
-	
-	
+
+	/* if fields.Tier == 0 {
+		fields.Tier = hero,3
+	} */
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -605,71 +536,59 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("gameMode") {
-		q.Add("gameMode", "battlegrounds")
-	}
-    
-     // q.Add("tier", fields.Tier)
-    
-     // q.Add("attack", fields.Attack)
-    
-     // q.Add("health", fields.Health)
-    
-    
-	if !q.Has("minionType") {
-		q.Add("minionType", "<no value>")
-	}
-    
-    
-	if !q.Has("keyword") {
-		q.Add("keyword", "<no value>")
-	}
-    
-    
-	if !q.Has("textFilter") {
-		q.Add("textFilter", "<no value>")
-	}
-    
-    
-    	if !q.Has("page") {
-    		q.Add("page", strconv.Itoa(fields.Page))
-    	}
-    
-    
-    	if !q.Has("pageSize") {
-    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
-    	}
-    
-    
-	if !q.Has("sort") {
-		q.Add("sort", "<no value>")
-	}
-    
+		if !q.Has("gameMode") {
+			q.Add("gameMode", "battlegrounds")
+		}
 
+		// q.Add("tier", fields.Tier)
 
-	req.URL.RawQuery = q.Encode()
-}
+		// q.Add("attack", fields.Attack)
+
+		// q.Add("health", fields.Health)
+
+		if !q.Has("minionType") {
+			q.Add("minionType", "<no value>")
+		}
+
+		if !q.Has("keyword") {
+			q.Add("keyword", "<no value>")
+		}
+
+		if !q.Has("textFilter") {
+			q.Add("textFilter", "<no value>")
+		}
+
+		if !q.Has("page") {
+			q.Add("page", strconv.Itoa(fields.Page))
+		}
+
+		if !q.Has("pageSize") {
+			q.Add("pageSize", strconv.Itoa(fields.PageSize))
+		}
+
+		if !q.Has("sort") {
+			q.Add("sort", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -688,11 +607,10 @@ func StringBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 
 // bridgeBattlegroundscardsearch routes the request to either CN or Global logic based on input.
 func bridgeBattlegroundscardsearch(ctx context.Context, fields *BattlegroundscardsearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookBattlegroundscardsearch != nil {
 			return CNHookBattlegroundscardsearch(ctx, fields)
@@ -720,24 +638,23 @@ func bridgeBattlegroundscardsearch(ctx context.Context, fields *Battlegroundscar
 // Path: /hearthstone/cards
 var Battlegroundscardsearch = bridgeBattlegroundscardsearch
 
-
 // ==============================================================================================
 // API: Mercenariescardsearch
 // ==============================================================================================
 
 type MercenariescardsearchFields struct {
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
-	GameMode string `form:"gameMode,default=mercenaries"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>mercenaries</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
-	Attack []int `form:"attack"` // The attack power of the mercenary. You can include multiple values in a comma-separated list of numeric values.
-	Health []int `form:"health"` // The health of a mercenary. You can include multiple values in a comma-separated list of numeric values.
-	MinionType string `form:"minionType"` // The type of mercenary card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
-	MercenaryId []int `form:"mercenaryId"` // The unique numeric ID of a mercenary. This can return multiple cards representing each mercenary skin.
-	MercenaryRole string `form:"mercenaryRole"` // The role of a mercenary card (for example, fighter, protector, tank). These values must match the mercenary role slugs in metadata. You can include multiple values in a comma-separated list of values.
-	DefaultMercenary []int `form:"defaultMercenary"` // Whether or not a given card represents the default Mercenary skin. Specify 0 for non-default, and 1 for default.
-	TextFilter string `form:"textFilter"` // A text string used to filter cards. You must include a locale along with the textFilter parameter.
-	Page int `form:"page"` // A page number.
-	PageSize int `form:"pageSize"` // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
-	Sort string `form:"sort"` // The sort option and direction used to sort the results. Valid values include tier:asc, tier:desc, attack:asc, attack:desc, health:asc, health:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
+	Locale           string `form:"locale,default=en_US"`         // The locale to reflect in localized data. If you do not supply a value, all translations are returned.
+	GameMode         string `form:"gameMode,default=mercenaries"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>mercenaries</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
+	Attack           []int  `form:"attack"`                       // The attack power of the mercenary. You can include multiple values in a comma-separated list of numeric values.
+	Health           []int  `form:"health"`                       // The health of a mercenary. You can include multiple values in a comma-separated list of numeric values.
+	MinionType       string `form:"minionType"`                   // The type of mercenary card (for example, beast, murloc, dragon, and so on). This value must match the minion type slugs found in metadata.
+	MercenaryId      []int  `form:"mercenaryId"`                  // The unique numeric ID of a mercenary. This can return multiple cards representing each mercenary skin.
+	MercenaryRole    string `form:"mercenaryRole"`                // The role of a mercenary card (for example, fighter, protector, tank). These values must match the mercenary role slugs in metadata. You can include multiple values in a comma-separated list of values.
+	DefaultMercenary []int  `form:"defaultMercenary"`             // Whether or not a given card represents the default Mercenary skin. Specify 0 for non-default, and 1 for default.
+	TextFilter       string `form:"textFilter"`                   // A text string used to filter cards. You must include a locale along with the textFilter parameter.
+	Page             int    `form:"page"`                         // A page number.
+	PageSize         int    `form:"pageSize"`                     // The number of results to choose per page. A value will be selected automatically if you do not supply a pageSize or if the pageSize is higher than the maximum allowed.
+	Sort             string `form:"sort"`                         // The sort option and direction used to sort the results. Valid values include tier:asc, tier:desc, attack:asc, attack:desc, health:asc, health:desc, name:asc, and name:desc. Results are sorted by name:asc by default.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -768,17 +685,14 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
+
 	if fields.GameMode == "" {
 		fields.GameMode = "mercenaries"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -793,73 +707,61 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	req.URL.Path = fields.Path
-    	
+
+		req.URL.Path = fields.Path
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
-	}
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
 
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("gameMode") {
-		q.Add("gameMode", "mercenaries")
-	}
-    
-     // q.Add("attack", fields.Attack)
-    
-     // q.Add("health", fields.Health)
-    
-    
-	if !q.Has("minionType") {
-		q.Add("minionType", "<no value>")
-	}
-    
-     // q.Add("mercenaryId", fields.MercenaryId)
-    
-    
-	if !q.Has("mercenaryRole") {
-		q.Add("mercenaryRole", "<no value>")
-	}
-    
-     // q.Add("defaultMercenary", fields.DefaultMercenary)
-    
-    
-	if !q.Has("textFilter") {
-		q.Add("textFilter", "<no value>")
-	}
-    
-    
-    	if !q.Has("page") {
-    		q.Add("page", strconv.Itoa(fields.Page))
-    	}
-    
-    
-    	if !q.Has("pageSize") {
-    		q.Add("pageSize", strconv.Itoa(fields.PageSize))
-    	}
-    
-    
-	if !q.Has("sort") {
-		q.Add("sort", "<no value>")
-	}
-    
+		if !q.Has("gameMode") {
+			q.Add("gameMode", "mercenaries")
+		}
 
+		// q.Add("attack", fields.Attack)
 
-	req.URL.RawQuery = q.Encode()
-}
+		// q.Add("health", fields.Health)
+
+		if !q.Has("minionType") {
+			q.Add("minionType", "<no value>")
+		}
+
+		// q.Add("mercenaryId", fields.MercenaryId)
+
+		if !q.Has("mercenaryRole") {
+			q.Add("mercenaryRole", "<no value>")
+		}
+
+		// q.Add("defaultMercenary", fields.DefaultMercenary)
+
+		if !q.Has("textFilter") {
+			q.Add("textFilter", "<no value>")
+		}
+
+		if !q.Has("page") {
+			q.Add("page", strconv.Itoa(fields.Page))
+		}
+
+		if !q.Has("pageSize") {
+			q.Add("pageSize", strconv.Itoa(fields.PageSize))
+		}
+
+		if !q.Has("sort") {
+			q.Add("sort", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -878,11 +780,10 @@ func StringMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 
 // bridgeMercenariescardsearch routes the request to either CN or Global logic based on input.
 func bridgeMercenariescardsearch(ctx context.Context, fields *MercenariescardsearchFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMercenariescardsearch != nil {
 			return CNHookMercenariescardsearch(ctx, fields)
@@ -910,15 +811,14 @@ func bridgeMercenariescardsearch(ctx context.Context, fields *Mercenariescardsea
 // Path: /hearthstone/cards
 var Mercenariescardsearch = bridgeMercenariescardsearch
 
-
 // ==============================================================================================
 // API: Fetchonecard
 // ==============================================================================================
 
 type FetchonecardFields struct {
 	Idorslug string `uri:"idorslug" binding:"required"` // An ID or slug that uniquely identifies a card. You can discover these values by using the `GET /hearthstone/cards` endpoint.
-		Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
-	GameMode string `form:"gameMode"` // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
+	Locale   string `form:"locale,default=en_US"`       // The locale to reflect in localized data.
+	GameMode string `form:"gameMode"`                   // A recognized game mode (for example, <strong>battlegrounds</strong> or <strong>constructed</strong>). The default value is constructed. See the <a href='/documentation/hearthstone/guides/game-modes'>Game Modes Guide</a> for more information.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -949,17 +849,14 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Idorslug == "" {
 		fields.Idorslug = "52119-arch-villain-rafaam"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -974,49 +871,42 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"idorslug": fields.Idorslug,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"idorslug": fields.Idorslug,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		if !q.Has("gameMode") {
+			q.Add("gameMode", "<no value>")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-    
-	if !q.Has("gameMode") {
-		q.Add("gameMode", "<no value>")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -1035,11 +925,10 @@ func StringFetchonecard(ctx context.Context, fields *FetchonecardFields) (string
 
 // bridgeFetchonecard routes the request to either CN or Global logic based on input.
 func bridgeFetchonecard(ctx context.Context, fields *FetchonecardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookFetchonecard != nil {
 			return CNHookFetchonecard(ctx, fields)
@@ -1066,4 +955,3 @@ func bridgeFetchonecard(ctx context.Context, fields *FetchonecardFields) (any, e
 /* Fetchonecard Returns the card with an ID or slug that matches the one you specify. For more information, see the <a href='/documentation/hearthstone/guides/card-search'>Card Search Guide</a>. */
 // Path: /hearthstone/cards/:idorslug
 var Fetchonecard = bridgeFetchonecard
-

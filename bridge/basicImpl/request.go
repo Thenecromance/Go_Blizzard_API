@@ -2,7 +2,7 @@ package basicImpl
 
 import (
 	"fmt"
-	"github.com/Thenecromance/BlizzardAPI/Interface"
+	"github.com/Thenecromance/Go_Blizzard_API/Interface"
 	"io"
 	"net/http"
 	"strings"

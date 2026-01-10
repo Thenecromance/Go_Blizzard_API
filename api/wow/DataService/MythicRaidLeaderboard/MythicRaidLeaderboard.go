@@ -7,33 +7,27 @@ package wow_MythicRaidLeaderboard
 import (
 	"context"
 	"encoding/json"
-	
-
-	
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: MythicRaidLeaderboard
 // ==============================================================================================
 
 type MythicRaidLeaderboardFields struct {
-	Raid string `uri:"raid" binding:"required"` // The raid for a leaderboard.
-		Faction string `uri:"faction" binding:"required"` // Player faction (`alliance` or `horde`).
-		Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	Raid      string `uri:"raid" binding:"required"`       // The raid for a leaderboard.
+	Faction   string `uri:"faction" binding:"required"`    // Player faction (`alliance` or `horde`).
+	Namespace string `form:"namespace,default=dynamic-us"` // The namespace to use to locate this document.
+	Locale    string `form:"locale,default=en_US"`         // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -64,27 +58,22 @@ func StringMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.Raid == "" {
 		fields.Raid = "uldir"
 	}
-	
-	
+
 	if fields.Faction == "" {
 		fields.Faction = "alliance"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "dynamic-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -99,50 +88,43 @@ func StringMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"raid": fields.Raid,
-    		"faction": fields.Faction,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"raid":    fields.Raid,
+			"faction": fields.Faction,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "dynamic-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "dynamic-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -161,11 +143,10 @@ func StringMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 
 // bridgeMythicRaidLeaderboard routes the request to either CN or Global logic based on input.
 func bridgeMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderboardFields) (any, error) {
-    
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookMythicRaidLeaderboard != nil {
 			return CNHookMythicRaidLeaderboard(ctx, fields)
@@ -192,4 +173,3 @@ func bridgeMythicRaidLeaderboard(ctx context.Context, fields *MythicRaidLeaderbo
 /* MythicRaidLeaderboard Returns the leaderboard for a given raid and faction. */
 // Path: /data/wow/leaderboard/hall-of-fame/{raid}/{faction}
 var MythicRaidLeaderboard = bridgeMythicRaidLeaderboard
-

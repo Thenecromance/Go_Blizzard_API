@@ -7,35 +7,29 @@ package wow_CharacterMythicKeystoneProfile
 import (
 	"context"
 	"encoding/json"
-	
 
-	
-	    "strings"
-    
+	"strings"
 
 	"io"
 	"net/http"
 
-	"github.com/Thenecromance/BlizzardAPI/ApiError"
-	"github.com/Thenecromance/BlizzardAPI/api/Authentication"
-	"github.com/Thenecromance/BlizzardAPI/global"
-	"github.com/Thenecromance/BlizzardAPI/utils"
-
+	"github.com/Thenecromance/Go_Blizzard_API/ApiError"
+	"github.com/Thenecromance/Go_Blizzard_API/api/Authentication"
+	"github.com/Thenecromance/Go_Blizzard_API/global"
+	"github.com/Thenecromance/Go_Blizzard_API/utils"
 
 	"github.com/jtacoma/uritemplates"
-
 )
-
 
 // ==============================================================================================
 // API: CharacterMythicKeystoneProfileIndex
 // ==============================================================================================
 
 type CharacterMythicKeystoneProfileIndexFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -66,27 +60,22 @@ func StringCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -101,50 +90,43 @@ func StringCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -163,22 +145,21 @@ func StringCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 
 // bridgeCharacterMythicKeystoneProfileIndex routes the request to either CN or Global logic based on input.
 func bridgeCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *CharacterMythicKeystoneProfileIndexFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterMythicKeystoneProfileIndex != nil {
 			return CNHookCharacterMythicKeystoneProfileIndex(ctx, fields)
@@ -206,17 +187,16 @@ func bridgeCharacterMythicKeystoneProfileIndex(ctx context.Context, fields *Char
 // Path: /profile/wow/character/{realmSlug}/{characterName}/mythic-keystone-profile
 var CharacterMythicKeystoneProfileIndex = bridgeCharacterMythicKeystoneProfileIndex
 
-
 // ==============================================================================================
 // API: CharacterMythicKeystoneSeasonDetails
 // ==============================================================================================
 
 type CharacterMythicKeystoneSeasonDetailsFields struct {
-	RealmSlug string `uri:"realmSlug" binding:"required"` // The slug of the realm.
-		CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
-		SeasonId string `uri:"seasonId" binding:"required"` // The ID of the Mythic Keystone season.
-		Namespace string `form:"namespace,default=profile-us"` // The namespace to use to locate this document.
-	Locale string `form:"locale,default=en_US"` // The locale to reflect in localized data.
+	RealmSlug     string `uri:"realmSlug" binding:"required"`     // The slug of the realm.
+	CharacterName string `uri:"characterName" binding:"required"` // The lowercase name of the character.
+	SeasonId      string `uri:"seasonId" binding:"required"`      // The ID of the Mythic Keystone season.
+	Namespace     string `form:"namespace,default=profile-us"`    // The namespace to use to locate this document.
+	Locale        string `form:"locale,default=en_US"`            // The locale to reflect in localized data.
 
 	// Extra fields for internal logic
 	ExtraFields map[any]any
@@ -247,32 +227,26 @@ func StringCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 	// 2. Apply Default Values (if needed for client-side logic)
 	// Note: Usually struct tags handle server-side binding,
 	// but here we might need manual checks if 0/"" are invalid for the request.
-	
+
 	if fields.RealmSlug == "" {
 		fields.RealmSlug = "tichondrius"
 	}
-	
-	
+
 	if fields.CharacterName == "" {
 		fields.CharacterName = "charactername"
 	}
-	
-	
+
 	if fields.SeasonId == "" {
 		fields.SeasonId = "1"
 	}
-	
-	
+
 	if fields.Namespace == "" {
 		fields.Namespace = "profile-us"
 	}
-	
-	
+
 	if fields.Locale == "" {
 		fields.Locale = "en_US"
 	}
-	
-	
 
 	// 3. Create HTTP Request
 	req, err := http.NewRequestWithContext(
@@ -287,51 +261,44 @@ func StringCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 
 	// 4. Resolve Path (Handle URI Bindings)
 	{
-	
-    	tpl, err := uritemplates.Parse(fields.Path)
-    	if err != nil {
-    		return "", err
-    	}
 
-    	pathValues := map[string]interface{}{
-    		"realmSlug": fields.RealmSlug,
-    		"characterName": fields.CharacterName,
-    		"seasonId": fields.SeasonId,
-    		
-    	}
+		tpl, err := uritemplates.Parse(fields.Path)
+		if err != nil {
+			return "", err
+		}
 
-    	expandedPath, err := tpl.Expand(pathValues)
-    	if err != nil {
-    		return "", err
-    	}
-    	req.URL.Path = expandedPath
-    	
+		pathValues := map[string]interface{}{
+			"realmSlug":     fields.RealmSlug,
+			"characterName": fields.CharacterName,
+			"seasonId":      fields.SeasonId,
+		}
+
+		expandedPath, err := tpl.Expand(pathValues)
+		if err != nil {
+			return "", err
+		}
+		req.URL.Path = expandedPath
+
 	}
 
 	// 5. Build Query Strings
-{
-	q := req.URL.Query()
+	{
+		q := req.URL.Query()
 
+		for key, value := range fields.ExtraFields {
+			q.Add(key.(string), value.(string))
+		}
 
-	for key, value := range fields.ExtraFields {
-		q.Add(key.(string), value.(string))
+		if !q.Has("namespace") {
+			q.Add("namespace", "profile-us")
+		}
+
+		if !q.Has("locale") {
+			q.Add("locale", "en_US")
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
-
-	
-    
-	if !q.Has("namespace") {
-		q.Add("namespace", "profile-us")
-	}
-    
-    
-	if !q.Has("locale") {
-		q.Add("locale", "en_US")
-	}
-    
-
-
-	req.URL.RawQuery = q.Encode()
-}
 
 	// 6. Execute Request
 	resp, err := Authentication.Client().Do(req)
@@ -350,22 +317,21 @@ func StringCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 
 // bridgeCharacterMythicKeystoneSeasonDetails routes the request to either CN or Global logic based on input.
 func bridgeCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *CharacterMythicKeystoneSeasonDetailsFields) (any, error) {
-    
+
 	if strings.Contains(fields.Namespace, "-cn") {
 		if fields.CN == nil {
 			fields.CN = &utils.CNRequestMethod{
-				
-				Name:      fields.CharacterName,
-				
+
+				Name: fields.CharacterName,
+
 				RealmSlug: fields.RealmSlug,
 			}
 		}
 	}
-	
 
 	// 1. If CN specific parameters are present, use CN logic
 	if fields.CN != nil {
-        // Design Scheme: Check if a custom CN handler is registered at runtime.
+		// Design Scheme: Check if a custom CN handler is registered at runtime.
 		// This allows extension without modifying the template generator.
 		if CNHookCharacterMythicKeystoneSeasonDetails != nil {
 			return CNHookCharacterMythicKeystoneSeasonDetails(ctx, fields)
@@ -392,4 +358,3 @@ func bridgeCharacterMythicKeystoneSeasonDetails(ctx context.Context, fields *Cha
 /* CharacterMythicKeystoneSeasonDetails Returns the Mythic Keystone season details for a character.<br/><br/>Returns a <strong>404 Not Found</strong> for characters that have not yet completed a Mythic Keystone dungeon for the specified season. */
 // Path: /profile/wow/character/{realmSlug}/{characterName}/mythic-keystone-profile/season/{seasonId}
 var CharacterMythicKeystoneSeasonDetails = bridgeCharacterMythicKeystoneSeasonDetails
-
