@@ -23,9 +23,8 @@ func init() {
 		}
 	} else {
 		fmt.Println("Config file loaded successfully")
-		cookie := GetCookie()
+		cookie := GetNetEaseCookie()
 		fmt.Println("Cookie:", cookie[:4]+"...."+cookie[len(cookie)-4:])
-
 	}
 
 }
